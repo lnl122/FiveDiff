@@ -16,7 +16,10 @@ namespace FiveDiff
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(@"C:\_2del\pic01.jpg");
+            ImageDiff a = new ImageDiff(bmp);
+            int ii = 0;
+            //Application.Run(new Form1());
         }
     }
 }
