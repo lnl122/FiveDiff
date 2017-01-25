@@ -338,11 +338,22 @@ namespace FiveDiff
                 GetDiffs();
                 Calculate();
 
-                ResultBmp = Part1;
+                ResultBmp = DrawNewBmp();
                 
-            
-
             }
+            else
+            {
+                ResultBmp = null;
+            }
+               
+        }
+
+        private Bitmap DrawNewBmp()
+        {
+            // тут нужно отрисовать новый битмап.
+            Bitmap res = Part1;
+
+            return res;
         }
 
         private void Calculate()
@@ -1354,27 +1365,37 @@ namespace FiveDiff
             }
             float width = (float)ss / (float)cc;
             //осталось найти начало и конец сетки
-            LineAnalize[block].SeparatorWidth = width;
-            int[] tests = new int[5];
-            tests[0] = TestStartEnd(block, b, b[0]);
-            tests[1] = TestStartEnd(block, b, b[1]);
-            tests[2] = TestStartEnd(block, b, b[2]);
-            tests[3] = TestStartEnd(block, b, b[3]);
-            tests[4] = TestStartEnd(block, b, b[4]);
-            int idx3 = -1;
-            int mmm = -1;
-            for(int i=0; i<5; i++)
+            if (b.Length >= 5)
             {
-                if (tests[i] > mmm)
+                LineAnalize[block].SeparatorWidth = width;
+                int[] tests = new int[5];
+                tests[0] = TestStartEnd(block, b, b[0]);
+                tests[1] = TestStartEnd(block, b, b[1]);
+                tests[2] = TestStartEnd(block, b, b[2]);
+                tests[3] = TestStartEnd(block, b, b[3]);
+                tests[4] = TestStartEnd(block, b, b[4]);
+                int idx3 = -1;
+                int mmm = -1;
+                for (int i = 0; i < 5; i++)
                 {
-                    mmm = tests[i];
-                    idx3 = i;
+                    if (tests[i] > mmm)
+                    {
+                        mmm = tests[i];
+                        idx3 = i;
+                    }
                 }
+                LineAnalize[block].SeparatorStart = b[idx3];
+                LineAnalize[block].SeparatorCount = tests[idx3];
+                LineAnalize[block].SeparatorEnd = TestEnd(block, b, b[idx3]);
+                LineAnalize[block].SeparatorWidth = ((float)(LineAnalize[block].SeparatorEnd - b[idx3])) / ((float)(tests[idx3]));
             }
-            LineAnalize[block].SeparatorStart = b[idx3];
-            LineAnalize[block].SeparatorCount = tests[idx3];
-            LineAnalize[block].SeparatorEnd = TestEnd(block, b, b[idx3]);
-            LineAnalize[block].SeparatorWidth = ((float)(LineAnalize[block].SeparatorEnd - b[idx3])) / ((float)(tests[idx3]));
+            else
+            {
+                LineAnalize[block].SeparatorStart = block;
+                LineAnalize[block].SeparatorCount = block+1;
+                LineAnalize[block].SeparatorEnd = block+5;
+                LineAnalize[block].SeparatorWidth = block*5;
+            }
         }
 
         /// <summary>
