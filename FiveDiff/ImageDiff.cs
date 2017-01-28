@@ -338,7 +338,8 @@ namespace FiveDiff
                 GetDiffs();
                 Calculate();
 
-                ResultBmp = DrawNewBmp();
+                ResultBmp = bmp;
+                DrawNewBmp();
                 
             }
             else
@@ -348,14 +349,121 @@ namespace FiveDiff
                
         }
 
-        private Bitmap DrawNewBmp()
+        private void DrawNewBmp()
         {
             // тут нужно отрисовать новый битмап.
-            Bitmap res = Part1;
+            int p1_left = LineAnalize[0].SeparatorStart + rPart1.Left;
+            int p1_width = LineAnalize[0].SeparatorEnd - LineAnalize[0].SeparatorStart-1;
+            int p1_top = LineAnalize[1].SeparatorStart + rPart1.Top;
+            int p1_height = LineAnalize[1].SeparatorEnd - LineAnalize[1].SeparatorStart-1;
+            int p2_left = LineAnalize[2].SeparatorStart + rPart2.Left;
+            int p2_width = LineAnalize[2].SeparatorEnd - LineAnalize[2].SeparatorStart-1;
+            int p2_top = LineAnalize[3].SeparatorStart + rPart2.Top;
+            int p2_height = LineAnalize[3].SeparatorEnd - LineAnalize[3].SeparatorStart-1;
 
-            return res;
+            Color cc = Color.Blue;
+
+            DrawRectangle3(p1_left, p1_top, p1_width, p1_height, cc);
+            DrawRectangle3(p2_left, p2_top, p2_width, p2_height, cc);
+
+            int cnt_w = LineAnalize[0].SeparatorCount-1;
+            int cnt_h = LineAnalize[1].SeparatorCount-1;
+            float w = LineAnalize[0].SeparatorWidth;
+            float h = LineAnalize[1].SeparatorWidth;
+
+            cc = Color.Red;
+            DrawSq(diff_found, LineAnalize[0].SeparatorStart, LineAnalize[1].SeparatorStart, LineAnalize[0].SeparatorEnd, LineAnalize[1].SeparatorEnd, LineAnalize[0].SeparatorCount, LineAnalize[1].SeparatorCount, cc);
+            cc = Color.Yellow;
+            DrawSq(diff_found2, LineAnalize[0].SeparatorStart, LineAnalize[1].SeparatorStart, LineAnalize[0].SeparatorEnd, LineAnalize[1].SeparatorEnd, LineAnalize[0].SeparatorCount, LineAnalize[1].SeparatorCount, cc);
+            //private kv[] FillKV(Bitmap bb, int p, int w_start, int h_start, int w_end, int h_end, int w_cnt, int h_cnt)
+
+
+            /*
+            //diff_found
+            cc = Color.Red;
+            foreach (int num in diff_found)
+            {
+                int num2 = num + shift_lr * cnt_w + shift_ud;
+
+                int num_w = num / cnt_w;
+                int num_h = num - num_w * cnt_w;
+                int num2_w = num2 / cnt_w;
+                int num2_h = num2 - num2_w * cnt_w;
+
+                DrawRectangle3(p1_left + (int)(num_w * w), p1_top + (int)(num_h * h), (int)w, (int)h, cc);
+                DrawRectangle3(p2_left + (int)(num2_w * w), p2_top + (int)(num2_h * h), (int)w, (int)h, cc);
+            }
+            */
+            /*
+            //diff_found2
+            cc = Color.Yellow;
+            foreach (int num in diff_found2)
+            {
+                int num2 = num + shift_lr * cnt_w + shift_ud;
+
+                int num_w = num / cnt_w;
+                int num_h = num - num_w * cnt_w;
+                int num2_w = num2 / cnt_w;
+                int num2_h = num2 - num2_w * cnt_w;
+
+                DrawRectangle3(p1_left + (int)(num_w * w), p1_top + (int)(num_h * h), (int)w, (int)h, cc);
+                DrawRectangle3(p2_left + (int)(num2_w * w), p2_top + (int)(num2_h * h), (int)w, (int)h, cc);
+            }*/
+        }
+        private void DrawSq(List<int> df, int w_start, int h_start, int w_end, int h_end, int w_cnt, int h_cnt, Color cc)
+        {
+            int count = w_cnt * h_cnt;
+            float w = (float)((float)(w_end - w_start) / (float)w_cnt);
+            float h = (float)((float)(h_end - h_start) / (float)h_cnt);
+            for (int i = 0; i < w_cnt; i++)
+            {
+                for (int j = 0; j < h_cnt; j++)
+                {
+                    int i2 = i + shift_lr;
+                    int j2 = j + shift_ud;
+                    int num2 = i2 * h_cnt + j2;
+
+                    int num = i * h_cnt + j;
+                    int l = w_start + (int)(i * w);
+                    int r = l + (int)(w);
+                    int t = h_start + (int)(j * h);
+                    int b = t + (int)(h);
+
+                    int l2 = rPart2.Left + LineAnalize[2].SeparatorStart + (int)(i2 * w);
+                    int t2 = rPart2.Top + LineAnalize[3].SeparatorStart + (int)(j2 * h);
+
+                    if (df.Contains(num))
+                    {
+                        DrawRectangle3(l + 1, t + 1, (int)(w) - 1, (int)(h) - 1, cc);
+                        DrawRectangle3(l2 + 1, t2 + 1, (int)(w) - 1, (int)(h) - 1, cc);
+                    }
+                }
+            }
         }
 
+        private void DrawRectangle3(int left, int top, int width, int height, Color c)
+        {
+            DrawRectangle(left, top, width, height, c);
+            DrawRectangle(left+1, top+1, width-2, height-2, c);
+            DrawRectangle(left+2, top+2, width-4, height-4, c);
+        }
+        private void DrawRectangle(int left, int top, int width, int height, Color c)
+        {
+            for (int i = left; i < left + width; i++)
+            {
+                ResultBmp.SetPixel(i, top, c);
+                ResultBmp.SetPixel(i, top + height, c);
+            }
+            for (int i = top; i < top + height; i++)
+            {
+                ResultBmp.SetPixel(left, i, c);
+                ResultBmp.SetPixel(left + width, i, c);
+            }
+        }
+
+        /// <summary>
+        /// нахождение индексов выявленных квадратов
+        /// </summary>
         private void Calculate()
         {
             List<int> res = new List<int>();
@@ -425,8 +533,9 @@ namespace FiveDiff
             }
             // в res2 - двумерный массив с найденными вариантами. топ-5 - решение, остальные - кандидаты
             List<int> top5 = new List<int>();
-            while ((top5.Count < 5) || SumCnt(res2, all) == 0)
+            while (top5.Count < 5)
             {
+                if (SumCnt(res2, all) == 0) { break; }
                 int max = 0;
                 for (int i = 0; i < all; i++)
                 {
@@ -456,6 +565,12 @@ namespace FiveDiff
             diff_found2 = top99;
         }
 
+        /// <summary>
+        /// сумма чисел из двумерного массива, по второму индексу
+        /// </summary>
+        /// <param name="arr2">массив</param>
+        /// <param name="size">размер длины массива</param>
+        /// <returns>сумма колонки 1</returns>
         private int SumCnt(int[,] arr2, int size)
         {
             int res = 0;
@@ -466,6 +581,11 @@ namespace FiveDiff
             return res;
         }
 
+        /// <summary>
+        /// получить топ-5 наибольших индексов из массива
+        /// </summary>
+        /// <param name="arr2">массив</param>
+        /// <returns>список чисел</returns>
         private List<int> GetFiveTopIndexes(long[] arr2)
         {
             long[] arr = arr2;
@@ -486,6 +606,11 @@ namespace FiveDiff
             return res;
         }
 
+        /// <summary>
+        /// найти максимум в массиве
+        /// </summary>
+        /// <param name="arr">массив</param>
+        /// <returns>максимальное значение</returns>
         private long GetMaxArr(long[] arr)
         {
             int l = arr.Length;
@@ -587,6 +712,14 @@ namespace FiveDiff
             }
         }
 
+        /// <summary>
+        /// сравнивалка
+        /// </summary>
+        /// <param name="a1">1й массив со значениями цветов мелких квадратиков</param>
+        /// <param name="a2">2й массив</param>
+        /// <param name="lines">колво цветов</param>
+        /// <param name="squares">колво квадратиков</param>
+        /// <returns>сумма</returns>
         private long CopmareKv_(int[,] a1, int[,] a2, int lines, int squares)
         {
             long res = 0;
@@ -601,6 +734,14 @@ namespace FiveDiff
 
             return res;
         }
+        /// <summary>
+        /// сравнивалка и находился максимального отличия в мелких квадратиках
+        /// </summary>
+        /// <param name="a1">1й массив со значениями цветов мелких квадратиков</param>
+        /// <param name="a2">2й массив</param>
+        /// <param name="lines">колво цветов</param>
+        /// <param name="squares">колво квадратиков</param>
+        /// <returns>максимальная сумма</returns>
         private long CopmareKv_m_(int[,] a1, int[,] a2, int lines, int squares)
         {
             long res = 0;

@@ -7,19 +7,34 @@
 *.userosscache
 *.sln.docstates
 
+
+*.vshost*
+*.pdb
+*.gif
+*.jpg
+*.jpeg
+*.png
+*.html
+*.http
+*.config
+
+
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
+#[Dd]ebug/
+#[Dd]ebug/pics/
+#[Dd]ebugPublic/
+#[Rr]elease/
+#[Rr]elease/pics/
+#[Rr]eleases/
 [Xx]64/
 [Xx]86/
 [Bb]uild/
 bld/
-[Bb]in/
+#[Bb]in/
 [Oo]bj/
 
 # Visual Studio 2015 cache/options directory
@@ -140,7 +155,7 @@ publish/
 *.[Pp]ublish.xml
 *.azurePubxml
 
-# TODO: Un-comment the next line if you do not want to checkin
+# TODO: Un-comment the next line if you do not want to checkin 
 # your web deploy settings because they may include unencrypted
 # passwords
 #*.pubxml
@@ -165,6 +180,9 @@ csx/
 # Microsoft Azure Emulator
 ecf/
 rcf/
+
+# Microsoft Azure ApplicationInsights config file
+ApplicationInsights.config
 
 # Windows Store app package directory
 AppPackages/
