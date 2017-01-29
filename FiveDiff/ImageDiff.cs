@@ -1,27 +1,220 @@
-﻿/// 2do
-/// 
-
-//using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
 using System.Drawing;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+using System.IO;
 
 namespace FiveDiff
 {
     class ImageDiff
     {
+        private const int BmpHeader = 54;
+        private Bitmap Bmp;
+        private Parts[] Part = new Parts[2];
+        private int LineLen;
+
+        private struct Parts
+        {
+            public Bitmap img;
+            public Rectangle rect;
+            public byte[] ba;
+        }
+
+        /// <summary>
+        /// конструктор
+        /// </summary>
+        /// <param name="b">битмап, в котором нужно найти отличия</param>
+        public ImageDiff(Bitmap b)
+        {
+            Bmp = b;
+            CutImage();
+            FindShift();
+            //byte[] ba2 = test2(b);
+            //int[,] la1 = test3(b);
+
+            int iii = 0;
+        }
+        /*private int[,] test3(Bitmap img)
+        {
+            byte[] ba;
+            using (MemoryStream mStream = new MemoryStream())
+            {
+                img.Save(mStream, System.Drawing.Imaging.ImageFormat.Bmp);
+                // 54 байта - заголовок
+                //    temp = width * 3;
+                // line = temp + width % 4; // Длина строки с учетом выравнивания
+                //System.Drawing.Imaging.ImageFormat.Png
+                ba = mStream.ToArray();
+            }
+            int[,] res = new int[img.Width, img.Height];
+            int linelen = img.Width * 3 + img.Width % 4;
+            int tl = 0;
+            int tc = 0;
+            for (int y = 0; y < img.Height; y++)
+            {
+                tl = y * linelen + 54;
+                for (int x = 0; x < img.Width; x++)
+                {
+                    tc = tl + x;
+                    res[x, y] = ((((int)ba[tc]) <<16) + (((int)ba[tc + 1]) <<8) + ((int)ba[tc + 2]));
+                }
+            }
+
+            return res;
+        }*/
+
+        private void FindShift()
+        {
+            int width = Bmp.Width;
+            int heigth = Bmp.Height;
+            int width6 = width / 6;
+            int heigth6 = heigth / 6;
+            int width3 = width6 * 2;
+            int heigth3 = heigth6 * 2;
+            byte[] sq = GetColorMapRect(0, width3, heigth3, width3, heigth3);
+            ulong[,] diffs = new ulong[width3, heigth3];
+            for(int j = heigth6; j < heigth6 * 3; j++)
+            {
+                for (int i = width6; i < width6 * 3; i++)
+                {
+                    diffs[i-width6, j-heigth6] = GetDifference(sq, GetColorMapRect(1, i, j, width3, heigth3));
+                }
+            }
+            ulong min = 0xffffffff;
+            int idxi = 0;
+            int idxj = 0;
+            for (int j = heigth6; j < heigth6 * 3; j++)
+            {
+                for (int i = width6; i < width6 * 3; i++)
+                {
+                    if (min > diffs[i - width6, j - heigth6])
+                    {
+                        min = diffs[i - width6, j - heigth6];
+                        idxi = i;
+                        idxj = j;
+                    }
+                }
+            }
+            int iii = 0;
+        }
+
+        /// <summary>
+        /// расчитывает сумму моделей разниц в цветах между двумя массивами. 
+        /// </summary>
+        /// <param name="a">массив байт 1</param>
+        /// <param name="b">массив байт 2</param>
+        /// <returns>значение разницы</returns>
+        private ulong GetDifference(byte[] a, byte[] b)
+        {
+            int len = a.Length;
+            if(len != b.Length) { return 0xffffffff; }
+            ulong res = 0;
+            for(int i=0; i<len; i++)
+            {
+                if (a[i] >= b[i])
+                {
+                    res += (ulong)(a[i] - b[i]);
+                }
+                else
+                {
+                    res += (ulong)(b[i] - a[i]);
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// получает маску цветов для прямоугольника. массив байт
+        /// </summary>
+        /// <param name="p">номер части 0/1</param>
+        /// <param name="x">начальная позиция по горизонтали</param>
+        /// <param name="y">начальная позиция по вертикали</param>
+        /// <param name="w">ширина</param>
+        /// <param name="h">высота</жparam>
+        /// <returns>массив байт - цвета прямоугольника</returns>
+        private byte[] GetColorMapRect(int p, int x, int y, int w, int h)
+        {
+            byte[] res = new byte[3 * (w + 1) * (h + 1)];
+            int y2 = y + h;
+            int x2 = x + w;
+            int pos = 0;
+            for (int yy = y; yy < y2; yy++)
+            {
+                for (int xx = x; xx < x2; xx++)
+                {
+                    int idx = GetIndexByXY(xx, yy);
+                    res[pos] = Part[p].ba[idx];
+                    res[pos+1] = Part[p].ba[idx+1];
+                    res[pos+2] = Part[p].ba[idx+2];
+                    pos += 3;
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// получает индекс в массиве байт для координат
+        /// </summary>
+        /// <param name="x">координата пикселя слева-направо</param>
+        /// <param name="y">координата пикселя сверху-вниз</param>
+        /// <returns>положение в массиве</returns>
+        private int GetIndexByXY(int x, int y)
+        {
+            return BmpHeader + y*LineLen + x*3;
+        }
+
+        /// <summary>
+        /// из битмапа делает массив байт - представление bmp
+        /// </summary>
+        /// <param name="img">битмап</param>
+        /// <returns>массив байт</returns>
+        private byte[] BitmapToByteArray(Bitmap img)
+        {
+            // 54 байта - заголовок
+            // line = width * 3 + width % 4; /* Длина строки с учетом выравнивания */
+            MemoryStream mStream = new MemoryStream();
+            img.Save(mStream, System.Drawing.Imaging.ImageFormat.Bmp);
+            return mStream.ToArray();
+        }
+
+        /// <summary>
+        /// разрезает картину на две части согласно найденных прямоугольников
+        /// </summary>
+        private void CutImage()
+        {
+            int width = Bmp.Width;
+            int height = Bmp.Height;
+            // определим метод разрезания (верт/гор), определим прямоугольники
+            if (width >= height)
+            {
+                int t = (int)(width / 2) - 1;
+                Part[0].rect = new Rectangle(0, 0, t, height);
+                Part[1].rect = new Rectangle(t, 0, t, height);
+            }
+            else
+            {
+                int t = (int)(height / 2) - 1;
+                Part[0].rect = new Rectangle(0, 0, width, t);
+                Part[1].rect = new Rectangle(0, t, width, t);
+            }
+            // разражем картинку
+            Part[0].img = Bmp.Clone(Part[0].rect, Bmp.PixelFormat);
+            Part[1].img = Bmp.Clone(Part[1].rect, Bmp.PixelFormat);
+            // переведем в массив байт
+            Part[0].ba = BitmapToByteArray(Part[0].img);
+            Part[1].ba = BitmapToByteArray(Part[1].img);
+            // найдем длину линии в BMP
+            LineLen = Part[0].img.Width * 3 + Part[0].img.Width % 4;
+        }
+
+
+        /*
         public const int vertical = 1;
         public const int horizontal = 2;
-        private Bitmap bmp;
+
         public Bitmap ResultBmp;
         private int method = 0;
-        private Rectangle rPart1;
-        private Rectangle rPart2;
-        private Bitmap Part1;
-        private Bitmap Part2;
+
+
         bool error = false;
         private int shift_lr = 0;
         private int shift_ud = 0;
@@ -107,47 +300,9 @@ namespace FiveDiff
         public kv[] p1kv;
         public kv[] p2kv;
 
-        /// <summary>
-        /// определяет по ширине/высоте картинки вероятное расположение частей (вертикаль/горизонталь)
-        /// </summary>
-        private void GetMethod()
-        {
-            int width = bmp.Width;
-            int height = bmp.Height;
-            if (width >= height)
-            {
-                method = vertical;
-                rPart1 = new Rectangle(0, 0, (int)(width / 2), height);
-                rPart2 = new Rectangle(rPart1.Width, 0, width - rPart1.Width, height);
-            }
-            else
-            {
-                method = horizontal;
-                rPart1 = new Rectangle(0, 0, width, (int)(height / 2));
-                rPart2 = new Rectangle(0, rPart1.Height, width, height - rPart1.Height);
-            }
-        }
 
-        /// <summary>
-        /// отрезает один кусок из начального файла
-        /// </summary>
-        /// <param name="r">прямоугольная область</param>
-        /// <returns>отрезанный битмап</returns>
-        private Bitmap CutPart(Rectangle r)
-        {
-            Bitmap res = new Bitmap(r.Width, r.Height);
-            res = bmp.Clone(r, bmp.PixelFormat);
-            return res;
-        }
 
-        /// <summary>
-        /// разрезает картину на две части согласно выбранного метода
-        /// </summary>
-        private void CutImage()
-        {
-            Part1 = CutPart(rPart1);
-            Part2 = CutPart(rPart2);
-        }
+
 
         /// <summary>
         /// получает и заполняет сведения о линиях всех направлений в обоих частях
@@ -340,13 +495,13 @@ namespace FiveDiff
 
                 ResultBmp = bmp;
                 DrawNewBmp();
-                
+
             }
             else
             {
                 ResultBmp = null;
             }
-               
+
         }
 
         private void DrawNewBmp()
@@ -377,38 +532,6 @@ namespace FiveDiff
             DrawSq(diff_found2, LineAnalize[0].SeparatorStart, LineAnalize[1].SeparatorStart, LineAnalize[0].SeparatorEnd, LineAnalize[1].SeparatorEnd, LineAnalize[0].SeparatorCount, LineAnalize[1].SeparatorCount, cc);
             //private kv[] FillKV(Bitmap bb, int p, int w_start, int h_start, int w_end, int h_end, int w_cnt, int h_cnt)
 
-
-            /*
-            //diff_found
-            cc = Color.Red;
-            foreach (int num in diff_found)
-            {
-                int num2 = num + shift_lr * cnt_w + shift_ud;
-
-                int num_w = num / cnt_w;
-                int num_h = num - num_w * cnt_w;
-                int num2_w = num2 / cnt_w;
-                int num2_h = num2 - num2_w * cnt_w;
-
-                DrawRectangle3(p1_left + (int)(num_w * w), p1_top + (int)(num_h * h), (int)w, (int)h, cc);
-                DrawRectangle3(p2_left + (int)(num2_w * w), p2_top + (int)(num2_h * h), (int)w, (int)h, cc);
-            }
-            */
-            /*
-            //diff_found2
-            cc = Color.Yellow;
-            foreach (int num in diff_found2)
-            {
-                int num2 = num + shift_lr * cnt_w + shift_ud;
-
-                int num_w = num / cnt_w;
-                int num_h = num - num_w * cnt_w;
-                int num2_w = num2 / cnt_w;
-                int num2_h = num2 - num2_w * cnt_w;
-
-                DrawRectangle3(p1_left + (int)(num_w * w), p1_top + (int)(num_h * h), (int)w, (int)h, cc);
-                DrawRectangle3(p2_left + (int)(num2_w * w), p2_top + (int)(num2_h * h), (int)w, (int)h, cc);
-            }*/
         }
         private void DrawSq(List<int> df, int w_start, int h_start, int w_end, int h_end, int w_cnt, int h_cnt, Color cc)
         {
@@ -723,7 +846,7 @@ namespace FiveDiff
         private long CopmareKv_(int[,] a1, int[,] a2, int lines, int squares)
         {
             long res = 0;
-            
+
             for (int i = 0; i < lines; i++)
             {
                 for (int j = 0; j < squares; j++)
@@ -1626,6 +1749,6 @@ namespace FiveDiff
             }
             return s;
         }
-
+        */
     }
 }

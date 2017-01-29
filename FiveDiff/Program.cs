@@ -22,9 +22,9 @@ namespace FiveDiff
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //Bitmap bmp = new Bitmap(@"C:\_2del\pic03.jpg");
-            //ImageDiff a = new ImageDiff(bmp);
-
+            Bitmap bmp = new Bitmap(@"C:\_2del\pic03.jpg");
+            ImageDiff a = new ImageDiff(bmp);
+            /*
             F = new Form();
             F.SizeChanged += F_SizeChanged;
             F.AllowDrop = true;
@@ -38,9 +38,9 @@ namespace FiveDiff
             //img.Image = bmp;
 
             F_SizeChanged(null, null);
-            Application.Run(F);
+            Application.Run(F);*/
         }
-
+        /*
         private static void Img_DragEnter(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
@@ -65,6 +65,6 @@ namespace FiveDiff
             img.Left = 5;
             img.Width = F.Width - 25;
             img.Height = F.Height - 50;
-        }
+        }*/
     }
 }
