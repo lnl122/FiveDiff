@@ -5,7 +5,7 @@ using System.IO;
 
 namespace FiveDiff
 {
-    class ImageDiff
+    public class ImageDiff
     {
         public Bitmap img1;
         public Bitmap img2;
@@ -25,6 +25,15 @@ namespace FiveDiff
             public Rectangle rect_shift;
             public Bitmap img_shift;
             public Bitmap pair;
+        }
+
+        public int nu_GetMinIndex(float[] diff)
+        {
+            return GetMinIndex(diff);
+        }
+        public int[] nu_GetFiveMinIndex(float[] diff)
+        {
+            return GetFiveMinIndex(diff);
         }
 
         /// <summary>
@@ -100,6 +109,58 @@ namespace FiveDiff
             //Part[1].img_shift.Save(@"C:\_2del\p2.jpg");
         }
         /// <summary>
+        /// находит индекс минимального значения из массива
+        /// </summary>
+        /// <param name="diff">массив</param>
+        /// <returns>минимальный индекс</returns>
+        private int GetMinIndex(float[] diff)
+        {
+            int res = 0;
+            int len = diff.Length;
+            float min = (float)9e50;
+            for (int i = 0; i < len; i++)
+            {
+                if (min > diff[i])
+                {
+                    min = diff[i];
+                    res = i;
+                }
+            }
+            return res;
+        }        
+        /// <summary>
+        /// находит индексы пяти минимальных значений из массива
+        /// </summary>
+        /// <param name="d">массив</param>
+        /// <returns>массив минимальных индексов</returns>
+        private int[] GetFiveMinIndex(float[] d)
+        {
+            float[] diff = d;
+            List<int> res_l = new List<int>();
+            int len = diff.Length;
+            while (res_l.Count < 5)
+            {
+                int ii = 0;
+                float min = (float)9e50;
+                for (int i = 0; i < len; i++)
+                {
+                    if (min > diff[i])
+                    {
+                        min = diff[i];
+                        ii = i;
+                    }
+                }
+                res_l.Add(ii);
+                diff[ii] = (float)9e50;
+            }
+            int[] res = new int[res_l.Count];
+            for(int i=0; i<res_l.Count; i++)
+            {
+                res[i] = res_l[i];
+            }
+            return res;
+        }
+        /// <summary>
         /// находит смещение по разнице цветов из двух массивов
         /// </summary>
         /// <param name="a1">массив цветов 1</param>
@@ -116,15 +177,7 @@ namespace FiveDiff
             {
                 diff[i + shift] = GetLineDiffOne(a1, a2, i*3);
             }
-            float min = (float)0xfffffff;
-            for (int i = -shift; i <= shift; i++)
-            {
-                if(min > diff[i + shift])
-                {
-                    min = diff[i + shift];
-                    res = i;
-                }
-            }
+            res = GetMinIndex(diff) + shift;
             return res;
         }
         /// <summary>
