@@ -16,6 +16,7 @@ namespace FiveDiff
         private int LineLen;
         private int shift_ver;
         private int shift_hor;
+        private ShArr[] Shifts;
 
         private struct Parts
         {
@@ -25,6 +26,14 @@ namespace FiveDiff
             public Rectangle rect_shift;
             public Bitmap img_shift;
             public Bitmap pair;
+        }
+        private struct ShArr
+        {
+            public int shift_v_base;
+            public int shift_h_base;
+            public int shift_v_offset;
+            public int shift_h_offset;
+            public long diff;
         }
 
         public int nu_GetMinIndex(float[] diff)
@@ -44,7 +53,8 @@ namespace FiveDiff
         {
             Bmp = b;
             CutImage();
-            FindShiftByLines();
+            FindShift();
+            StoreParts()
             CreatePairImage();
             img1 = Part[0].pair;
             img2 = Part[1].pair;
@@ -66,14 +76,47 @@ namespace FiveDiff
         /// <summary>
         /// находит смещения по разнице цветов в линиях
         /// </summary>
-        private void FindShiftByLines()
+        private void FindShift()
         {
             int[] w0 = GetSumWidthPart(0);
             int[] w1 = GetSumWidthPart(1);
             int[] h0 = GetSumHeigthPart(0);
             int[] h1 = GetSumHeigthPart(1);
+
+            int[] sh_v = GetLineDiffArr(w0, w1);
+            int[] sh_h = GetLineDiffArr(h0, h1);
+            int sh_v_len = sh_v.Length;
+            int sh_h_len = sh_h.Length;
+
+            Shifts = new ShArr[sh_v_len * sh_h_len * 9];
+            for (int i = 0; i < sh_v_len; i++)
+            {
+                for (int j = 0; j < sh_h_len; j++)
+                {
+                    for (int i2 = 0; i2 < 3; i2++)
+                    {
+                        for (int j2 = 0; j2 < 3; j2++)
+                        {
+                            int idx = (i * sh_v_len + j) * 9 + i2 * 3 + j2;
+                            ShArr q = new ShArr();
+                            q.diff = 0;
+                            q.shift_h_base = j;
+                            q.shift_v_base = i;
+                            q.shift_h_offset = j2 - 1;
+                            q.shift_v_offset = i2 - 1;
+                            Shifts[idx] = q;
+                        }
+                    }
+                }
+            }
+
             shift_ver = -GetLineDiff(w0, w1);
             shift_hor = GetLineDiff(h0, h1);
+        }
+        /// <summary>
+        /// сохраняет части по найденным смещениям
+        /// </summary>
+        private void StoreParts() { 
             int ww = Part[0].rect.Width - Math.Abs(shift_hor);
             int hh = Part[0].rect.Height - Math.Abs(shift_ver);
             if (shift_ver >= 0)
@@ -170,14 +213,36 @@ namespace FiveDiff
         {
             int res = 0;
             int len = a1.Length;
-            if(len != a2.Length) { return -1; }
+            if (len != a2.Length) { return -1; }
             int shift = len / 3 / 3;
-            float[] diff = new float[shift*2+1];
-            for(int i = -shift; i <= shift; i++)
+            float[] diff = new float[shift * 2 + 1];
+            for (int i = -shift; i <= shift; i++)
             {
-                diff[i + shift] = GetLineDiffOne(a1, a2, i*3);
+                diff[i + shift] = GetLineDiffOne(a1, a2, i * 3);
             }
-            res = GetMinIndex(diff) + shift;
+            res = GetMinIndex(diff) - shift;
+            return res;
+        }        
+        /// <summary>
+        /// находит смещение по разнице цветов из двух массивов
+        /// </summary>
+        /// <param name="a1">массив цветов 1</param>
+        /// <param name="a2">массив цветов 2</param>
+        /// <returns>смещение массива 2 относительно массива 1</returns>
+        private int[] GetLineDiffArr(int[] a1, int[] a2)
+        {
+            int len = a1.Length;
+            if (len != a2.Length) { return new int[0]; }
+            int shift = len / 3 / 3;
+            float[] diff = new float[shift * 2 + 1];
+            for (int i = -shift; i <= shift; i++)
+            {
+                diff[i + shift] = GetLineDiffOne(a1, a2, i * 3);
+            }
+            int[] res2 = GetFiveMinIndex(diff);
+            int lenres = res2.Length;
+            int[] res = new int[lenres];
+            for(int i=0; i<lenres; i++) { res[i] = res2[i] - shift; }
             return res;
         }
         /// <summary>

@@ -11,7 +11,7 @@ namespace FiveDiff
         static public Form F;
         static public System.Timers.Timer t1;
         static public Bitmap[] pairs;
-        static public int num;
+        static public int num = 1;
 
         /// <summary>
         /// Главная точка входа для приложения.
@@ -21,9 +21,6 @@ namespace FiveDiff
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            //Bitmap bmp = new Bitmap(@"C:\_2del\pic01.jpg");
-            //ImageDiff a = new ImageDiff(bmp);
 
             F = new Form();
             F.SizeChanged += F_SizeChanged;
@@ -39,6 +36,15 @@ namespace FiveDiff
             t1.Interval = 500;
             t1.AutoReset = true;
             t1.Elapsed += T_Elapsed;
+
+            Bitmap bmp = new Bitmap(@"C:\_2del\pic02.jpg");
+            ImageDiff a = new ImageDiff(bmp);
+            pairs = new Bitmap[2];
+            pairs[0] = a.img1;
+            pairs[1] = a.img2;
+            a.img1.Save(@"C:\_2del\1.jpg");
+            a.img2.Save(@"C:\_2del\2.jpg");
+            t1.Enabled = true;
 
             F_SizeChanged(null, null);
             Application.Run(F);
