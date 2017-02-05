@@ -27,12 +27,10 @@ namespace FiveDiff
             public Bitmap img_shift;
             public Bitmap pair;
         }
-        private struct ShArr
+        public struct ShArr
         {
-            public int shift_v_base;
-            public int shift_h_base;
-            public int shift_v_offset;
-            public int shift_h_offset;
+            public int shift_v;
+            public int shift_h;
             public long diff;
         }
 
@@ -44,6 +42,18 @@ namespace FiveDiff
         {
             return GetFiveMinIndex(diff);
         }
+        public ShArr[] nu_KillDupesShifts(ShArr[] shifts2)
+        {
+            return KillDupesShifts(shifts2);
+        }
+        public int nu_GetShHor()
+        {
+            return shift_hor;
+        }
+        public int nu_GetShVer()
+        {
+            return shift_ver;
+        }
 
         /// <summary>
         /// конструктор
@@ -54,7 +64,7 @@ namespace FiveDiff
             Bmp = b;
             CutImage();
             FindShift();
-            StoreParts()
+            StoreParts();
             CreatePairImage();
             img1 = Part[0].pair;
             img2 = Part[1].pair;
@@ -70,8 +80,8 @@ namespace FiveDiff
             g.DrawImage(Part[0].img, new Rectangle(0, 0, Part[0].img.Width, Part[0].img.Height), new Rectangle(0, 0, Part[0].img.Width, Part[0].img.Height), GraphicsUnit.Pixel);
             g.DrawImage(Part[1].img_shift, Part[0].rect_shift, Part[1].rect_shift, GraphicsUnit.Pixel);
             Part[1].pair = b;
-            //Part[0].pair.Save(@"C:\_2del\l1.jpg");
-            //Part[1].pair.Save(@"C:\_2del\l2.jpg");
+            Part[0].pair.Save(@"C:\_2del\f1.jpg");
+            Part[1].pair.Save(@"C:\_2del\f2.jpg");
         }
         /// <summary>
         /// находит смещения по разнице цветов в линиях
@@ -87,31 +97,93 @@ namespace FiveDiff
             int[] sh_h = GetLineDiffArr(h0, h1);
             int sh_v_len = sh_v.Length;
             int sh_h_len = sh_h.Length;
-
-            Shifts = new ShArr[sh_v_len * sh_h_len * 9];
+            int s_cnt = 3;
+            ShArr[] Shifts2 = new ShArr[sh_v_len * sh_h_len * s_cnt * s_cnt];
             for (int i = 0; i < sh_v_len; i++)
             {
                 for (int j = 0; j < sh_h_len; j++)
                 {
-                    for (int i2 = 0; i2 < 3; i2++)
+                    for (int i2 = 0; i2 < s_cnt; i2++)
                     {
-                        for (int j2 = 0; j2 < 3; j2++)
+                        for (int j2 = 0; j2 < s_cnt; j2++)
                         {
-                            int idx = (i * sh_v_len + j) * 9 + i2 * 3 + j2;
+                            int idx2 = (i * sh_v_len + j) * s_cnt * s_cnt + i2 * s_cnt + j2;
                             ShArr q = new ShArr();
                             q.diff = 0;
-                            q.shift_h_base = j;
-                            q.shift_v_base = i;
-                            q.shift_h_offset = j2 - 1;
-                            q.shift_v_offset = i2 - 1;
-                            Shifts[idx] = q;
+                            q.shift_h = sh_h[j] + j2 - s_cnt / 2;
+                            q.shift_v = sh_v[i] + i2 - s_cnt / 2;
+                            Shifts2[idx2] = q;
                         }
                     }
                 }
             }
-
-            shift_ver = -GetLineDiff(w0, w1);
-            shift_hor = GetLineDiff(h0, h1);
+            Shifts = KillDupesShifts(Shifts2);
+            FindDiffsByShifts();
+            long[] dd = new long[Shifts.Length];
+            for(int i = 0; i < Shifts.Length; i++) { dd[i] = Shifts[i].diff; }
+            int idx = GetMinIndex(dd);
+            shift_ver = -Shifts[idx].shift_v;
+            shift_hor = Shifts[idx].shift_h-1;
+        }
+        /// <summary>
+        /// для всех сдвигов ищет сумму разниц отличий
+        /// </summary>
+        private void FindDiffsByShifts()
+        {
+            int len = Shifts.Length;
+            for(int i=0; i<len; i++)
+            {
+                Shifts[i].diff = FindDiffsByShiftsOne(i);
+            }
+        }
+        /// <summary>
+        /// ищет сумму разниц отличий для одной пары сдвигов по прямоугольнику
+        /// </summary>
+        /// <param name="num">индекс в массиве сдвигов</param>
+        /// <returns>разница цветов</returns>
+        private long FindDiffsByShiftsOne(int num)
+        {
+            int sh_v = Shifts[num].shift_v;
+            int sh_h = Shifts[num].shift_h;
+            int part_v = Part[0].rect.Height;
+            int part_h = Part[0].rect.Width;
+            int pv5 = part_v / 5;
+            int ph5 = part_h / 5;
+            long dd = 0;
+            for(int i = 0; i < ph5; i++)
+            {
+                for (int j = 0; j < pv5; j++)
+                {
+                    int x = ph5 * 2 + i;
+                    int y = pv5 * 2 + j;
+                    int x2 = x + sh_h;
+                    int y2 = y + sh_v;
+                    dd = dd + Math.Abs(Part[0].ba[GetIndexByXY(x, y)] - Part[1].ba[GetIndexByXY(x2, y2)]);
+                    dd = dd + Math.Abs(Part[0].ba[GetIndexByXY(x, y)+1] - Part[1].ba[GetIndexByXY(x2, y2)]+1);
+                    dd = dd + Math.Abs(Part[0].ba[GetIndexByXY(x, y)+2] - Part[1].ba[GetIndexByXY(x2, y2)]+2);
+                }
+            }
+            return dd;
+        }
+        /// <summary>
+        /// убивает дубликаты структур в Shifts
+        /// </summary>
+        /// <param name="shifts2">исходный массив</param>
+        /// <returns>массив без дупов</returns>
+        private ShArr[] KillDupesShifts(ShArr[] shifts2)
+        {
+            List<ShArr> resL = new List<ShArr>();
+            foreach(ShArr q in shifts2)
+            {
+                if (!resL.Contains(q)) { resL.Add(q); }
+            }
+            int len = resL.Count;
+            ShArr[] res = new ShArr[len];
+            for(int i = 0; i < len; i++)
+            {
+                res[i] = resL[i];
+            }
+            return res;
         }
         /// <summary>
         /// сохраняет части по найденным смещениям
@@ -148,8 +220,8 @@ namespace FiveDiff
             Part[0].img_shift = Part[0].img.Clone(Part[0].rect_shift, Bmp.PixelFormat);
             Part[1].img_shift = Part[1].img.Clone(Part[1].rect_shift, Bmp.PixelFormat);
 
-            //Part[0].img_shift.Save(@"C:\_2del\p1.jpg");
-            //Part[1].img_shift.Save(@"C:\_2del\p2.jpg");
+            Part[0].img_shift.Save(@"C:\_2del\p1.jpg");
+            Part[1].img_shift.Save(@"C:\_2del\p2.jpg");
         }
         /// <summary>
         /// находит индекс минимального значения из массива
@@ -170,7 +242,27 @@ namespace FiveDiff
                 }
             }
             return res;
-        }        
+        }
+        /// <summary>
+        /// находит индекс минимального значения из массива
+        /// </summary>
+        /// <param name="diff">массив</param>
+        /// <returns>минимальный индекс</returns>
+        private int GetMinIndex(long[] diff)
+        {
+            int res = 0;
+            int len = diff.Length;
+            float min = 0xffffffffffffff;
+            for (int i = 0; i < len; i++)
+            {
+                if (min > diff[i])
+                {
+                    min = diff[i];
+                    res = i;
+                }
+            }
+            return res;
+        }
         /// <summary>
         /// находит индексы пяти минимальных значений из массива
         /// </summary>

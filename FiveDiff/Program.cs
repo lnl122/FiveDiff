@@ -37,7 +37,7 @@ namespace FiveDiff
             t1.AutoReset = true;
             t1.Elapsed += T_Elapsed;
 
-            Bitmap bmp = new Bitmap(@"C:\_2del\pic02.jpg");
+            Bitmap bmp = new Bitmap(@"C:\_2del\9\u.jpg");
             ImageDiff a = new ImageDiff(bmp);
             pairs = new Bitmap[2];
             pairs[0] = a.img1;
