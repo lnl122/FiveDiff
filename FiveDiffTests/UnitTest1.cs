@@ -25,7 +25,7 @@ namespace FiveDiffTests
         public void nu_Shift_0_h()
         {
             ImageDiff z = new ImageDiff(new Bitmap(@"C:\_2del\9\0.jpg"));
-            Assert.AreEqual(0, z.nu_GetShHor());
+            Assert.AreEqual(0+1, z.nu_GetShHor());
         }
         [Test]
         public void nu_Shift_0_v()
@@ -37,7 +37,7 @@ namespace FiveDiffTests
         public void nu_Shift_l_h()
         {
             ImageDiff z = new ImageDiff(new Bitmap(@"C:\_2del\9\l.jpg"));
-            Assert.AreEqual(-5, z.nu_GetShHor());
+            Assert.AreEqual(-5 + 1, z.nu_GetShHor());
         }
         [Test]
         public void nu_Shift_l_v()
@@ -49,7 +49,7 @@ namespace FiveDiffTests
         public void nu_Shift_r_h()
         {
             ImageDiff z = new ImageDiff(new Bitmap(@"C:\_2del\9\r.jpg"));
-            Assert.AreEqual(5, z.nu_GetShHor());
+            Assert.AreEqual(5 + 1, z.nu_GetShHor());
         }
         [Test]
         public void nu_Shift_r_v()
@@ -61,7 +61,7 @@ namespace FiveDiffTests
         public void nu_Shift_u_h()
         {
             ImageDiff z = new ImageDiff(new Bitmap(@"C:\_2del\9\u.jpg"));
-            Assert.AreEqual(0, z.nu_GetShHor());
+            Assert.AreEqual(0 + 1, z.nu_GetShHor());
         }
         [Test]
         public void nu_Shift_u_v()
@@ -73,7 +73,7 @@ namespace FiveDiffTests
         public void nu_Shift_d_h()
         {
             ImageDiff z = new ImageDiff(new Bitmap(@"C:\_2del\9\d.jpg"));
-            Assert.AreEqual(0, z.nu_GetShHor());
+            Assert.AreEqual(0 + 1, z.nu_GetShHor());
         }
         [Test]
         public void nu_Shift_d_v()
@@ -85,7 +85,7 @@ namespace FiveDiffTests
         public void nu_Shift_lu_h()
         {
             ImageDiff z = new ImageDiff(new Bitmap(@"C:\_2del\9\lu.jpg"));
-            Assert.AreEqual(-6, z.nu_GetShHor());
+            Assert.AreEqual(-6 + 1, z.nu_GetShHor());
         }
         [Test]
         public void nu_Shift_lu_v()
@@ -97,7 +97,7 @@ namespace FiveDiffTests
         public void nu_Shift_ld_h()
         {
             ImageDiff z = new ImageDiff(new Bitmap(@"C:\_2del\9\ld.jpg"));
-            Assert.AreEqual(-5, z.nu_GetShHor());
+            Assert.AreEqual(-5 + 1, z.nu_GetShHor());
         }
         [Test]
         public void nu_Shift_ld_v()
@@ -109,7 +109,7 @@ namespace FiveDiffTests
         public void nu_Shift_rd_h()
         {
             ImageDiff z = new ImageDiff(new Bitmap(@"C:\_2del\9\rd.jpg"));
-            Assert.AreEqual(6, z.nu_GetShHor());
+            Assert.AreEqual(6 + 1, z.nu_GetShHor());
         }
         [Test]
         public void nu_Shift_rd_v()
@@ -121,7 +121,7 @@ namespace FiveDiffTests
         public void nu_Shift_ru_h()
         {
             ImageDiff z = new ImageDiff(new Bitmap(@"C:\_2del\9\ru.jpg"));
-            Assert.AreEqual(5, z.nu_GetShHor());
+            Assert.AreEqual(5 + 1, z.nu_GetShHor());
         }
         [Test]
         public void nu_Shift_ru_v()

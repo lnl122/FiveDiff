@@ -34,6 +34,8 @@ namespace FiveDiff
             public long diff;
         }
 
+#if DEBUG
+        // набор функций предназначен для юнит-тестов private методов
         public int nu_GetMinIndex(float[] diff)
         {
             return GetMinIndex(diff);
@@ -54,6 +56,8 @@ namespace FiveDiff
         {
             return shift_ver;
         }
+        // конец набора функций для юнит-тестов
+#endif
 
         /// <summary>
         /// конструктор
@@ -78,7 +82,7 @@ namespace FiveDiff
             Bitmap b = new Bitmap(Part[0].img.Width, Part[0].img.Height);
             Graphics g = Graphics.FromImage(b);
             g.DrawImage(Part[0].img, new Rectangle(0, 0, Part[0].img.Width, Part[0].img.Height), new Rectangle(0, 0, Part[0].img.Width, Part[0].img.Height), GraphicsUnit.Pixel);
-            g.DrawImage(Part[1].img_shift, Part[0].rect_shift, Part[1].rect_shift, GraphicsUnit.Pixel);
+            g.DrawImage(Part[1].img, Part[0].rect_shift, Part[1].rect_shift, GraphicsUnit.Pixel);
             Part[1].pair = b;
             Part[0].pair.Save(@"C:\_2del\f1.jpg");
             Part[1].pair.Save(@"C:\_2del\f2.jpg");
@@ -97,7 +101,7 @@ namespace FiveDiff
             int[] sh_h = GetLineDiffArr(h0, h1);
             int sh_v_len = sh_v.Length;
             int sh_h_len = sh_h.Length;
-            int s_cnt = 3;
+            int s_cnt = 5;
             ShArr[] Shifts2 = new ShArr[sh_v_len * sh_h_len * s_cnt * s_cnt];
             for (int i = 0; i < sh_v_len; i++)
             {
@@ -123,7 +127,7 @@ namespace FiveDiff
             for(int i = 0; i < Shifts.Length; i++) { dd[i] = Shifts[i].diff; }
             int idx = GetMinIndex(dd);
             shift_ver = -Shifts[idx].shift_v;
-            shift_hor = Shifts[idx].shift_h-1;
+            shift_hor = Shifts[idx].shift_h;
         }
         /// <summary>
         /// для всех сдвигов ищет сумму разниц отличий
