@@ -37,14 +37,14 @@ namespace FiveDiff
             t1.AutoReset = true;
             t1.Elapsed += T_Elapsed;
 
-            Bitmap bmp = new Bitmap(@"C:\_2del\9\u.jpg");
+            /*Bitmap bmp = new Bitmap(@"C:\_2del\9\u.jpg");
             ImageDiff a = new ImageDiff(bmp);
             pairs = new Bitmap[2];
             pairs[0] = a.img1;
             pairs[1] = a.img2;
             a.img1.Save(@"C:\_2del\1.jpg");
-            a.img2.Save(@"C:\_2del\2.jpg");
-            t1.Enabled = true;
+            a.img2.Save(@"C:\_2del\2.jpg");*/
+            //t1.Enabled = true;
 
             F_SizeChanged(null, null);
             Application.Run(F);
@@ -67,28 +67,36 @@ namespace FiveDiff
             string lnk = (string)e.Data.GetData(DataFormats.Text, true);
             if (lnk != null)
             {
-                PictureBox PictBox = new PictureBox();
-                PictBox.Load(lnk);
-                Bitmap Bmp = new Bitmap(PictBox.Image);
-                img.Image = Bmp;
-                F.Update();
-                ImageDiff a = new ImageDiff(Bmp);
-                pairs = new Bitmap[2];
-                pairs[0] = a.img1;
-                pairs[1] = a.img2;
-            }else
+                // перетащенная ссылка из браузера
+                using (var client = new System.Net.WebClient())
+                {
+                    string path = @"C:\TEMP\" + lnk.Substring(lnk.LastIndexOf("/") + 1);
+                    client.DownloadFile(lnk, path);
+                    RunWithFile(path);
+                    System.IO.File.Delete(path);
+                }
+            }
+            else
             {
+                // перетащенный файл
                 string[] lnkarr = (string[])e.Data.GetData(DataFormats.FileDrop, true);
-                lnk = lnkarr[0];
-                Bitmap Bmp = new Bitmap(lnk);
-                img.Image = Bmp;
-                F.Update();
-                ImageDiff a = new ImageDiff(Bmp);
-                pairs = new Bitmap[2];
-                pairs[0] = a.img1;
-                pairs[1] = a.img2;
+                RunWithFile(lnkarr[0]);
             }
             t1.Enabled = true;
+        }
+
+        private static void RunWithFile(string v)
+        {
+            using (Bitmap Bmp = new Bitmap(v))
+            {
+                img.Image = Bmp;
+                F.Update();
+                ImageDiff a = new ImageDiff(Bmp);
+                pairs = new Bitmap[2];
+                pairs[0] = a.img1;
+                pairs[1] = a.img2;
+                a = null;
+            }
         }
 
         private static void F_SizeChanged(object sender, EventArgs e)
