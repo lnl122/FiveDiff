@@ -239,7 +239,7 @@ namespace FiveDiff
                 int img2_up = img1_up + shift_ver + q.sh_v;
                 int img_width = h_bounds[q.col].end - h_bounds[q.col].start - 2 * corner;
                 int img_heigth = v_bounds[q.row].end - v_bounds[q.row].start - 2 * corner;
-                long res = 0;
+                //long res = 0;
                 //#if DEBUG
                 //                Bitmap temp1 = Parts[0].img.Clone(new Rectangle(img1_left, img1_up, img_width, img_heigth), Parts[0].img.PixelFormat);
                 //                temp1.Save(@"C:\_2del\23\row=" + q.row.ToString() + " col=" + q.col.ToString() + " l=" + img1_left.ToString() + " u=" + img1_up.ToString() + " h=" + q.sh_h.ToString() + " v=" + q.sh_v.ToString() + " part 0.jpg");

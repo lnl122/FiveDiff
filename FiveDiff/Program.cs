@@ -19,7 +19,7 @@ namespace FiveDiff
         static public System.Timers.Timer t1;
         static public Bitmap[] pairs;
         static public int num = 1;
-        static public string answerformat = "LaUp1A";
+        static public string answerformat;// = "LaUp1A";
 
         /// <summary>
         /// Главная точка входа для приложения.
@@ -30,6 +30,23 @@ namespace FiveDiff
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            PrepareForm();
+            PrepareTimer();
+
+            F_SizeChanged(null, null);
+            Application.Run(F);
+        }
+
+        private static void PrepareTimer()
+        {
+            t1 = new System.Timers.Timer();
+            t1.Interval = 250;
+            t1.AutoReset = true;
+            t1.Elapsed += T_Elapsed;
+        }
+
+        private static void PrepareForm()
+        {
             F = new Form();
             F.Text = "Найдём пять отличий и покажем код. Перетащите картинку.";
             F.SizeChanged += F_SizeChanged;
@@ -73,41 +90,15 @@ namespace FiveDiff
             img = new PictureBox();
             img.AllowDrop = true;
             img.SizeMode = PictureBoxSizeMode.StretchImage;
+            img.Top = 5;
+            img.Left = 5;
+            img.Width = F.Width - 25;
+            img.Height = F.Height - 50;
             img.DragDrop += Img_DragDrop;
             img.DragEnter += Img_DragEnter;
             F.Controls.Add(img);
-
-            t1 = new System.Timers.Timer();
-            t1.Interval = 250;
-            t1.AutoReset = true;
-            t1.Elapsed += T_Elapsed;
-            /*
-            Bitmap bmp = new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\pic00.jpg");
-            FindFiveDiff a = new FindFiveDiff(bmp, "RuLeA1");
-            //Save_h_info(b,"01");
-            int iii = 0;
-            Bitmap bmp2 = new Bitmap(@"C:\temp\02.jpg");
-            FindFiveDiff a2 = new FindFiveDiff(bmp2, answerformat);
-            //Save_h_info(b2,"02");
-            //return;
-            int iiii = 0;
-            */
-            //t1.Enabled = true;
-
-            F_SizeChanged(null, null);
-            Application.Run(F);
         }
 
-        /*private static void Select_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string lang = "La";
-            if (SelectLang.SelectedIndex == 1) { lang = "Ru"; }
-            string nums = "Up";
-            if (SelectLang.SelectedIndex == 1) { nums = "Le"; }
-            string answ = "1A";
-            if (SelectLang.SelectedIndex == 1) { answ = "A1"; }
-            answerformat = lang + nums + answ;
-        }*/
         private static void CreateAnswerFormat()
         {
             string lang = "La";
@@ -119,21 +110,6 @@ namespace FiveDiff
             answerformat = lang + nums + answ;
         }
 
-        /*
-private static void Save_h_info(FindLetters b, string s)
-{
-   using (System.IO.StreamWriter log = new System.IO.StreamWriter(System.IO.File.AppendText(@"C:\temp\"+s+".txt").BaseStream))
-   {
-       log.WriteLine("0_1\tf_1\t0_2\tf_2\tg1\tc1\tg2\tc2\tg3\tc3");
-       for (int i = 0; i < b.h_00_1.Length; i++)
-       {
-           log.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}",
-               b.h_00_1[i], b.h_ff_1[i], b.h_00_2[i], b.h_ff_2[i],
-               b.h_gr_4[i], b.h_co_4[i], b.h_gr_8[i], b.h_co_8[i], b.h_gr_16[i], b.h_co_16[i]);
-       }
-   }
-}
-*/
         private static void T_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             img.Image = pairs[num];
