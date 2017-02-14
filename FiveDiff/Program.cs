@@ -181,6 +181,7 @@ private static void Save_h_info(FindLetters b, string s)
                 pairs[0] = a.Img1;
                 pairs[1] = a.Img2;
                 Answer.Text = a.Answer;
+                Clipboard.SetText(a.Answer);
                 a = null;
             }
         }
