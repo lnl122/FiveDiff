@@ -78,7 +78,7 @@ namespace FiveDiff
             F.Controls.Add(img);
 
             t1 = new System.Timers.Timer();
-            t1.Interval = 500;
+            t1.Interval = 250;
             t1.AutoReset = true;
             t1.Elapsed += T_Elapsed;
             /*

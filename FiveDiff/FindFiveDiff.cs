@@ -97,7 +97,7 @@ namespace FiveDiff
 
             CutImage();
             ImageToByteArray();
-            FindShift();
+            FindShift();//долгая
             StorePart();
             CreatePairImage();
             FillColorLines();
@@ -108,7 +108,7 @@ namespace FiveDiff
             if (presentBounds)
             {
                 // выполним нарезку кусочков, их синхронизацию и найдем разницы
-                FindBlockDiffs();
+                FindBlockDiffs();//долгая
                 FindDifferenceInBlocks();
                 int[] prior1 = GetFiveBlockIndexes(SortBlocks(1));
                 int[] prior9 = GetFiveBlockIndexes(SortBlocks(9));
@@ -283,7 +283,7 @@ namespace FiveDiff
         {
             rows = v_bounds.Count;
             columns = h_bounds.Count;
-            int local_shift = 2;
+            int local_shift = 1;
             int blocks_cnt = rows * columns;
             blocks = new Block[blocks_cnt];
             int blocks2_cnt = rows * columns * (local_shift * 2 + 1) * (local_shift * 2 + 1);
@@ -489,9 +489,11 @@ namespace FiveDiff
             {
                 for (int i = 0; i < w; i++)
                 {
-                    res[j * 3] += Parts[v].ba[GetIndexByXY(i, j)];
-                    res[j * 3 + 1] += Parts[v].ba[GetIndexByXY(i, j) + 1];
-                    res[j * 3 + 2] += Parts[v].ba[GetIndexByXY(i, j) + 2];
+                    int pos = GetIndexByXY(i, j);
+                    int idx = j * 3;
+                    res[idx] += Parts[v].ba[pos];
+                    res[idx + 1] += Parts[v].ba[pos + 1];
+                    res[idx + 2] += Parts[v].ba[pos + 2];
                 }
             }
             return res;
@@ -510,9 +512,11 @@ namespace FiveDiff
             {
                 for (int j = 0; j < h; j++)
                 {
-                    res[i * 3] += Parts[v].ba[GetIndexByXY(i, j)];
-                    res[i * 3 + 1] += Parts[v].ba[GetIndexByXY(i, j) + 1];
-                    res[i * 3 + 2] += Parts[v].ba[GetIndexByXY(i, j) + 2];
+                    int pos = GetIndexByXY(i, j);
+                    int idx = i * 3;
+                    res[idx] += Parts[v].ba[pos];
+                    res[idx + 1] += Parts[v].ba[pos + 1];
+                    res[idx + 2] += Parts[v].ba[pos + 2];
                 }
             }
             return res;
@@ -664,9 +668,11 @@ namespace FiveDiff
                     int y = pv5 * 2 + j;
                     int x2 = x + sh_h;
                     int y2 = y + sh_v;
-                    dd = dd + Math.Abs(Parts[0].ba[GetIndexByXY(x, y)] - Parts[1].ba[GetIndexByXY(x2, y2)]);
-                    dd = dd + Math.Abs(Parts[0].ba[GetIndexByXY(x, y) + 1] - Parts[1].ba[GetIndexByXY(x2, y2)] + 1);
-                    dd = dd + Math.Abs(Parts[0].ba[GetIndexByXY(x, y) + 2] - Parts[1].ba[GetIndexByXY(x2, y2)] + 2);
+                    int pos = GetIndexByXY(x, y);
+                    int pos2 = GetIndexByXY(x2, y2);
+                    dd += Math.Abs(Parts[0].ba[pos] - Parts[1].ba[pos2]);
+                    dd += Math.Abs(Parts[0].ba[pos + 1] - Parts[1].ba[pos2 + 1] );
+                    dd += Math.Abs(Parts[0].ba[pos + 2] - Parts[1].ba[pos2 + 2] );
                 }
             }
             return dd;
