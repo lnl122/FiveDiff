@@ -25,6 +25,7 @@ namespace FiveDiff
         public Block[] blocks;
         public string answ_lang, answ_nums, answ_type, answ_lett;
         public string Answer;
+        public int Bits2Clear = 4;
 
         public struct Part
         {
@@ -66,9 +67,11 @@ namespace FiveDiff
             public int sh_v;
             public long diff;
             public long[] diff16;
+            public long[] diff25;
             public long[] diff9;
             public long max9;
             public long max16;
+            public long max25;
             public long diff99;
             public Block(int r, int c, int sh, int sv, int i)
             {
@@ -80,8 +83,10 @@ namespace FiveDiff
                 diff = 0;
                 diff9 = new long[9];
                 diff16 = new long[16];
+                diff25 = new long[25];
                 max9 = 0;
                 max16 = 0;
+                max25 = 0;
                 diff99 = 0;
             }
         }
@@ -110,12 +115,127 @@ namespace FiveDiff
                 // выполним нарезку кусочков, их синхронизацию и найдем разницы
                 FindBlockDiffs();//долгая
                 FindDifferenceInBlocks();
+
                 int[] prior1 = GetFiveBlockIndexes(SortBlocks(1));
                 int[] prior9 = GetFiveBlockIndexes(SortBlocks(9));
                 int[] prior16 = GetFiveBlockIndexes(SortBlocks(16));
+                int[] prior25 = GetFiveBlockIndexes(SortBlocks(25));
                 int[] prior99 = GetFiveBlockIndexes(SortBlocks(99));
-                Answer = GetAnswer(prior16);
+                int[] prior88 = GetFiveBlockIndexes(SortBlocks(88));
+                int[] prior77 = GetFiveBlockIndexes(SortBlocks(77));
+
+                int[] prior_election_16_25 = GetElection(prior9, prior16, prior25);
+                int[] prior_election_9_16_25 = GetElection(prior9, prior16, prior25);
+                int[] prior_election_1_9_16 = GetElection(prior9, prior16, prior1);
+                int[] prior_election_9_16 = GetElection(prior9, prior16);
+                int[] prior_election_1_16 = GetElection(prior9, prior16);
+                int[] prior_election_1_9 = GetElection(prior9, prior16);
+                //                                                bad / good / all
+                //Answer = GetAnswer(prior25);                  // 57 / 181 / 238 - 76%
+                //Answer = GetAnswer(prior77);                  // 57 / 181 / 238 - 76%
+                //Answer = GetAnswer(prior16);                  // 63 / 175 / 238 - 74% (!)
+                //Answer = GetAnswer(prior_election_16_25);     // 65 / 173 / 238 - 73%
+                //Answer = GetAnswer(prior_election_9_16_25);   // 65 / 173 / 238 - 73%
+                //Answer = GetAnswer(prior88);                  // 74 / 164 / 238 - 69%
+                //Answer = GetAnswer(prior99);                  // 74 / 164 / 238 - 69%
+                //Answer = GetAnswer(prior_election_1_9_16);    // 99 / 139 / 238 - 58%
+                //Answer = GetAnswer(prior1);                   // 152 / 86 / 238 - 36%
+                //Answer = GetAnswer(prior9);                   // 182 / 56 / 238 - 24%
+                //Answer = GetAnswer(prior_election_9_16);      // 182 / 56 / 238 - 24%
+                //Answer = GetAnswer(prior_election_1_16);      // 182 / 56 / 238 - 24%
+                //Answer = GetAnswer(prior_election_1_9);       // 182 / 56 / 238 - 24%
+
+                Answer = GetAnswer(prior25);
+
+                //Answer = GetAnswer(prior25);                  // Bits2Clear = 0 / 57 / 181 / 238 - 76%
+                //Answer = GetAnswer(prior25);                  // Bits2Clear = 1 / 57 / 181 / 238 - 76%
+                //Answer = GetAnswer(prior25);                  // Bits2Clear = 2 / 57 / 181 / 238 - 76%
+                //Answer = GetAnswer(prior25);                  // Bits2Clear = 3 / 58 / 180 / 238 - 76%
+                //Answer = GetAnswer(prior25);                  // Bits2Clear = 4 / 58 / 180 / 238 - 76%
+                //Answer = GetAnswer(prior16);                  // Bits2Clear = 0 / 63 / 175 / 238 - 74%
+                //Answer = GetAnswer(prior16);                  // Bits2Clear = 1 / 
+                //Answer = GetAnswer(prior16);                  // Bits2Clear = 2 / 
+                //Answer = GetAnswer(prior16);                  // Bits2Clear = 3 / 
+                //Answer = GetAnswer(prior16);                  // Bits2Clear = 4 / 69 / 169 / 238 - 71%          
             }
+        }
+
+        /// <summary>
+        /// проведение выборов более часто встречающихся индексов из нескольких массивов
+        /// </summary>
+        /// <param name="ar1">массив 1</param>
+        /// <param name="ar2">массив 2</param>
+        /// <param name="ar3">массив 3</param>
+        /// <param name="ar4">массив 4</param>
+        /// <returns>сортированный массив в 5 элементов</returns>
+        private int[] GetElection(int[] ar1, int[] ar2, int[] ar3 = null, int[] ar4 = null)
+        {
+            List<int> all = new List<int>();
+            if (ar1 != null) { for (int i = 0; i < ar1.Length; i++) { all.Add(ar1[i]); } }
+            if (ar2 != null) { for (int i = 0; i < ar2.Length; i++) { all.Add(ar2[i]); } }
+            if (ar3 != null) { for (int i = 0; i < ar3.Length; i++) { all.Add(ar3[i]); } }
+            if (ar4 != null) { for (int i = 0; i < ar4.Length; i++) { all.Add(ar4[i]); } }
+            List<int> num = new List<int>();
+            List<int> cnt = new List<int>();
+            foreach(int n in all)
+            {
+                int idx = -1;
+                for(int i = 0; i < num.Count; i++) { if(all[i] == n) { idx = i; } }
+                if (idx == -1) { num.Add(n); cnt.Add(1); }
+                else { cnt[idx]++; }
+            }
+            bool need = true;
+            while (need)
+            {
+                need = false;
+                for(int i = 0; i < num.Count - 1; i++)
+                {
+                    if (cnt[i] < cnt[i+1])
+                    {
+                        int nn = num[i];
+                        num[i] = num[i + 1];
+                        num[i + 1] = nn;
+                        int cc = cnt[i];
+                        cnt[i] = cnt[i + 1];
+                        cnt[i + 1] = cc;
+                        need = true;
+                    }
+                }
+            }
+            int[] res = new int[5];
+            for(int i = 0; i < 5; i++)
+            {
+                res[i] = num[i];
+            }
+            return SortArray5items(res);
+        }
+
+        /// <summary>
+        /// сотрирует массив из 5 элементов
+        /// </summary>
+        /// <param name="ar">входящий массив</param>
+        /// <returns>сортированный по возрастанию массив</returns>
+        public int[] SortArray5items(int[] ar)
+        {
+            int[] res2 = ar;
+            bool need = true;
+            while (need)
+            {
+                need = false;
+                for (int i = 0; i < res2.Length - 1; i++)
+                {
+                    if (res2[i] > res2[i + 1])
+                    {
+                        int nn = res2[i];
+                        res2[i] = res2[i + 1];
+                        res2[i + 1] = nn;
+                        need = true;
+                    }
+                }
+            }
+            int[] res = new int[5];
+            for(int i = 0; i < 5; i++) { res[i] = res2[i]; }
+            return res;
         }
 
         /// <summary>
@@ -172,9 +292,8 @@ namespace FiveDiff
         /// </summary>
         /// <param name="b">блоки</param>
         /// <returns>массив лучших индексов</returns>
-        public int[] GetFiveBlockIndexes(Block[] b)
+        public int[] GetFiveBlockIndexes(Block[] b, int cnt = 5)
         {
-            int cnt = 5;
             int[] res = new int[cnt];
             for (int i = 0; i < cnt; i++) { res[i] = b[i].num; }
             bool needSort = true;
@@ -201,7 +320,7 @@ namespace FiveDiff
         public Block[] SortBlocks(int v)
         {
             Block[] bl = blocks;
-            if (!((v == 1) || (v == 9) || (v == 16) || (v == 99))) { return blocks; }
+            if (!((v == 1) || (v == 9) || (v == 16) || (v == 25) || (v == 77) || (v == 88) || (v == 99))) { return blocks; }
             int cnt = blocks.Length;
             bool needSort = true;
             while (needSort)
@@ -212,6 +331,9 @@ namespace FiveDiff
                     if ( ((v == 1) && (bl[i].diff < bl[i + 1].diff)) ||
                         ((v == 9) && (bl[i].max9 < bl[i + 1].max9)) ||
                         ((v == 16) && (bl[i].max16 < bl[i + 1].max16)) ||
+                        ((v == 25) && (bl[i].max25 < bl[i + 1].max25)) ||
+                        ((v == 77) && ((bl[i].max16 + bl[i].max25) < (bl[i + 1].max16 + bl[i + 1].max25))) ||
+                        ((v == 88) && ((bl[i].max16 + bl[i].max9) < (bl[i + 1].max16 + bl[i + 1].max9))) ||
                         ((v == 99) && (bl[i].diff99 < bl[i + 1].diff99)))
                     {
                         Block q = bl[i];
@@ -250,9 +372,12 @@ namespace FiveDiff
                 int h3 = img_heigth / 3 + 1;
                 int w4 = img_width / 4 + 1;
                 int h4 = img_heigth / 4 + 1;
+                int w5 = img_width / 5 + 1;
+                int h5 = img_heigth / 5 + 1;
                 q.diff = 0;
                 q.diff9 = new long[9];
                 q.diff16 = new long[16];
+                q.diff25 = new long[25];
                 for (int i = 0; i < img_width; i++)
                 {
                     for (int j = 0; j < img_heigth; j++)
@@ -265,11 +390,16 @@ namespace FiveDiff
                         q.diff += res_pixel;
                         int idx9 = (i / w3) * 3 + (j / h3);
                         int idx16 = (i / w4) * 4 + (j / h4);
+                        int idx25 = (i / w5) * 5 + (j / h5);
                         q.diff9[idx9] += res_pixel;
                         q.diff16[idx16] += res_pixel;
+                        q.diff25[idx25] += res_pixel;
                     }
                 }
                 q.num = q.row * columns + q.col;
+                long t1 = Math.Max(Math.Max(Math.Max(Math.Max(q.diff25[0], q.diff25[1]), Math.Max(q.diff25[2], q.diff25[3])), Math.Max(Math.Max(q.diff25[4], q.diff25[5]), Math.Max(q.diff25[6], q.diff25[7]))), Math.Max(Math.Max(Math.Max(q.diff25[8], q.diff25[9]), Math.Max(q.diff25[10], q.diff25[11])), Math.Max(Math.Max(q.diff25[12], q.diff25[13]), Math.Max(q.diff25[14], q.diff25[15]))));
+                long t2 = Math.Max(Math.Max(Math.Max(q.diff25[16], q.diff25[17]), Math.Max(q.diff25[18], q.diff25[19])), Math.Max(Math.Max(q.diff25[20], q.diff25[21]), Math.Max(q.diff25[22], Math.Max(q.diff25[23], q.diff25[24]))));
+                q.max25 = Math.Max(t1, t2);
                 q.max16 = Math.Max(Math.Max(Math.Max(Math.Max(q.diff16[0], q.diff16[1]), Math.Max(q.diff16[2], q.diff16[3])), Math.Max(Math.Max(q.diff16[4], q.diff16[5]), Math.Max(q.diff16[6], q.diff16[7]))), Math.Max(Math.Max(Math.Max(q.diff16[8], q.diff16[9]), Math.Max(q.diff16[10], q.diff16[11])), Math.Max(Math.Max(q.diff16[12], q.diff16[13]), Math.Max(q.diff16[14], q.diff16[15]))));
                 q.max9 = Math.Max(Math.Max(Math.Max(q.diff16[0], q.diff16[1]), Math.Max(q.diff16[2], q.diff16[3])), Math.Max(Math.Max(q.diff16[4], q.diff16[5]), Math.Max(q.diff16[6], Math.Max(q.diff16[7], q.diff16[8]))));
                 q.diff99 = q.diff + q.max9 * 9 + q.max16 * 16;
@@ -419,6 +549,39 @@ namespace FiveDiff
             Parts[1].ba = BitmapToByteArray(Parts[1].img);
             // найдем длину линии в BMP
             LineLen = Parts[0].img.Width * 3 + Parts[0].img.Width % 4;
+            LowestDepthColor(Bits2Clear);
+        }
+        /// <summary>
+        /// понижает на указанное количество бит глубину цвета пикселей
+        /// </summary>
+        /// <param name="cc">число бит</param>
+        public void LowestDepthColor(int cc)
+        {
+            if (cc == 0) { return; }
+            if (cc > 4) { return; }
+            byte mask = 0;
+            if (cc == 1) { mask = 256-1; }
+            if (cc == 2) { mask = 256-3; }
+            if (cc == 3) { mask = 256-7; }
+            if (cc == 4) { mask = 256-15; }
+            Parts[0].ba = LowestDepthColorOne(Parts[0].ba, mask);
+            Parts[1].ba = LowestDepthColorOne(Parts[1].ba, mask);
+        }
+        /// <summary>
+        /// выполняет AND над массивом байт
+        /// </summary>
+        /// <param name="ba">массив</param>
+        /// <param name="mask">маска</param>
+        /// <returns>измененный массив</returns>
+        public byte[] LowestDepthColorOne(byte[] ba, byte mask)
+        {
+            int len = ba.Length;
+            byte[] res = new byte[len];
+            for(int i=0; i<len; i++)
+            {
+                res[i] = (byte)(ba[i] & mask);
+            }
+            return res;
         }
         /// <summary>
         /// из битмапа делает массив байт - представление bmp
