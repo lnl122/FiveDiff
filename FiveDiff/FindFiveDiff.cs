@@ -25,7 +25,7 @@ namespace FiveDiff
         public Block[] blocks;
         public string answ_lang, answ_nums, answ_type, answ_lett;
         public string Answer;
-        public int Bits2Clear = 4;
+        public int Bits2Clear = 0;
 
         public struct Part
         {
@@ -124,6 +124,12 @@ namespace FiveDiff
                 int[] prior88 = GetFiveBlockIndexes(SortBlocks(88));
                 int[] prior77 = GetFiveBlockIndexes(SortBlocks(77));
 
+                //int[] prior9_10 = GetFiveBlockIndexes(SortBlocks(9), 10);
+                //int[] prior16_10 = GetFiveBlockIndexes(SortBlocks(16), 10);
+                //int[] prior25_10 = GetFiveBlockIndexes(SortBlocks(25),10);
+                //int[] prior_10_election_9_16_25 = GetElection(prior9_10, prior16_10, prior25_10);
+                //Answer = GetAnswer(prior_10_election_9_16_25);        // 
+
                 int[] prior_election_16_25 = GetElection(prior9, prior16, prior25);
                 int[] prior_election_9_16_25 = GetElection(prior9, prior16, prior25);
                 int[] prior_election_1_9_16 = GetElection(prior9, prior16, prior1);
@@ -145,6 +151,12 @@ namespace FiveDiff
                 //Answer = GetAnswer(prior_election_1_16);      // 182 / 56 / 238 - 24%
                 //Answer = GetAnswer(prior_election_1_9);       // 182 / 56 / 238 - 24%
 
+                //
+
+
+                //Answer = GetAnswer(prior25);        // 10
+                //Answer = GetAnswer(prior16);        // 19
+                //Answer = GetAnswer(prior9);        // >19
                 Answer = GetAnswer(prior25);
 
                 //Answer = GetAnswer(prior25);                  // Bits2Clear = 0 / 57 / 181 / 238 - 76%
@@ -354,13 +366,22 @@ namespace FiveDiff
             {
                 Block q = blocks[k];
                 int height = Img1.Height;
-                int corner = 1;
+
+                int corner = 0;
+                corner = 0; // 14a
+                corner = 1; // 12a
+                corner = 2; // 13a
+                corner = 3; // 9a
+                corner = 4; // 10a
+                corner = 5; // 9a
+                corner = 3;
+
                 int img1_left = h_bounds[q.col].start + corner;
                 int img1_up = v_bounds[q.row].start + corner;
                 int img2_left = img1_left + shift_hor + q.sh_h;
                 int img2_up = img1_up + shift_ver + q.sh_v;
-                int img_width = h_bounds[q.col].end - h_bounds[q.col].start - 2 * corner;
-                int img_heigth = v_bounds[q.row].end - v_bounds[q.row].start - 2 * corner;
+                int img_width = h_bounds[q.col].end - h_bounds[q.col].start - 2 * corner - Math.Abs(q.sh_h) - 1;
+                int img_heigth = v_bounds[q.row].end - v_bounds[q.row].start - 2 * corner - Math.Abs(q.sh_v) - 1;
                 //long res = 0;
                 //#if DEBUG
                 //                Bitmap temp1 = Parts[0].img.Clone(new Rectangle(img1_left, img1_up, img_width, img_heigth), Parts[0].img.PixelFormat);
@@ -467,13 +488,22 @@ namespace FiveDiff
         public long FindBlockDiffOne(Block q)
         {
             int height = Img1.Height;
-            int corner = 3;
+
+            int corner = 0;
+            corner = 0; // 10
+            corner = 1; // 10
+            corner = 2; // 10
+            corner = 3; // 9
+            corner = 4; // 10
+            corner = 5; // 10
+            corner = 0;
+
             int img1_left = h_bounds[q.col].start + corner;
             int img1_up = v_bounds[q.row].start + corner;
             int img2_left = img1_left + shift_hor + q.sh_h;
             int img2_up = img1_up + shift_ver + q.sh_v;
-            int img_width = h_bounds[q.col].end - h_bounds[q.col].start - 2 * corner;
-            int img_heigth = v_bounds[q.row].end - v_bounds[q.row].start - 2 * corner;
+            int img_width = h_bounds[q.col].end - h_bounds[q.col].start - 2 * corner - Math.Abs(q.sh_h) - 1;
+            int img_heigth = v_bounds[q.row].end - v_bounds[q.row].start - 2 * corner - Math.Abs(q.sh_v) - 1;
             long res = 0;
 //#if DEBUG
 //            if ((q.sh_v == 0) && (q.sh_h == 0))
@@ -1060,12 +1090,23 @@ namespace FiveDiff
         /// </summary>
         public void GetDelimiters()
         {
+            int corr = 0;
+            corr = 0; // bad - 2b 13a
+            corr = 1; // bad - 0b 11b
+            corr = 3; // bad - 0b 11b
+            corr = 5; // bad - 0b 11b
+            corr = 10; // bad - 0b 10a
+            corr = 20; // bad - 0b 9a
+            corr = 30; // bad - говно
+
+            corr = 3; // bad - 0b 11b
+
             int height = Img1.Height;
             int width = Img1.Width;
             byte[] ba = Parts[0].ba;
             // ищем в верхней части картинки
             int[] h1 = new int[width - v_right];
-            for (int i = v_right; i < width; i++)
+            for (int i = v_right+ corr; i < width; i++)
             {
                 for (int j = h_up; j < h_down; j++)
                 {
@@ -1076,7 +1117,7 @@ namespace FiveDiff
             }
             // ищем в левой части картинки
             int[] v1 = new int[height - h_down];
-            for (int i = h_down; i < height; i++)
+            for (int i = h_down+ corr; i < height; i++)
             {
                 for (int j = v_left; j < v_right; j++)
                 {
@@ -1110,19 +1151,25 @@ namespace FiveDiff
         /// <returns>список начал и концов букв</returns>
         public List<Bounds> GetBounds(int[] ar, int shift)
         {
+            int idx_cnt = 0;
+            //idx_cnt = 0; // bad - 2
+            //idx_cnt = 3; // bad - 5
+            //idx_cnt = 1; // bad - 2 разных
+            //idx_cnt = 2; // bad - 
+
             List<Bounds> res = new List<Bounds>();
             int prev_idx = -1;
             int curr = ar[0];
             for (int i = 1; i < ar.Length; i++)
             {
                 int col = ar[i];
-                if ((curr == 0) && (col != 0))
+                if ((curr <= idx_cnt) && (col > idx_cnt))
                 {
                     //после черного - белый, сохранить индекс начала
                     prev_idx = i;
                     curr = col;
                 }
-                else if ((curr != 0) && (col == 0))
+                else if ((curr > idx_cnt) && (col <= idx_cnt))
                 {
                     //после белого черный - надо записать
                     if (prev_idx != -1)

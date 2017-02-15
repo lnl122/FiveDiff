@@ -33,6 +33,10 @@ namespace FiveDiff
             PrepareForm();
             PrepareTimer();
 
+            string v1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\kmv57389_EnUpA1\A5B2B4B7E6-2.jpg";
+            string v2 = "EnUpA1";
+            FindFiveDiff a = new FindFiveDiff(new Bitmap(v1), v2);
+
             F_SizeChanged(null, null);
             Application.Run(F);
         }
