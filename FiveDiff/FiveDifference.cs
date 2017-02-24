@@ -534,8 +534,8 @@ namespace FiveDiff
         {
             DetectGridOne(0);
             DetectGridOne(1);
-            columns = Parts[1].columns;
-            rows = Parts[1].rows;
+            columns = Parts[0].columns;
+            rows = Parts[0].rows;
         }
     
         /// <summary>
