@@ -53,6 +53,7 @@ namespace FiveDiff
             p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B6C3C4D2E5-1.jpg"; // фрукты
             p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2A7D2D5E8.jpg"; // белая раска вокруг
             p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4F4I5J6K3.jpg"; // белый фон картинки
+            p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1C2J3D5J7G-1_g1.jpg"; // белый фон картинки
             FiveDifference b = new FiveDifference(new Bitmap(p1), new FiveDifference.Settings(FiveDifference.setNums.Left, FiveDifference.setLang.Rus, FiveDifference.setType._A1));
 
             //string v1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\kmv57389_EnUpA1\A5B2B4B7E6-2.jpg";

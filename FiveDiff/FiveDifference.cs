@@ -78,6 +78,13 @@ namespace FiveDiff
                 return ((c1.start == c2.start) && (c1.end == c2.end));
             }
         }
+        /// <summary>
+        /// структура для массива количества белого цвета по строкам и столбцам
+        /// </summary>
+        public struct TwoWhiteArray
+        {
+            public int[] cols, rows;
+        }
 
         // константы
         private const int BmpHeader = 54;
@@ -87,7 +94,6 @@ namespace FiveDiff
         // = 1, иначе ошибки совсем
         public int DetectGridOne_ArrSumMultiplier = 1; // поиск сетки по строкам/столбцам, отсечение ошибок до сравнения на белый цвет
 
-
         public int FindCommonShift_shift2 = 5; // общий сдвиг, сдвиг поиска вокруг найденных пересечений
         public int FindDiffsByShiftsOne_CutPart = 5; // часть (1/х) половинок, для поиска соответствия в одном пересечении
         public int GetLineDiffArr_max_shift = 3; // часть (1/х) строк, по которым ищем сдвиг
@@ -96,6 +102,8 @@ namespace FiveDiff
         public float GetBounds_AllowSizeMultiplier = 1.5f; // допустимые изменения размеров блоков
         public float DetectGridOne_MaxDiffPeakMultiplier = 1.3f; // максимальная разница в пиках
         public int FindGrid_AllowedWhitePixels = 3; // сколько может быть белых пикселей в сетке
+        public int GetWhiteBound_PortionWhiteBound1000 = 10; // доля +- точек для определения границ белого по краям
+        public int GetWhiteBound_PortionWhiteBound1000_0 = 5; // доля +- точек для определения границ белого по краям (1% = 10)
 
         /// <summary>
         /// конструктор
@@ -530,19 +538,20 @@ namespace FiveDiff
             rows = Parts[1].rows;
         }
     
-
         /// <summary>
-        /// находит сетку для одной из половинок
-        /// <param name="num">номер части</param>
+        /// получает количества белых цветов в части картинки
         /// </summary>
-        public void DetectGridOne(int num)
+        /// <param name="num">номер части</param>
+        /// <returns>структура из двух массивов</returns>
+        public TwoWhiteArray GetWhiteCounts(int num)
         {
             byte[] ba = Parts[num].ba;
             int width = Parts[num].rect.Width;
             int height = Parts[num].rect.Height;
 
-            int[] white_columns = new int[width];
-            int[] white_rows = new int[height];
+            TwoWhiteArray res = new TwoWhiteArray();
+            res.cols = new int[width];
+            res.rows = new int[height];
             // считаем белые цвета
             for (int i = 0; i < width; i++)
             {
@@ -551,19 +560,121 @@ namespace FiveDiff
                     int clr12 = GetColor12bit(ba, GetIndexByXY(i, j));
                     if (clr12 == 4095)
                     {
-                        white_columns[i]++;
-                        white_rows[height - j - 1]++;
+                        res.cols[i]++;
+                        res.rows[height - j - 1]++;
                     }
                 }
             }
+            return res;
+        }
 
+        /// <summary>
+        /// находит границы белого фона
+        /// </summary>
+        /// <param name="ar">линейка количества белого цвета</param>
+        /// <param name="max">теоретически максимальное значение</param>
+        /// <returns>границы слева и справа</returns>
+        public Bound GetWhiteBound(int[] ar, int max)
+        {
+            int m = max - max * GetWhiteBound_PortionWhiteBound1000 / 1000;
+            int cnt = ar.Length;
 
-            // идея следующая:
+            int b1 = 0;
+            int b2 = cnt - 1;
+            for (int i = b1; i < cnt; i++) { if (ar[i] < m) { b1 = i; break; } }
+            for (int i = b2; i >= 0; i--) { if (ar[i] < m) { b2 = i; break; } }
+
+            return new Bound(b1, b2);
+        }
+
+        /// <summary>
+        /// находит мнодество границ клеток сетки, включая ту, где символы
+        /// </summary>
+        /// <param name="ar">массив количеств белых цветов</param>
+        /// <param name="b">границы краев, за которыми искать не нужно</param>
+        /// <returns>массив границ ячеек сетки</returns>
+        public List<Bound> GetWhiteSquare(int[] ar, Bound b, int wh)
+        {
+            int len = ar.Length;
+            int diff = wh + len * GetWhiteBound_PortionWhiteBound1000_0 / 1000;
+            int start = b.start;
+            int end = b.end;
+            int[] ard = new int[len];
+            for (int i = start; i < end; i++) { int x = ar[i] - diff; if (x < 0) { x = 0; } ard[i] = x; }
+            int b_start = start;
+            int b_end = end;
+            List<Bound> res = new List<Bound>();
+            for (int i = start; i < end-1; i++)
+            {
+                if ((ard[i] > 0) && (ard[i + 1] == 0))
+                {
+                    // конец ячейки
+                    b_end = i;
+                    res.Add(new Bound(b_start, b_end));
+                    b_start = i + 1;
+                }
+                if ((ard[i + 1] > 0) && (ard[i] == 0))
+                {
+                    // начало ячейки
+                    b_start = i;
+                }
+            }
+            if ((b_start < end) && ((end-b_start)>20) ) { res.Add(new Bound(b_start, end)); }
+            return res;
+        }
+
+        /// <summary>
+        /// считает количество белых цветов, паразитных на картинке
+        /// </summary>
+        /// <param name="b"></param>
+        /// <param name="l"></param>
+        /// <returns></returns>
+        public int GetWhiteCnt(Bound b, int l)
+        {
+            return (b.start) + (l-b.end);
+        }
+
+        /// <summary>
+        /// находит сетку для одной из половинок
+        /// <param name="num">номер части</param>
+        /// </summary>
+        public void DetectGridOne(int num)
+        {
+            // * найти количества белых цветов
+            TwoWhiteArray white = GetWhiteCounts(num);
+            int cols_cnt = white.cols.Length;
+            int rows_cnt = white.rows.Length;
             // * максимальные значения, = 99% или больше чем другое измерение - отсекать, т.к. это белый фон вокруг картинки
+            Bound boundUD = GetWhiteBound(white.rows, cols_cnt);
+            Bound boundLR = GetWhiteBound(white.cols, rows_cnt);
+            // заполним показания в сетке
+            Parts[num].grid_columns = new bool[cols_cnt];
+            Parts[num].grid_lines = new bool[rows_cnt];
+            for (int i = 0; i < boundUD.start; i++) { Parts[num].grid_lines[i] = true; }
+            for (int i = boundUD.end; i < rows_cnt; i++) { Parts[num].grid_lines[i] = true; }
+            for (int i = 0; i < boundLR.start; i++) { Parts[num].grid_columns[i] = true; }
+            for (int i = boundLR.end; i < cols_cnt; i++) { Parts[num].grid_columns[i] = true; }
             // * в оставшихся искать значения равные минимальному +- 3 пикселя, или минимум +-0,5% от него - это сетка
+            List<Bound> squareUD = GetWhiteSquare(white.rows, boundUD, GetWhiteCnt(boundLR, cols_cnt));
+            List<Bound> squareLR = GetWhiteSquare(white.cols, boundLR, GetWhiteCnt(boundUD, rows_cnt));
+            // заполним в сетке
+            
+            int ii0 = 9;
+            if (num == 0)
+            {
+                Parts[0].columns = squareLR.Count -1;
+                Parts[1].columns = Parts[0].columns;
+                Parts[0].rows = squareUD.Count -1;
+                Parts[1].rows = Parts[0].rows;
+                columns = Parts[0].columns;
+                rows = Parts[0].rows;
+            }
             // * для Parts[0] - символы у нас в первой колонке/столбце
             // * для Parts[1] - символы могут быть вначале/конце. надо найти где посмотрев на величину сдвига, учтя белые границы
             // все остальное - наша сетка для поиска.
+
+
+
             /*
             int[] white_col_diff = GetWhiteDiff(white_columns, white_columns4);
             int[] white_row_diff = GetWhiteDiff(white_rows, white_rows4);
