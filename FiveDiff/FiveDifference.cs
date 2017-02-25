@@ -597,8 +597,8 @@ namespace FiveDiff
         {
             int len = ar.Length;
             int diff = wh + len * GetWhiteBound_PortionWhiteBound1000_0 / 1000;
-            int start = b.start;
-            int end = b.end;
+            int start = b.start+1;
+            int end = b.end-1;
             int[] ard = new int[len];
             for (int i = start; i < end; i++) { int x = ar[i] - diff; if (x < 0) { x = 0; } ard[i] = x; }
             int b_start = start;
@@ -610,7 +610,7 @@ namespace FiveDiff
                 {
                     // конец ячейки
                     b_end = i;
-                    res.Add(new Bound(b_start, b_end));
+                    if (b_start + 10 < b_end) { res.Add(new Bound(b_start, b_end)); }
                     b_start = i + 1;
                 }
                 if ((ard[i + 1] > 0) && (ard[i] == 0))
@@ -655,8 +655,8 @@ namespace FiveDiff
             for (int i = 0; i < boundLR.start; i++) { Parts[num].grid_columns[i] = true; }
             for (int i = boundLR.end; i < cols_cnt; i++) { Parts[num].grid_columns[i] = true; }
             // * в оставшихся искать значения равные минимальному +- 3 пикселя, или минимум +-0,5% от него - это сетка
-            List<Bound> squareUD = GetWhiteSquare(white.rows, boundUD, GetWhiteCnt(boundLR, cols_cnt));
-            List<Bound> squareLR = GetWhiteSquare(white.cols, boundLR, GetWhiteCnt(boundUD, rows_cnt));
+            List<Bound> squareUD = GetWhiteSquare(white.rows, boundUD, GetWhiteCnt(boundLR, cols_cnt)+1);
+            List<Bound> squareLR = GetWhiteSquare(white.cols, boundLR, GetWhiteCnt(boundUD, rows_cnt)+1);
             // заполним в сетке
             
             int ii0 = 9;
