@@ -596,7 +596,9 @@ namespace FiveDiff
         public List<Bound> GetWhiteSquare(int[] ar, Bound b, int wh)
         {
             int len = ar.Length;
-            int diff = wh + len * GetWhiteBound_PortionWhiteBound1000_0 / 1000;
+            int min = GetMin(ar);
+            int wh2 = Math.Max(wh, min);
+            int diff = wh2 + len * GetWhiteBound_PortionWhiteBound1000_0 / 1000;
             int start = b.start+1;
             int end = b.end-1;
             int[] ard = new int[len];
@@ -655,20 +657,25 @@ namespace FiveDiff
             for (int i = 0; i < boundLR.start; i++) { Parts[num].grid_columns[i] = true; }
             for (int i = boundLR.end; i < cols_cnt; i++) { Parts[num].grid_columns[i] = true; }
             // * в оставшихся искать значения равные минимальному +- 3 пикселя, или минимум +-0,5% от него - это сетка
-            List<Bound> squareUD = GetWhiteSquare(white.rows, boundUD, GetWhiteCnt(boundLR, cols_cnt)+1);
-            List<Bound> squareLR = GetWhiteSquare(white.cols, boundLR, GetWhiteCnt(boundUD, rows_cnt)+1);
+            List<Bound> squareUD = GetWhiteSquare(white.rows, boundUD, GetWhiteCnt(boundLR, cols_cnt));
+            List<Bound> squareLR = GetWhiteSquare(white.cols, boundLR, GetWhiteCnt(boundUD, rows_cnt));
+            // 2todo
+            // в отдельных случаях, для картинок в низком разрешении, есть ложные срабатывания двух видов:
+            // 1. одна из колонок, или несколько делиться на две части по метке символа -- их надо бы объединять
+            // 2. какие-нить две колонки, или несколько, могут быть объединены в одну, с большим размером - их надо бы разбивать.
+            // как - находить наиболее частый размер, и, анализировать все примерно вдвое большие/меньшие размеры. 
+            // если такие найдутся - то соотв. разбивать их по локальному минимуму, или объединять.
+            // как временное решение - не использовать картинки в мелком р
+            // в тестах мелкие картинки выделил отдельно
+
             // заполним в сетке
-            
+
+
+            Parts[num].columns = squareLR.Count - 1;
+            Parts[num].rows = squareUD.Count - 1;
+
             int ii0 = 9;
-            if (num == 0)
-            {
-                Parts[0].columns = squareLR.Count -1;
-                Parts[1].columns = Parts[0].columns;
-                Parts[0].rows = squareUD.Count -1;
-                Parts[1].rows = Parts[0].rows;
-                columns = Parts[0].columns;
-                rows = Parts[0].rows;
-            }
+
             // * для Parts[0] - символы у нас в первой колонке/столбце
             // * для Parts[1] - символы могут быть вначале/конце. надо найти где посмотрев на величину сдвига, учтя белые границы
             // все остальное - наша сетка для поиска.

@@ -32,157 +32,80 @@ namespace FiveDiffTests
     [TestFixture]
     public class UnitTestAllBounds_2
     {
-
-        [Test]
-        public void Bounds_1A3H5A5I9E_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1A3H5A5I9E-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(9, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_1A3H5A5I9E_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1A3H5A5I9E-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(9, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_1B4H7A7D7H_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1B4H7A7D7H-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_1B4H7A7D7H_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1B4H7A7D7H-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_1C2J3D5J7G_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1C2J3D5J7G-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_1C2J3D5J7G_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1C2J3D5J7G-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_1C3F7I8L9B_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1C3F7I8L9B-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_1C3F7I8L9B_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1C3F7I8L9B-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_1D3G4E4J5L_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1D3G4E4J5L-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_1D3G4E4J5L_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1D3G4E4J5L-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_1F2C3J6I7I_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1F2C3J6I7I-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(15, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_1F2C3J6I7I_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1F2C3J6I7I-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(15, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_1G3B3J6M7G_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1G3B3J6M7G-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_1G3B3J6M7G_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1G3B3J6M7G-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_1G3E5B5F7B_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1G3E5B5F7B-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(9, z.columns); Assert.AreEqual(11, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_1G3E5B5F7B_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1G3E5B5F7B-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(9, z.columns); Assert.AreEqual(11, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_1I2F5I5K5L_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1I2F5I5K5L-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_1I2F5I5K5L_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1I2F5I5K5L-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_1I4F4K7L9H_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1I4F4K7L9H-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_1I4F4K7L9H_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1I4F4K7L9H-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_1K3G3L5A7G_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1K3G3L5A7G-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_1K3G3L5A7G_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1K3G3L5A7G-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_1L3G6G6K9E_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1L3G6G6K9E-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_1L3G6G6K9E_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1L3G6G6K9E-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_1M4H4N7D8C_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1M4H4N7D8C-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(14, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_1M4H4N7D8C_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1M4H4N7D8C-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(14, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_2B2G3K5D8F_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2B2G3K5D8F-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(11, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_2B2G3K5D8F_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2B2G3K5D8F-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(11, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_2B2G5H5K6A_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2B2G5H5K6A-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(11, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_2B2G5H5K6A_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2B2G5H5K6A-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(11, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_2B2H2N7E8N_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2B2H2N7E8N-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_2B2H2N7E8N_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2B2H2N7E8N-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_2I3L7F7H8B_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2I3L7F7H8B-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(14, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_2I3L7F7H8B_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2I3L7F7H8B-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(14, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_2J3G4F5C5J_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2J3G4F5C5J-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(14, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_2J3G4F5C5J_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2J3G4F5C5J-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(14, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_2L3K7L8G9A_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2L3K7L8G9A-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_2L3K7L8G9A_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2L3K7L8G9A-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_2L5M6L7B8J_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2L5M6L7B8J-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_2L5M6L7B8J_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\2L5M6L7B8J-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_3A3D4B5K7L_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3A3D4B5K7L-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_3A3D4B5K7L_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3A3D4B5K7L-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_3A5A6H6P9D_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3A5A6H6P9D-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_3A5A6H6P9D_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3A5A6H6P9D-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_3B6N8A8L9C_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3B6N8A8L9C-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_3B6N8A8L9C_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3B6N8A8L9C-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_3C3F3I4B6C_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3C3F3I4B6C-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(9, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_3C3F3I4B6C_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3C3F3I4B6C-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(9, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_3C4G4L6F6H_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3C4G4L6F6H-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(12, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_3C4G4L6F6H_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3C4G4L6F6H-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(12, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_3D4K6G7B7E_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3D4K6G7B7E-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(12, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_3D4K6G7B7E_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3D4K6G7B7E-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(12, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_3G4E5E6E10E_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3G4E5E6E10E-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(10, z.columns); Assert.AreEqual(12, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_3G4E5E6E10E_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3G4E5E6E10E-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(10, z.columns); Assert.AreEqual(12, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_3G6C6F9D9K_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3G6C6F9D9K-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(11, z.columns); Assert.AreEqual(11, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_3G6C6F9D9K_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3G6C6F9D9K-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(11, z.columns); Assert.AreEqual(11, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_3H7B7G8H8J_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3H7B7G8H8J-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(15, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_3H7B7G8H8J_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3H7B7G8H8J-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(15, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_3J4H6B6H7D_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3J4H6B6H7D-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_3J4H6B6H7D_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3J4H6B6H7D-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_3L6B6E6H6M_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3L6B6E6H6M-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_3L6B6E6H6M_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\3L6B6E6H6M-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_4A5E8F8H9I_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4A5E8F8H9I-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(16, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_4A5E8F8H9I_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4A5E8F8H9I-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(13, z.columns); Assert.AreEqual(16, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_4E4L5H6E8K_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4E4L5H6E8K-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(12, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_4E4L5H6E8K_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4E4L5H6E8K-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(12, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_4G7L9G9L10C_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4G7L9G9L10C-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(11, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_4G7L9G9L10C_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4G7L9G9L10C-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(11, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_4H5J5M6B8G_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4H5J5M6B8G-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(14, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_4H5J5M6B8G_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4H5J5M6B8G-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(14, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_4K6E6J6K7F_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4K6E6J6K7F-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(12, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_4K6E6J6K7F_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4K6E6J6K7F-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(12, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_4M7I10E10G10J_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4M7I10E10G10J-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(11, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_4M7I10E10G10J_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4M7I10E10G10J-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(11, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_5E6C7N7O10M_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\5E6C7N7O10M-1_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(11, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_5E6C7N7O10M_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\5E6C7N7O10M-2_g1.jpg"), "EnLe1A"); Assert.AreEqual(16, z.columns); Assert.AreEqual(11, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
@@ -190,31 +113,21 @@ namespace FiveDiffTests
         [Test]
         public void Bounds_A12B6D7G8H3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A12B6D7G8H3.jpg"), "EnUpA1"); Assert.AreEqual(12, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A1A3A7C1C2_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1A3A7C1C2-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A1A3A7C1C2_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1A3A7C1C2-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A1A3A7C1C2_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1A3A7C1C2-3.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_A1A4E2F2F4_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1A4E2F2F4-1.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A1A4E2F2F4_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1A4E2F2F4-2.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A1A4E2F2F4_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1A4E2F2F4-3.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A1B2B5D2D5_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1B2B5D2D5-1.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A1B2B5D2D5_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1B2B5D2D5-2.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A1B2B5D2D5_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1B2B5D2D5-3.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A1B3B6D5E2_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1B3B6D5E2-1.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A1B3B6D5E2_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1B3B6D5E2-2.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A1B3B6D5E2_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1B3B6D5E2-3.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_A1D3E4G3G5_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1D3E4G3G5-1.jpg"), "EnUpA1"); Assert.AreEqual(5, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A1D3E4G3G5_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A1D3E4G3G5-2.jpg"), "EnUpA1"); Assert.AreEqual(5, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
@@ -222,31 +135,21 @@ namespace FiveDiffTests
         [Test]
         public void Bounds_A2A7D2D5E8() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2A7D2D5E8.jpg"), "EnUpA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A2B1B3E3G1_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2B1B3E3G1-1.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A2B1B3E3G1_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2B1B3E3G1-2.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A2B1B3E3G1_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2B1B3E3G1-3.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_A2B5C5D5D7_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2B5C5D5D7-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A2B5C5D5D7_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2B5C5D5D7-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A2B5C5D5D7_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2B5C5D5D7-3.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A2B6C3D6E2_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2B6C3D6E2-1.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A2B6C3D6E2_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2B6C3D6E2-2.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A2B6C3D6E2_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2B6C3D6E2-3.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A3A4C3D4F4_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A3A4C3D4F4-1.jpg"), "EnUpA1"); Assert.AreEqual(5, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A3A4C3D4F4_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A3A4C3D4F4-2.jpg"), "EnUpA1"); Assert.AreEqual(5, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A3A4C3D4F4_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A3A4C3D4F4-3.jpg"), "EnUpA1"); Assert.AreEqual(5, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_A3B3B4C7D3_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A3B3B4C7D3-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A3B3B4C7D3_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A3B3B4C7D3-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
@@ -254,37 +157,25 @@ namespace FiveDiffTests
         [Test]
         public void Bounds_A3B5F5H2J5() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A3B5F5H2J5.jpg"), "EnUpA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A3B8D3E1E7_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A3B8D3E1E7-1.jpg"), "EnUpA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A3B8D3E1E7_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A3B8D3E1E7-2.jpg"), "EnUpA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A3B8D3E1E7_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A3B8D3E1E7-3.jpg"), "EnUpA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_A4B1B5C3C6_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B1B5C3C6-1.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A4B1B5C3C6_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B1B5C3C6-2.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A4B1B5C3C6_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B1B5C3C6-3.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A4B1C1E2F2_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B1C1E2F2-1.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A4B1C1E2F2_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B1C1E2F2-2.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A4B1C1E2F2_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B1C1E2F2-3.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_A4B2C1D2D5_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B2C1D2D5-1.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A4B2C1D2D5_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B2C1D2D5-2.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A4B2C1D2D5_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B2C1D2D5-3.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A4B5C7D1E7_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B5C7D1E7-1.jpg"), "EnUpA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A4B5C7D1E7_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B5C7D1E7-2.jpg"), "EnUpA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A4B5C7D1E7_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B5C7D1E7-3.jpg"), "EnUpA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_A4B6D4D6D7_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B6D4D6D7-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A4B6D4D6D7_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4B6D4D6D7-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
@@ -294,19 +185,13 @@ namespace FiveDiffTests
         [Test]
         public void Bounds_A4F4I5J6K3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4F4I5J6K3.jpg"), "EnUpA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(12, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A5B2B4B7E6_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A5B2B4B7E6-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A5B2B4B7E6_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A5B2B4B7E6-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A5B2B4B7E6_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A5B2B4B7E6-3.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A5B2C2D2D5_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A5B2C2D2D5-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A5B2C2D2D5_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A5B2C2D2D5-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A5B2C2D2D5_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A5B2C2D2D5-3.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_A5C5C6D2E1_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A5C5C6D2E1-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A5C5C6D2E1_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A5C5C6D2E1-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
@@ -314,19 +199,13 @@ namespace FiveDiffTests
         [Test]
         public void Bounds_A6D7F2G4J9() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A6D7F2G4J9.jpg"), "EnUpA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(13, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A7B1B7D1E5_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A7B1B7D1E5-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A7B1B7D1E5_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A7B1B7D1E5-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A7B1B7D1E5_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A7B1B7D1E5-3.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_A7B1D1D5D7_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A7B1D1D5D7-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_A7B1D1D5D7_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A7B1D1D5D7-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A7B1D1D5D7_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A7B1D1D5D7-3.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_A7B6C1C2D6_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A7B6C1C2D6-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_A7B6C1C2D6_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A7B6C1C2D6-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(4, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
@@ -334,13 +213,9 @@ namespace FiveDiffTests
         [Test]
         public void Bounds_A8B1B6E6F10() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A8B1B6E6F10.jpg"), "EnUpA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(7, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_B1B4B6C3E5_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B1B4B6C3E5-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_B1B4B6C3E5_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B1B4B6C3E5-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_B1B4B6C3E5_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B1B4B6C3E5-3.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_B1B6D3E1E6_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B1B6D3E1E6-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_B1B6D3E1E6_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B1B6D3E1E6-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
@@ -352,19 +227,13 @@ namespace FiveDiffTests
         [Test]
         public void Bounds_B2B3K4G5K6() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B2B3K4G5K6.jpg"), "EnLeA1"); Assert.AreEqual(13, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_B2B5D6E2E3_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B2B5D6E2E3-1.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_B2B5D6E2E3_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B2B5D6E2E3-2.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_B2B5D6E2E3_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B2B5D6E2E3-3.jpg"), "EnUpA1"); Assert.AreEqual(7, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_B2C4D2D4E3_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B2C4D2D4E3-1.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_B2C4D2D4E3_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B2C4D2D4E3-2.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_B2C4D2D4E3_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B2C4D2D4E3-3.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_B3B4C3C4E1_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B3B4C3C4E1-1.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_B3B4C3C4E1_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B3B4C3C4E1-2.jpg"), "EnUpA1"); Assert.AreEqual(4, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
@@ -378,8 +247,6 @@ namespace FiveDiffTests
         [Test]
         public void Bounds_B4B7E2G4J2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B4B7E2G4J2.jpg"), "EnUpA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(11, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_B4D5D6E2F4_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B4D5D6E2F4-1.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_B4D5D6E2F4_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B4D5D6E2F4-2.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_B4D5D6E2F4_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B4D5D6E2F4-3.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
@@ -392,13 +259,9 @@ namespace FiveDiffTests
         [Test]
         public void Bounds_B5D3D12F5I7() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B5D3D12F5I7.jpg"), "EnUpA1"); Assert.AreEqual(12, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_B6C1C4E4F1_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B6C1C4E4F1-1.jpg"), "EnUpA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_B6C1C4E4F1_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B6C1C4E4F1-2.jpg"), "EnUpA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_B6C1C4E4F1_3() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B6C1C4E4F1-3.jpg"), "EnUpA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(6, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_B6C3C4D2E5_1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B6C3C4D2E5-1.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_B6C3C4D2E5_2() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B6C3C4D2E5-2.jpg"), "EnUpA1"); Assert.AreEqual(6, z.columns); Assert.AreEqual(5, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
@@ -472,151 +335,80 @@ namespace FiveDiffTests
         [Test]
         public void Bounds_L3G4I5C6K8() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\L3G4I5C6K8.jpg"), "EnLeA1"); Assert.AreEqual(13, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_А1Ж4К6Ж7К8_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\А1Ж4К6Ж7К8-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_А1Ж4К6Ж7К8_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\А1Ж4К6Ж7К8-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_А1И3И4З8И8_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\А1И3И4З8И8-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_А1И3И4З8И8_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\А1И3И4З8И8-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_А2К2З4Д6Л6_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\А2К2З4Д6Л6-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_А2К2З4Д6Л6_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\А2К2З4Д6Л6-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Б1Д3А4Л5З6_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Б1Д3А4Л5З6-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Б1Д3А4Л5З6_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Б1Д3А4Л5З6-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_Б1Л7В8И8В9_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Б1Л7В8И8В9-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_Б1Л7В8И8В9_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Б1Л7В8И8В9-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Б2Г2Ж2Е5И10_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Б2Г2Ж2Е5И10-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(9, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Б2Г2Ж2Е5И10_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Б2Г2Ж2Е5И10-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(9, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_Б3Д4А6И6Ж8_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Б3Д4А6И6Ж8-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(9, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_Б3Д4А6И6Ж8_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Б3Д4А6И6Ж8-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(9, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Б3Ж3Е6З6В7_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Б3Ж3Е6З6В7-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Б3Ж3Е6З6В7_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Б3Ж3Е6З6В7-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_В1Е1Ж6Б7Е7_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\В1Е1Ж6Б7Е7-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_В1Е1Ж6Б7Е7_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\В1Е1Ж6Б7Е7-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_В1Л2Г3К5М9_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\В1Л2Г3К5М9-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(12, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_В1Л2Г3К5М9_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\В1Л2Г3К5М9-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(12, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_В2З5В6Е7К7_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\В2З5В6Е7К7-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_В2З5В6Е7К7_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\В2З5В6Е7К7-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Г1Е4Е5К5Г7_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Г1Е4Е5К5Г7-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Г1Е4Е5К5Г7_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Г1Е4Е5К5Г7-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_Г1И1К4Г8К8_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Г1И1К4Г8К8-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_Г1И1К4Г8К8_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Г1И1К4Г8К8-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Г3З3К4Е7И8_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Г3З3К4Е7И8-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Г3З3К4Е7И8_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Г3З3К4Е7И8-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_Г3Р4Ж6К6Б7_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Г3Р4Ж6К6Б7-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(16, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_Г3Р4Ж6К6Б7_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Г3Р4Ж6К6Б7-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(16, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Г4И4Б6Г6Д8_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Г4И4Б6Г6Д8-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Г4И4Б6Г6Д8_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Г4И4Б6Г6Д8-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_Д1К2В4Г5Ж8_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Д1К2В4Г5Ж8-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_Д1К2В4Г5Ж8_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Д1К2В4Г5Ж8-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Д2В3К5Д6Б7_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Д2В3К5Д6Б7-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Д2В3К5Д6Б7_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Д2В3К5Д6Б7-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_Д4К4Л6А8Б9_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Д4К4Л6А8Б9-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(12, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_Д4К4Л6А8Б9_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Д4К4Л6А8Б9-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(12, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Е1Д4В5И8Г9_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Е1Д4В5И8Г9-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Е1Д4В5И8Г9_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Е1Д4В5И8Г9-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_Е2В4И4Б6Л8_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Е2В4И4Б6Л8-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_Е2В4И4Б6Л8_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Е2В4И4Б6Л8-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Е2Д3В6И7Г10_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Е2Д3В6И7Г10-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(9, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Е2Д3В6И7Г10_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Е2Д3В6И7Г10-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(9, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_Е2З3А8Е9З9_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Е2З3А8Е9З9-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_Е2З3А8Е9З9_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Е2З3А8Е9З9-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Е3М3И5Г7Д9_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Е3М3И5Г7Д9-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(12, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Е3М3И5Г7Д9_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Е3М3И5Г7Д9-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(12, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_Ж1З3А8З8Д9_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Ж1З3А8З8Д9-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_Ж1З3А8З8Д9_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Ж1З3А8З8Д9-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Ж2В3К3И5Е7_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Ж2В3К3И5Е7-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Ж2В3К3И5Е7_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Ж2В3К3И5Е7-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_Ж2В4Д7Г9Е10_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Ж2В4Д7Г9Е10-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_Ж2В4Д7Г9Е10_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Ж2В4Д7Г9Е10-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(8, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Ж2Г3З4В6И9_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Ж2Г3З4В6И9-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(9, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Ж2Г3З4В6И9_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Ж2Г3З4В6И9-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(9, z.columns); Assert.AreEqual(10, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_З1А2Г3Ж5А8_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\З1А2Г3Ж5А8-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(9, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_З1А2Г3Ж5А8_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\З1А2Г3Ж5А8-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(9, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_З1Г4Д5В6З7_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\З1Г4Д5В6З7-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_З1Г4Д5В6З7_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\З1Г4Д5В6З7-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_И1А2З3Б5Е6_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\И1А2З3Б5Е6-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_И1А2З3Б5Е6_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\И1А2З3Б5Е6-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_К1А2Е2Ж5В7_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\К1А2Е2Ж5В7-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_К1А2Е2Ж5В7_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\К1А2Е2Ж5В7-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(10, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_К1Б2К2И3В4_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\К1Б2К2И3В4-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_К1Б2К2И3В4_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\К1Б2К2И3В4-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
-        public void Bounds_Л1И3Б4Г6Е7_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Л1И3Б4Г6Е7-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
         public void Bounds_Л1И3Б4Г6Е7_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Л1И3Б4Г6Е7-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(11, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_М3Е4А5М5Д9_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\М3Е4А5М5Д9-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(12, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_М3Е4А5М5Д9_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\М3Е4А5М5Д9-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(12, z.columns); Assert.AreEqual(9, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
         [Test]
-        public void Bounds_М3Е4Б7З7К8_1_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\М3Е4Б7З7К8-1_g1.jpg"), "RuLeA1"); Assert.AreEqual(14, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
-        [Test]
         public void Bounds_М3Е4Б7З7К8_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\М3Е4Б7З7К8-2_g1.jpg"), "RuLeA1"); Assert.AreEqual(14, z.columns); Assert.AreEqual(8, z.rows); Assert.AreEqual(z.Parts[0].columns, z.Parts[1].columns); Assert.AreEqual(z.Parts[0].rows, z.Parts[1].rows); }
+
     }
-    
+
     /*
         // ответы
         [TestFixture]
@@ -915,7 +707,7 @@ namespace FiveDiffTests
 [Test] public void Answer_М3Е4Б7З7К8_2_g1() { FiveDifference z = new FiveDifference(new Bitmap(@"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\М3Е4Б7З7К8-2_g1.jpg"), "RuLeA1"); Assert.AreEqual("М3Е4Б7З7К8", z.Answer); }
 
         }
-       */ 
+       */
 
 
     /*    
