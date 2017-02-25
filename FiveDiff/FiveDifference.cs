@@ -143,10 +143,10 @@ namespace FiveDiff
         public int FindDiffsByShiftsOne_CutPart = 5; // часть (1/х) половинок, для поиска соответствия в одном пересечении
         public int GetLineDiffArr_max_shift = 3; // часть (1/х) строк, по которым ищем сдвиг
         //public int FindLetterBounds_start = 30; // с какой позиции искать границу окончения первой буквы
-        public int FindGrid_SkipPointsAroundLetters = 2; // точек пропустить от границ букв 2-3 где-то так
+        //public int FindGrid_SkipPointsAroundLetters = 2; // точек пропустить от границ букв 2-3 где-то так
         public float GetBounds_AllowSizeMultiplier = 1.5f; // допустимые изменения размеров блоков
-        public float DetectGridOne_MaxDiffPeakMultiplier = 1.3f; // максимальная разница в пиках
-        public int FindGrid_AllowedWhitePixels = 3; // сколько может быть белых пикселей в сетке
+        //public float DetectGridOne_MaxDiffPeakMultiplier = 1.3f; // максимальная разница в пиках
+        //public int FindGrid_AllowedWhitePixels = 3; // сколько может быть белых пикселей в сетке
         public int GetWhiteBound_PortionWhiteBound1000 = 10; // доля +- точек для определения границ белого по краям
         public int GetWhiteBound_PortionWhiteBound1000_0 = 5; // доля +- точек для определения границ белого по краям (1% = 10)
         public int FindOneDiff_shift_compare = 2; // сдвиг поиска в одной ячейке
@@ -188,32 +188,70 @@ namespace FiveDiff
         /// </summary>
         public void FiveDifferenceDo()
         {
+            // установим язык по настройкам
             if (settings.lang == setLang.Rus) { answ_lett = "АБВГДЕЖЗИКЛМНОПРСТУФ"; } else { answ_lett = "ABCDEFGHIJKLMNOPQRST"; }
 
-            // разрежем картинку, переведем обе части и массив байт - BMP, расставим флаги наличия сетки
+            // разрежем картинку
             CutImageToParts();
+            // переведем обе части и массив байт - BMP
             ImageToByteArray();
-
             // найдем сетку, границы, колонки/строки
             DetectGrid();
-
             // найдем общий сдвиг двух частей, сформируем прямоугольники с учетом сдвига.
             FindCommonShift();
+            // сохраним различия
             StoreParts();
+            // создадим парные картинки для отображения
             CreatePairImage();
 
             if ((Parts[0].columns == Parts[1].columns)&&(Parts[0].rows == Parts[1].rows)) { 
                 // для каждой ячейки найденной сетки выполним сравнение прямоугольных областей, запомним разницу цветов
                 FindDifferenceSquares();
-                
-                int[] prior1 = GetFiveBlockIndexes(SortBlocks(1));
-                Answer = GetAnswer(prior1);
-
-                int i = 0;
                 // для наибольших разниц цветов составим код по полученной маске
+                DoAnswer();
             }
-            //StoreImage(Parts[0].img, @"C:\_2del\part1.jpg");
-            //StoreImage(Parts[1].img, @"C:\_2del\part2.jpg");
+        }
+
+        /// <summary>
+        /// формирует ответ
+        /// </summary>
+        public void DoAnswer()
+        {
+            // 2Do: (!)
+            // у нас есть общий сдвиг картинки, и, сдвиг сравниваемой ячейки.
+            // можно найти для каждой ячейки максимально точный сдвиг, по которому нужно искать расхождения.
+            // тем самым привести FindOneDiff_shift_compare к 1, или даже к нулю!
+
+            // 2Do: (!)
+            // опционально (0/1) добавлять к найденной сетке +1 линию или нет. для исключения серых полос сетки
+
+            // 2Do: (!)
+            // засечь время работы рпи компиляции в ОпКод или х86-32бит
+
+            // 2Do: (!)
+            // выполнять точный расчет для каждого сдвига откуда докуда надо считать.
+            // избавиться от условий проверки границ ячейки. пересчитывать w3/4/5 и h3/4/5 от правильных ширины/высоты
+            // также, выполнять проверку на сетку сразу после начала соотв. цикла.
+
+            //                                                // +  / -   / all -  0,0% - options
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(1)));  // 49 / 138 / 187 - 26,2% - shift_compare=0, 0,4сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(1)));  // 71 / 116 / 187 - 38,0% - shift_compare=1, 0,7сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(1)));  // 74 / 113 / 187 - 39,5% - shift_compare=2, 1,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(1)));  // 78 / 109 / 187 - 41,7% - shift_compare=3, 2,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(1)));  // 80 / 107 / 187 - 42,8% - shift_compare=5, 6,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(1)));  // 80 / 107 / 187 - 42,8% - shift_compare=7, 9,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(9)));  // 92 / 95  / 187 - 49,2% - shift_compare=0, 0,6сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(9)));  // 125 / 62 / 187 - 66,8% - shift_compare=1, 2,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 103 / 84 / 187 - 55,1% - shift_compare=0, 0,6сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 133 / 54 / 187 - 71,1% - shift_compare=1, 2,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 0 / 0 / 187 - 0,0% - shift_compare=2, 7,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 109 / 78 / 187 - 58,3% - shift_compare=0, 0,6сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 140 / 47 / 187 - 74,9% - shift_compare=1, 2,0сек
+
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(9)));  // 0 / 0 / 187 - 0,0% - shift_compare=2, 0,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 0 / 0 / 187 - 0,0% - shift_compare=2, 0,0сек
+
+            Answer = GetAnswer(GetFiveBlockIndexes(SortBlocks(16)));
         }
 
         /// <summary>
@@ -320,18 +358,16 @@ namespace FiveDiff
         public void FindDifferenceSquares()
         {
             int cnt = columns * rows;
-            diffs = new long[cnt];
             blocks = new Block[cnt];
             int curr = 0;
             for(int r = 0; r < rows; r++)
             {
                 for (int c = 0; c < columns; c++)
                 {
-                    diffs[curr] = FindOneDiff(r, c);
+                    blocks[curr] = FindOneDiff(r, c);
                     curr++;
                 }
             }
-            for(int i = 0; i < cnt; i++) { blocks[i] = new Block(i, diffs[i]); }
         }
 
         /// <summary>
@@ -340,7 +376,7 @@ namespace FiveDiff
         /// <param name="r">строка</param>
         /// <param name="c">колонка</param>
         /// <returns>минимум разницы с учетом сдвигов</returns>
-        public long FindOneDiff(int r, int c)
+        public Block FindOneDiff(int r, int c)
         {
             int p1_l = Parts[0].BoundsLeftRight[c].start;
             int p1_r = Parts[0].BoundsLeftRight[c].end;
@@ -354,7 +390,7 @@ namespace FiveDiff
             int h = Math.Min(p1_d - p1_u, p2_d - p2_u);
             // FindOneDiff_shift_compare
             int FindOneDiff_shift_compare2 = FindOneDiff_shift_compare * 2 + 1;
-            long[] res_sh = new long[FindOneDiff_shift_compare2 * FindOneDiff_shift_compare2];
+            Block[] res_sh = new Block[FindOneDiff_shift_compare2 * FindOneDiff_shift_compare2];
             for(int i = 0; i < FindOneDiff_shift_compare2; i++)
             {
                 for (int j = 0; j < FindOneDiff_shift_compare2; j++)
@@ -362,7 +398,23 @@ namespace FiveDiff
                     res_sh[i * FindOneDiff_shift_compare2 + j] = FindOneDiffShift(r, c, p1_l, p1_u, p2_l + i - FindOneDiff_shift_compare, p2_u + j - FindOneDiff_shift_compare, w, h);
                 }
             }
-            return GetMin(res_sh);
+            return GetMinBlock(res_sh);
+        }
+
+        /// <summary>
+        /// находит из массива блоков тот, у которого общая разница меньше
+        /// </summary>
+        /// <param name="arbl">массив блоков</param>
+        /// <returns>блок с минимальным diff</returns>
+        private Block GetMinBlock(Block[] arbl)
+        {
+            long min = 0xffffffffffff;
+            int idx = -1;
+            for(int i = 0; i < arbl.Length; i++)
+            {
+                if (min > arbl[i].diff) { idx = i;  min = arbl[i].diff; }
+            }
+            return arbl[idx];
         }
 
         /// <summary>
@@ -377,7 +429,7 @@ namespace FiveDiff
         /// <param name="w">ширина</param>
         /// <param name="h">высота</param>
         /// <returns>отличия</returns>
-        private long FindOneDiffShift(int r, int c, int l1, int u1, int l2, int u2, int w, int h)
+        private Block FindOneDiffShift(int r, int c, int l1, int u1, int l2, int u2, int w, int h)
         {
             int hh = Parts[0].img.Height - 1;
             int p1_l = Parts[0].BoundsLeftRight[c].start;
@@ -388,7 +440,13 @@ namespace FiveDiff
             int p2_r = Parts[1].BoundsLeftRight[c].end;
             int p2_u = Parts[1].BoundsUpDown[r].start;
             int p2_d = Parts[1].BoundsUpDown[r].end;
-            long res = 0;
+            Block res = new Block(r*columns+c,0);
+            int w3 = w / 3 + 1;
+            int h3 = h / 3 + 1;
+            int w4 = w / 4 + 1;
+            int h4 = h / 4 + 1;
+            int w5 = w / 5 + 1;
+            int h5 = h / 5 + 1;
 
             for (int i = 0; i < w; i++)
             {
@@ -406,9 +464,19 @@ namespace FiveDiff
                             {
                                 int idx1 = GetIndexByXY(x1, hh - y1);
                                 int idx2 = GetIndexByXY(x2, hh - y2);
-                                res = res + Math.Abs(Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]);
-                                res = res + Math.Abs(Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]);
-                                res = res + Math.Abs(Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]);
+                                int res_pixel = Math.Abs(Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]);
+                                res_pixel = res_pixel + Math.Abs(Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]);
+                                res_pixel = res_pixel + Math.Abs(Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]);
+                                res.diff += res_pixel;
+                                int idx9 = (i / w3) * 3 + (j / h3);
+                                int idx16 = (i / w4) * 4 + (j / h4);
+                                int idx25 = (i / w5) * 5 + (j / h5);
+                                res.diff9[idx9] += res_pixel;
+                                res.diff16[idx16] += res_pixel;
+                                res.diff25[idx25] += res_pixel;
+                                res.max9 = 0; for (int ii = 0; ii < 9; ii++) { if (res.max9 < res.diff9[ii]) { res.max9 = res.diff9[ii]; } }
+                                res.max16 = 0; for (int ii = 0; ii < 16; ii++) { if (res.max16 < res.diff16[ii]) { res.max16 = res.diff16[ii]; } }
+                                res.max25 = 0; for (int ii = 0; ii < 25; ii++) { if (res.max25 < res.diff25[ii]) { res.max25 = res.diff25[ii]; } }
                             }
                         }
                     }
