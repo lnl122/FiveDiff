@@ -23,6 +23,11 @@ namespace FiveDiff
         public int shift_hor, shift_ver;
         // размер сетки
         public int rows, columns;
+        // разница ячеек
+        public long[] diffs;
+        public Block[] blocks;
+        // ответ
+        public string Answer = "";
 
         // структура настроек
         private Settings settings;
@@ -41,6 +46,7 @@ namespace FiveDiff
                 type = tt;
             }
         }
+        public string answ_lett = "";
 
         // структура для половинки картинки
         public struct Part
@@ -51,8 +57,9 @@ namespace FiveDiff
             public Bitmap img_shift;
             public byte[] ba;
             public bool[] grid_lines, grid_columns;
+            public TwoWhiteArray twa;
             public Bound BoundLetterLeft, BoundLetterUp;
-            public Bound[] BoundsLeftRight, BoundsUpDown;
+            public List<Bound> BoundsLeftRight, BoundsUpDown;
             public int columns, rows;
         }
         public struct ShArr
@@ -85,6 +92,44 @@ namespace FiveDiff
         {
             public int[] cols, rows;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public struct BoundHash
+        {
+            public int min, max, avg, min_cnt, max_cnt, high_cnt, low_cnt;
+            public BoundHash(int imin, int imax, int iavg) {
+                min = imin;
+                max = imax;
+                avg = iavg;
+                min_cnt = 0;
+                max_cnt = 0;
+                low_cnt = 0;
+                high_cnt = 0;
+            }
+        }
+        public struct Block
+        {
+            public int num;
+            public long diff;
+            public long[] diff16;
+            public long[] diff25;
+            public long[] diff9;
+            public long max9;
+            public long max16;
+            public long max25;
+            public Block(int i, long d)
+            {
+                num = i;
+                diff = d;
+                diff9 = new long[9];
+                diff16 = new long[16];
+                diff25 = new long[25];
+                max9 = 0;
+                max16 = 0;
+                max25 = 0;
+            }
+        }
 
         // константы
         private const int BmpHeader = 54;
@@ -104,6 +149,7 @@ namespace FiveDiff
         public int FindGrid_AllowedWhitePixels = 3; // сколько может быть белых пикселей в сетке
         public int GetWhiteBound_PortionWhiteBound1000 = 10; // доля +- точек для определения границ белого по краям
         public int GetWhiteBound_PortionWhiteBound1000_0 = 5; // доля +- точек для определения границ белого по краям (1% = 10)
+        public int FindOneDiff_shift_compare = 2; // сдвиг поиска в одной ячейке
 
         /// <summary>
         /// конструктор
@@ -124,6 +170,7 @@ namespace FiveDiff
             Bmp = b;
             FiveDifferenceDo();
         }
+
         /// <summary>
         /// конструктор
         /// </summary>
@@ -141,24 +188,233 @@ namespace FiveDiff
         /// </summary>
         public void FiveDifferenceDo()
         {
+            if (settings.lang == setLang.Rus) { answ_lett = "АБВГДЕЖЗИКЛМНОПРСТУФ"; } else { answ_lett = "ABCDEFGHIJKLMNOPQRST"; }
+
             // разрежем картинку, переведем обе части и массив байт - BMP, расставим флаги наличия сетки
             CutImageToParts();
             ImageToByteArray();
 
             // найдем сетку, границы, колонки/строки
             DetectGrid();
-            
+
             // найдем общий сдвиг двух частей, сформируем прямоугольники с учетом сдвига.
             FindCommonShift();
             StoreParts();
             CreatePairImage();
 
-            // для каждой ячейки найденной сетки выполним сравнение прямоугольных областей, запомним разницу цветов
+            if ((Parts[0].columns == Parts[1].columns)&&(Parts[0].rows == Parts[1].rows)) { 
+                // для каждой ячейки найденной сетки выполним сравнение прямоугольных областей, запомним разницу цветов
+                FindDifferenceSquares();
+                
+                int[] prior1 = GetFiveBlockIndexes(SortBlocks(1));
+                Answer = GetAnswer(prior1);
 
-            // для наибольших разниц цветов составим код по полученной маске
-
+                int i = 0;
+                // для наибольших разниц цветов составим код по полученной маске
+            }
             //StoreImage(Parts[0].img, @"C:\_2del\part1.jpg");
             //StoreImage(Parts[1].img, @"C:\_2del\part2.jpg");
+        }
+
+        /// <summary>
+        /// собирает ответ из массива номеров блоков
+        /// </summary>
+        /// <param name="a">массив</param>
+        /// <returns>ответ</returns>
+        public string GetAnswer(int[] a)
+        {
+            string res = "";
+            for (int i = 0; i < a.Length; i++)
+            {
+                res += GetPartAnswer(a[i]);
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// согласно формата ответа возвращает строку с частью ответа по идентификатору блока
+        /// </summary>
+        /// <param name="num">номер блока</param>
+        /// <returns>часть ответа</returns>
+        public string GetPartAnswer(int num)
+        {
+            string res = "";
+            int row = num / columns;
+            int col = num % columns;
+            if (settings.type == setType._1A)
+            {
+                if (settings.nums == setNums.Up) { res = (col + 1).ToString() + answ_lett[row]; }
+                else { res = (row + 1).ToString() + answ_lett[col]; }
+            }
+            else
+            {
+                if (settings.nums == setNums.Up) { res = answ_lett[row] + (col + 1).ToString(); }
+                else { res = answ_lett[col] + (row + 1).ToString(); }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// выбирает индексы блоков (номера)
+        /// </summary>
+        /// <param name="b">блоки</param>
+        /// <returns>массив лучших индексов</returns>
+        public int[] GetFiveBlockIndexes(Block[] b, int cnt = 5)
+        {
+            int[] res = new int[cnt];
+            for (int i = 0; i < cnt; i++) { res[i] = b[i].num; }
+            bool needSort = true;
+            while (needSort)
+            {
+                needSort = false;
+                for (int i = 0; i < cnt - 1; i++)
+                {
+                    if (res[i] > res[i + 1])
+                    {
+                        int t = res[i];
+                        res[i] = res[i + 1];
+                        res[i + 1] = t;
+                        needSort = true;
+                    }
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// сортирует блоки по убыванию отличий
+        /// </summary>
+        /// <param name="v">1 - на целом блоке, 9 - на 1/9 блока, 16 - на 1/16 блока</param>
+        public Block[] SortBlocks(int v)
+        {
+            Block[] bl = blocks;
+            if (!((v == 1) || (v == 9) || (v == 16) || (v == 25) || (v == 77) || (v == 88) || (v == 99))) { return blocks; }
+            int cnt = blocks.Length;
+            bool needSort = true;
+            while (needSort)
+            {
+                needSort = false;
+                for (int i = 0; i < cnt - 1; i++)
+                {
+                    if (((v == 1) && (bl[i].diff < bl[i + 1].diff)) ||
+                        ((v == 9) && (bl[i].max9 < bl[i + 1].max9)) ||
+                        ((v == 16) && (bl[i].max16 < bl[i + 1].max16)) ||
+                        ((v == 25) && (bl[i].max25 < bl[i + 1].max25)) ||
+                        ((v == 77) && ((bl[i].max16 + bl[i].max25) < (bl[i + 1].max16 + bl[i + 1].max25))) ||
+                        ((v == 88) && ((bl[i].max16 + bl[i].max9) < (bl[i + 1].max16 + bl[i + 1].max9))) )
+                        
+                    {
+                        Block q = bl[i];
+                        bl[i] = bl[i + 1];
+                        bl[i + 1] = q;
+                        needSort = true;
+                    }
+                }
+            }
+            return bl;
+        }
+
+        /// <summary>
+        /// находит разницы ячеек, заполняет difss
+        /// </summary>
+        public void FindDifferenceSquares()
+        {
+            int cnt = columns * rows;
+            diffs = new long[cnt];
+            blocks = new Block[cnt];
+            int curr = 0;
+            for(int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < columns; c++)
+                {
+                    diffs[curr] = FindOneDiff(r, c);
+                    curr++;
+                }
+            }
+            for(int i = 0; i < cnt; i++) { blocks[i] = new Block(i, diffs[i]); }
+        }
+
+        /// <summary>
+        /// находит разницу в ячейках, с учетом сдвигов
+        /// </summary>
+        /// <param name="r">строка</param>
+        /// <param name="c">колонка</param>
+        /// <returns>минимум разницы с учетом сдвигов</returns>
+        public long FindOneDiff(int r, int c)
+        {
+            int p1_l = Parts[0].BoundsLeftRight[c].start;
+            int p1_r = Parts[0].BoundsLeftRight[c].end;
+            int p1_u = Parts[0].BoundsUpDown[r].start;
+            int p1_d = Parts[0].BoundsUpDown[r].end;
+            int p2_l = Parts[1].BoundsLeftRight[c].start;
+            int p2_r = Parts[1].BoundsLeftRight[c].end;
+            int p2_u = Parts[1].BoundsUpDown[r].start;
+            int p2_d = Parts[1].BoundsUpDown[r].end;
+            int w = Math.Min(p1_r - p1_l, p2_r - p2_l);
+            int h = Math.Min(p1_d - p1_u, p2_d - p2_u);
+            // FindOneDiff_shift_compare
+            int FindOneDiff_shift_compare2 = FindOneDiff_shift_compare * 2 + 1;
+            long[] res_sh = new long[FindOneDiff_shift_compare2 * FindOneDiff_shift_compare2];
+            for(int i = 0; i < FindOneDiff_shift_compare2; i++)
+            {
+                for (int j = 0; j < FindOneDiff_shift_compare2; j++)
+                {
+                    res_sh[i * FindOneDiff_shift_compare2 + j] = FindOneDiffShift(r, c, p1_l, p1_u, p2_l + i - FindOneDiff_shift_compare, p2_u + j - FindOneDiff_shift_compare, w, h);
+                }
+            }
+            return GetMin(res_sh);
+        }
+
+        /// <summary>
+        /// находит различие в одной ячейке
+        /// </summary>
+        /// <param name="r">строка</param>
+        /// <param name="c">колонка</param>
+        /// <param name="l1">1 часть - левый</param>
+        /// <param name="u1">1 часть - верхний</param>
+        /// <param name="l2">2 часть - левый</param>
+        /// <param name="u2">2 часть - верхний</param>
+        /// <param name="w">ширина</param>
+        /// <param name="h">высота</param>
+        /// <returns>отличия</returns>
+        private long FindOneDiffShift(int r, int c, int l1, int u1, int l2, int u2, int w, int h)
+        {
+            int hh = Parts[0].img.Height - 1;
+            int p1_l = Parts[0].BoundsLeftRight[c].start;
+            int p1_r = Parts[0].BoundsLeftRight[c].end;
+            int p1_u = Parts[0].BoundsUpDown[r].start;
+            int p1_d = Parts[0].BoundsUpDown[r].end;
+            int p2_l = Parts[1].BoundsLeftRight[c].start;
+            int p2_r = Parts[1].BoundsLeftRight[c].end;
+            int p2_u = Parts[1].BoundsUpDown[r].start;
+            int p2_d = Parts[1].BoundsUpDown[r].end;
+            long res = 0;
+
+            for (int i = 0; i < w; i++)
+            {
+                for(int j = 0; j < h; j++)
+                {
+                    int x1 = i + l1;
+                    int x2 = i + l2;
+                    int y1 = j + u1;
+                    int y2 = j + u2;
+                    if ((p1_l <= x1) && (x1 <= p1_r) && (p1_u <= y1) && (y1 <= p1_d))
+                    {
+                        if ((p2_l <= x2) && (x2 <= p2_r) && (p2_u <= y2) && (y2 <= p2_d))
+                        {
+                            if ((!Parts[0].grid_columns[x1])&&(!Parts[1].grid_columns[x2]) &&(!Parts[0].grid_lines[y1]) && (!Parts[1].grid_lines[y2]))
+                            {
+                                int idx1 = GetIndexByXY(x1, hh - y1);
+                                int idx2 = GetIndexByXY(x2, hh - y2);
+                                res = res + Math.Abs(Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]);
+                                res = res + Math.Abs(Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]);
+                                res = res + Math.Abs(Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]);
+                            }
+                        }
+                    }
+                }
+            }
+            return res;
         }
 
         /// <summary>
@@ -644,6 +900,7 @@ namespace FiveDiff
         {
             // * найти количества белых цветов
             TwoWhiteArray white = GetWhiteCounts(num);
+            Parts[num].twa = white;
             int cols_cnt = white.cols.Length;
             int rows_cnt = white.rows.Length;
             // * максимальные значения, = 99% или больше чем другое измерение - отсекать, т.к. это белый фон вокруг картинки
@@ -659,7 +916,9 @@ namespace FiveDiff
             // * в оставшихся искать значения равные минимальному +- 3 пикселя, или минимум +-0,5% от него - это сетка
             List<Bound> squareUD = GetWhiteSquare(white.rows, boundUD, GetWhiteCnt(boundLR, cols_cnt));
             List<Bound> squareLR = GetWhiteSquare(white.cols, boundLR, GetWhiteCnt(boundUD, rows_cnt));
-            // 2todo
+            Parts[num].BoundsUpDown = squareUD;
+            Parts[num].BoundsLeftRight = squareLR;
+            // 2Do:
             // в отдельных случаях, для картинок в низком разрешении, есть ложные срабатывания двух видов:
             // 1. одна из колонок, или несколько делиться на две части по метке символа -- их надо бы объединять
             // 2. какие-нить две колонки, или несколько, могут быть объединены в одну, с большим размером - их надо бы разбивать.
@@ -669,95 +928,95 @@ namespace FiveDiff
             // в тестах мелкие картинки выделил отдельно
 
             // заполним в сетке
-
+            for (int i = 0; i < squareUD.Count - 1; i++)
+            {
+                for (int j = squareUD[i].end; j <= squareUD[i + 1].start; j++) { Parts[num].grid_lines[j] = true; }
+            }
+            for (int i = 0; i < squareLR.Count - 1; i++)
+            {
+                for (int j = squareLR[i].end; j <= squareLR[i + 1].start; j++) { Parts[num].grid_columns[j] = true; }
+            }
 
             Parts[num].columns = squareLR.Count - 1;
             Parts[num].rows = squareUD.Count - 1;
-
-            int ii0 = 9;
-
             // * для Parts[0] - символы у нас в первой колонке/столбце
             // * для Parts[1] - символы могут быть вначале/конце. надо найти где посмотрев на величину сдвига, учтя белые границы
+            if(num == 1)
+            {
+                // для num==1 нужно определить, где символы, и, удалить эти границы из общего списка
+                // для num==0 границы всегда слева и вверху.
+                BoundHash u0 = GetBoundHash(Parts[0].BoundsUpDown[0], Parts[0].twa.rows);
+                BoundHash u1_first = GetBoundHash(Parts[1].BoundsUpDown[0], Parts[1].twa.rows);
+                BoundHash u1_last = GetBoundHash(Parts[1].BoundsUpDown[Parts[1].BoundsUpDown.Count-1], Parts[1].twa.rows);
+                int choiceUD = ElectionHash(u0, u1_first, u1_last);
+
+                BoundHash l0 = GetBoundHash(Parts[0].BoundsLeftRight[0], Parts[0].twa.cols);
+                BoundHash l1_first = GetBoundHash(Parts[1].BoundsLeftRight[0], Parts[1].twa.cols);
+                BoundHash l1_last = GetBoundHash(Parts[1].BoundsLeftRight[Parts[1].BoundsLeftRight.Count - 1], Parts[1].twa.cols);
+                int choiceLR = ElectionHash(l0, l1_first, l1_last);
+
+                // 2Do:
+                // Может быть ещё и третий вариант - choice == -1 -- когда мы не может сделать выбор -- не решено 
+                Parts[0].BoundsUpDown.RemoveAt(0);
+                Parts[0].BoundsLeftRight.RemoveAt(0);
+                if (choiceUD == 0) { Parts[1].BoundsUpDown.RemoveAt(0); } else { Parts[1].BoundsUpDown.RemoveAt(Parts[1].BoundsUpDown.Count - 1); }
+                if (choiceLR == 0) { Parts[1].BoundsLeftRight.RemoveAt(0); } else { Parts[1].BoundsLeftRight.RemoveAt(Parts[1].BoundsLeftRight.Count - 1); }
+            }            
             // все остальное - наша сетка для поиска.
-
-
-
-            /*
-            int[] white_col_diff = GetWhiteDiff(white_columns, white_columns4);
-            int[] white_row_diff = GetWhiteDiff(white_rows, white_rows4);
-            // находим разницы для определения сетки
-            int max_diff_col = (int)(GetMax(white_col_diff) / DetectGridOne_MaxDiffPeakMultiplier);
-            int max_diff_row = (int)(GetMax(white_row_diff) / DetectGridOne_MaxDiffPeakMultiplier); // критерий определения заголовков/поля - значение выше половины максимума
-            Parts[num].grid_columns = GetGridFlagByDiff2(white_col_diff, max_diff_col);
-            Parts[num].grid_lines = GetGridFlagByDiff2(white_row_diff, max_diff_row);
-            // нужно найти наибольший промежуток, а затем слева от него ещё раз наибольший - это будет место с символами
-            Bound b1_col = GetMaxBound(Parts[num].grid_columns, new Bound(-1,-1));
-            Bound b1_row = GetMaxBound(Parts[num].grid_lines, new Bound(-1, -1));
-            Parts[num].BoundLetterLeft = GetMaxBound(Parts[num].grid_columns, b1_col);
-            Parts[num].BoundLetterUp = GetMaxBound(Parts[num].grid_lines, b1_row);
-
-            // тут у нас есть границы букв, и, ориентируясь на них нужно найти сетку и посчитать кол/стр
-            FindGrid(num);
-            */
+            // границы определены; сетка, которую не нужно проверять - тоже.
         }
 
         /// <summary>
-        /// поиск сетки по разделителям букв
+        /// производит выбор одного из диапазонов, более соответствующему эталонному
         /// </summary>
-        /// <param name="num">номер части</param>
-        public void FindGrid(int num)
+        /// <param name="p0">хэш эталона</param>
+        /// <param name="p1_f">кандидат 0</param>
+        /// <param name="p1_l">кандидат 1</param>
+        /// <returns>номер кандидата 0/1 (первый/послений)</returns>
+        private int ElectionHash(BoundHash p0, BoundHash c0, BoundHash c1)
         {
-            int width = Parts[num].img.Width;
-            int height = Parts[num].img.Height;
-            byte[] ba = Parts[num].ba;
-            // получим расположение букв
-            int h_left = Parts[num].BoundLetterLeft.start + FindGrid_SkipPointsAroundLetters;
-            int h_right = Parts[num].BoundLetterLeft.end - FindGrid_SkipPointsAroundLetters;
-            int v_up = Parts[num].BoundLetterUp.start + FindGrid_SkipPointsAroundLetters;
-            int v_down = Parts[num].BoundLetterUp.end - FindGrid_SkipPointsAroundLetters;
-            // соберем количества белых цветов для вертикали и горизонтали
-            int[] white_columns = new int[width];
-            for (int i = 0; i < width; i++)
-            {
-                for (int j = v_up; j < v_down; j++)
-                {
-                    if (GetColor12bit(ba, GetIndexByXY(i, height - j - 1)) == 4095) { white_columns[i]++; }
-                }
-            }
-            int[] white_rows = new int[height];
-            for (int j = 0; j < height; j++)
-            {
-                for (int i = h_left; i < h_right; i++)
-                {
-                    if (GetColor12bit(ba, GetIndexByXY(i, height - j - 1)) == 4095) { white_rows[j]++; }
-                }
-            }
-            // для найденных маркеров заполним grid_columns/grid_lines
-            int[] white_columns2 = GetArrSubInt(white_columns, GetMin(white_columns));
-            int[] white_rows2 = GetArrSubInt(white_rows, GetMin(white_rows));
-            for (int i = 0; i < width; i++)
-            {
-                if (white_columns[i] <= FindGrid_AllowedWhitePixels) { Parts[num].grid_columns[i] = true; } //else { Parts[num].grid_columns[i] = false; }
-            }
-            for (int i = 0; i < height; i++)
-            {
-                if (white_rows[i] <= FindGrid_AllowedWhitePixels) { Parts[num].grid_lines[i] = true; } //else { Parts[num].grid_lines[i] = false; }
-            }
-            Parts[num].grid_columns[0] = true;
-            Parts[num].grid_columns[1] = true;
-            Parts[num].grid_columns[width - 2] = true;
-            Parts[num].grid_columns[width - 1] = true;
-            Parts[num].grid_lines[0] = true;
-            Parts[num].grid_lines[1] = true;
-            Parts[num].grid_lines[height - 2] = true;
-            Parts[num].grid_lines[height - 1] = true;
-            // заполним Bounds для сетки
-            Parts[num].BoundsLeftRight = GetBounds(Parts[num].grid_columns, Parts[num].BoundLetterLeft);
-            Parts[num].BoundsUpDown = GetBounds(Parts[num].grid_lines, Parts[num].BoundLetterUp);
-            // посчитаем колонки/строки
-            Parts[num].columns = Parts[num].BoundsLeftRight.Length;
-            Parts[num].rows = Parts[num].BoundsUpDown.Length;
+            int f = 0;
+            int l = 0;
+            if (Math.Abs(p0.min - c0.min) < Math.Abs(p0.min - c1.min)) { f++; }
+            if (Math.Abs(p0.min - c0.min) > Math.Abs(p0.min - c1.min)) { l++; }
+            if (Math.Abs(p0.max - c0.max) < Math.Abs(p0.max - c1.max)) { f++; }
+            if (Math.Abs(p0.max - c0.max) > Math.Abs(p0.max - c1.max)) { l++; }
+            if (Math.Abs(p0.avg - c0.avg) < Math.Abs(p0.avg - c1.avg)) { f++; }
+            if (Math.Abs(p0.avg - c0.avg) > Math.Abs(p0.avg - c1.avg)) { l++; }
+            if (Math.Abs(p0.low_cnt - c0.low_cnt) < Math.Abs(p0.low_cnt - c1.low_cnt)) { f++; }
+            if (Math.Abs(p0.low_cnt - c0.low_cnt) > Math.Abs(p0.low_cnt - c1.low_cnt)) { l++; }
+            if (Math.Abs(p0.high_cnt - c0.high_cnt) < Math.Abs(p0.high_cnt - c1.high_cnt)) { f++; }
+            if (Math.Abs(p0.high_cnt - c0.high_cnt) > Math.Abs(p0.high_cnt - c1.high_cnt)) { l++; }
+            if (Math.Abs(p0.min_cnt - c0.min_cnt) < Math.Abs(p0.min_cnt - c1.min_cnt)) { f++; }
+            if (Math.Abs(p0.min_cnt - c0.min_cnt) > Math.Abs(p0.min_cnt - c1.min_cnt)) { l++; }
+            if (Math.Abs(p0.max_cnt - c0.max_cnt) < Math.Abs(p0.max_cnt - c1.max_cnt)) { f++; }
+            if (Math.Abs(p0.max_cnt - c0.max_cnt) > Math.Abs(p0.max_cnt - c1.max_cnt)) { l++; }
+            if (f > l) { return 0; }
+            if (f < l) { return 1; }
+            return -1;
+        }
 
+        /// <summary>
+        /// получает характеристики одной границы по белым цветам - мин, макс, среднее, разные количества
+        /// </summary>
+        /// <param name="b">границы</param>
+        /// <param name="ar2">массив</param>
+        /// <returns>хэш</returns>
+        public BoundHash GetBoundHash(Bound b, int[] ar2)
+        {
+            int cnt = b.end - b.start + 1;
+            int[] ar = new int[cnt];
+            for(int i = 0; i < cnt; i++) { ar[i] = ar2[i + b.start]; }
+            BoundHash res = new BoundHash(GetMin(ar), GetMax(ar), GetAvg(ar));
+            for (int i = 0; i < cnt; i++)
+            {
+                int x = ar[i];
+                if (x == res.min) { res.min_cnt++; }
+                if (x == res.max) { res.max_cnt++; }
+                if (x < res.avg) { res.low_cnt++; }
+                if (x > res.avg) { res.high_cnt++; }
+            }
+            return res;
         }
 
         /// <summary>
@@ -1000,7 +1259,7 @@ namespace FiveDiff
             for (int i = 0; i < cnt; i++) { res[i] = ar[i] - num; }
             return res;
         }
-   
+
         /// <summary>
         /// находит минимум в массиве
         /// </summary>
@@ -1012,13 +1271,39 @@ namespace FiveDiff
             int cnt = ar.Length;
             for (int i = 0; i < cnt; i++) { if (ar[i] < min) { min = ar[i]; } }
             return min;
-        }        
-  
+        }
+
         /// <summary>
-        /// находит минимум в массиве, не равный нулю
+        /// находит минимум в массиве
         /// </summary>
         /// <param name="ar">массив</param>
         /// <returns>минимальное значение</returns>
+        public long GetMin(long[] ar)
+        {
+            long min = 0xffffffffff;
+            int cnt = ar.Length;
+            for (int i = 0; i < cnt; i++) { if (ar[i] < min) { min = ar[i]; } }
+            return min;
+        }
+
+        /// <summary>
+        /// находит среднее в массиве
+        /// </summary>
+        /// <param name="ar">массив</param>
+        /// <returns>среднее значение</returns>
+        public int GetAvg(int[] ar)
+        {
+            int sum = 0;
+            int cnt = ar.Length;
+            for (int i = 0; i < cnt; i++) { sum += ar[i]; }
+            return sum/cnt;
+        }              
+        
+        /// <summary>
+                       /// находит минимум в массиве, не равный нулю
+                       /// </summary>
+                       /// <param name="ar">массив</param>
+                       /// <returns>минимальное значение</returns>
         public int GetMin_NonZero(int[] ar)
         {
             int min = 256 * 256 * 256;
