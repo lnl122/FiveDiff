@@ -149,7 +149,9 @@ namespace FiveDiff
         //public int FindGrid_AllowedWhitePixels = 3; // сколько может быть белых пикселей в сетке
         public int GetWhiteBound_PortionWhiteBound1000 = 10; // доля +- точек для определения границ белого по краям
         public int GetWhiteBound_PortionWhiteBound1000_0 = 5; // доля +- точек для определения границ белого по краям (1% = 10)
-        public int FindOneDiff_shift_compare = 2; // сдвиг поиска в одной ячейке
+        public bool CorrectGridBorder_flag = true; // (true/false) - корректировать сетку на 1 пиксель шире?
+        public int FindOneDiff_shift_compare = 1; // сдвиг поиска в одной ячейке
+        public int GetMinBlock_criteria = 1; // 1/9/16/25 - критерий выбора минимального блока
 
         /// <summary>
         /// конструктор
@@ -197,6 +199,7 @@ namespace FiveDiff
             ImageToByteArray();
             // найдем сетку, границы, колонки/строки
             DetectGrid();
+            CorrectGridBorder();
             // найдем общий сдвиг двух частей, сформируем прямоугольники с учетом сдвига.
             FindCommonShift();
             // сохраним различия
@@ -209,6 +212,36 @@ namespace FiveDiff
                 FindDifferenceSquares();
                 // для наибольших разниц цветов составим код по полученной маске
                 DoAnswer();
+            }
+        }
+
+        /// <summary>
+        /// корректирует сетку на 1 пиксель
+        /// </summary>
+        public void CorrectGridBorder()
+        {
+            if (!CorrectGridBorder_flag) { return; }
+            int cols = Parts[0].grid_columns.Length;
+            int rows = Parts[0].grid_lines.Length;
+            for (int i = 0; i < cols - 1; i++)
+            {
+                if ((!Parts[0].grid_columns[i]) && (Parts[0].grid_columns[i + 1])) { Parts[0].grid_columns[i] = true; }
+                if ((!Parts[1].grid_columns[i]) && (Parts[1].grid_columns[i + 1])) { Parts[1].grid_columns[i] = true; }
+            }
+            for (int i = cols-1; i > 1; i--)
+            {
+                if ((!Parts[0].grid_columns[i]) && (Parts[0].grid_columns[i - 1])) { Parts[0].grid_columns[i] = true; }
+                if ((!Parts[1].grid_columns[i]) && (Parts[1].grid_columns[i - 1])) { Parts[1].grid_columns[i] = true; }
+            }
+            for (int i = 0; i < rows - 1; i++)
+            {
+                if ((!Parts[0].grid_lines[i]) && (Parts[0].grid_lines[i + 1])) { Parts[0].grid_lines[i] = true; }
+                if ((!Parts[1].grid_lines[i]) && (Parts[1].grid_lines[i + 1])) { Parts[1].grid_lines[i] = true; }
+            }
+            for (int i = rows-1; i > 1; i--)
+            {
+                if ((!Parts[0].grid_lines[i]) && (Parts[0].grid_lines[i - 1])) { Parts[0].grid_lines[i] = true; }
+                if ((!Parts[1].grid_lines[i]) && (Parts[1].grid_lines[i - 1])) { Parts[1].grid_lines[i] = true; }
             }
         }
 
@@ -243,15 +276,18 @@ namespace FiveDiff
             //GetAnswer(GetFiveBlockIndexes(SortBlocks(9)));  // 92 / 95  / 187 - 49,2% - shift_compare=0, 0,6сек
             //GetAnswer(GetFiveBlockIndexes(SortBlocks(9)));  // 125 / 62 / 187 - 66,8% - shift_compare=1, 2,0сек
             //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 103 / 84 / 187 - 55,1% - shift_compare=0, 0,6сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 133 / 54 / 187 - 71,1% - shift_compare=1, 2,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 0 / 0 / 187 - 0,0% - shift_compare=2, 7,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 109 / 78 / 187 - 58,3% - shift_compare=0, 0,6сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 133 / 54 / 187 - 71,1% - shift_compare=1, criteria=1, 2,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 132 / 55 / 187 - 70,6% - shift_compare=1, criteria=16 2,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 138 / 49 / 187 - 73,8% - shift_compare=2, 7,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 109 / 78 / 187 - 58,3% - shift_compare=0, CorrectGridBorder_flag, 0,6сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 109 / 78 / 187 - 58,3% - shift_compare=0, criteria=1, 0,6сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 109 / 78 / 187 - 58,3% - shift_compare=0, criteria=25, 0,6сек
             //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 140 / 47 / 187 - 74,9% - shift_compare=1, 2,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 0 / 0 / 187 - 0,0% - shift_compare=1, CorrectGridBorder_flag, 0,6сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 146 / 41 / 187 - 78,1% - shift_compare=2, criteria=1, 0,0сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 146 / 41 / 187 - 78,1% - shift_compare=2, criteria=25, 0,0сек
 
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(9)));  // 0 / 0 / 187 - 0,0% - shift_compare=2, 0,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 0 / 0 / 187 - 0,0% - shift_compare=2, 0,0сек
-
-            Answer = GetAnswer(GetFiveBlockIndexes(SortBlocks(16)));
+            Answer = GetAnswer(GetFiveBlockIndexes(SortBlocks(25)));
         }
 
         /// <summary>
@@ -410,9 +446,33 @@ namespace FiveDiff
         {
             long min = 0xffffffffffff;
             int idx = -1;
-            for(int i = 0; i < arbl.Length; i++)
+            if (GetMinBlock_criteria == 1)
             {
-                if (min > arbl[i].diff) { idx = i;  min = arbl[i].diff; }
+                for (int i = 0; i < arbl.Length; i++)
+                {
+                    if (min > arbl[i].diff) { idx = i; min = arbl[i].diff; }
+                }
+            }
+            if (GetMinBlock_criteria == 9)
+            {
+                for (int i = 0; i < arbl.Length; i++)
+                {
+                    if (min > arbl[i].max9) { idx = i; min = arbl[i].max9; }
+                }
+            }
+            if (GetMinBlock_criteria == 16)
+            {
+                for (int i = 0; i < arbl.Length; i++)
+                {
+                    if (min > arbl[i].max16) { idx = i; min = arbl[i].max16; }
+                }
+            }
+            if (GetMinBlock_criteria == 25)
+            {
+                for (int i = 0; i < arbl.Length; i++)
+                {
+                    if (min > arbl[i].max25) { idx = i; min = arbl[i].max25; }
+                }
             }
             return arbl[idx];
         }
