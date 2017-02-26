@@ -149,8 +149,8 @@ namespace FiveDiff
         //public int FindGrid_AllowedWhitePixels = 3; // сколько может быть белых пикселей в сетке
         public int GetWhiteBound_PortionWhiteBound1000 = 10; // доля +- точек для определения границ белого по краям
         public int GetWhiteBound_PortionWhiteBound1000_0 = 5; // доля +- точек для определения границ белого по краям (1% = 10)
-        public bool CorrectGridBorder_flag = true; // (true/false) - корректировать сетку на 1 пиксель шире?
-        public int FindOneDiff_shift_compare = 1; // сдвиг поиска в одной ячейке
+        public bool CorrectGridBorder_flag = false; // (false/false) - корректировать сетку на 1 пиксель шире?
+        public int FindOneDiff_shift_compare = 8; // сдвиг поиска в одной ячейке
         public int GetMinBlock_criteria = 1; // 1/9/16/25 - критерий выбора минимального блока
 
         /// <summary>
@@ -283,9 +283,11 @@ namespace FiveDiff
             //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 109 / 78 / 187 - 58,3% - shift_compare=0, criteria=1, 0,6сек
             //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 109 / 78 / 187 - 58,3% - shift_compare=0, criteria=25, 0,6сек
             //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 140 / 47 / 187 - 74,9% - shift_compare=1, 2,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 0 / 0 / 187 - 0,0% - shift_compare=1, CorrectGridBorder_flag, 0,6сек
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 141 / 46 / 187 - 75,4% - shift_compare=1, CorrectGridBorder_flag, 0,6сек
             //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 146 / 41 / 187 - 78,1% - shift_compare=2, criteria=1, 0,0сек
             //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 146 / 41 / 187 - 78,1% - shift_compare=2, criteria=25, 0,0сек
+
+            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 161 / 26 / 187 - 86,1% - shift_compare=8 (!), criteria=1, 60,0сек
 
             Answer = GetAnswer(GetFiveBlockIndexes(SortBlocks(25)));
         }
