@@ -112,27 +112,27 @@ namespace FiveDiff
         {
             public int num;
             public long diff;
-            public long[] diff16;
+            //public long[] diff16;
             public long[] diff25;
-            public long[] diff9;
-            public long[] diff16_cnt;
+            //public long[] diff9;
+            //public long[] diff16_cnt;
             public long[] diff25_cnt;
-            public long[] diff9_cnt;
-            public long max9;
-            public long max16;
+            //public long[] diff9_cnt;
+            //public long max9;
+            //public long max16;
             public long max25;
             public Block(int i, long d)
             {
                 num = i;
                 diff = d;
-                diff9 = new long[9];
-                diff16 = new long[16];
+                //diff9 = new long[9];
+                //diff16 = new long[16];
                 diff25 = new long[25];
-                diff9_cnt = new long[9];
-                diff16_cnt = new long[16];
+                //diff9_cnt = new long[9];
+                //diff16_cnt = new long[16];
                 diff25_cnt = new long[25];
-                max9 = 0;
-                max16 = 0;
+                //max9 = 0;
+                //max16 = 0;
                 max25 = 0;
             }
         }
@@ -156,8 +156,162 @@ namespace FiveDiff
         public int GetWhiteBound_PortionWhiteBound1000 = 10; // доля +- точек для определения границ белого по краям
         public int GetWhiteBound_PortionWhiteBound1000_0 = 5; // доля +- точек для определения границ белого по краям (1% = 10)
         public bool CorrectGridBorder_flag = false; // (true/false) - корректировать сетку на 1 пиксель шире?
-        public int FindOneDiff_shift_compare = 1; // сдвиг поиска в одной ячейке
+        public int FindOneDiff_shift_compare = 0; // сдвиг поиска в одной ячейке
         public int GetMinBlock_criteria = 1; // 1/9/16/25 - критерий выбора минимального блока
+
+        /// <summary>
+        /// формирует ответ
+        /// </summary>
+        public void DoAnswer()
+        {
+
+
+            // 2Do: (!)
+            // засечь время работы при компиляции в ОпКод или х86-32бит
+
+            //  +  / -  / all -  0,0% - options
+            // 141 / 46 / 187 - 75,4% - 25, shift_compare=1, v1, CorrectGridBorder_flag, 0,6сек
+            // 140 / 47 / 187 - 74,9% - 25, shift_compare=1, v1
+            // 146 / 41 / 187 - 78,1% - 25, shift_compare=2, v1
+            // 161 / 26 / 187 - 86,1% - 25, shift_compare=8, v1 (!), 60,0сек
+
+            // 152 / 35 / 187 - 81,3% - 25, shift_compare=0, v2
+            // 160 / 27 / 187 - 85,6% - 25, shift_compare=1, v2
+            // 158 / 29 / 187 - 84,5% - 25, shift_compare=2, v2
+
+            // 149 / 38 / 187 - 79,7% - 16, shift_compare=1, v3
+            // 150 / 37 / 187 - 80,2% - 25, shift_compare=0, v3
+            // 155 / 32 / 187 - 82,9% - 25, shift_compare=1, v3
+
+            // 152 / 35 / 187 - 81,3% - 25, shift_compare=0, v2, c1, 0,6сек
+            // 157 / 30 / 187 - 84,0% - 25, shift_compare=1, v2, c1, 1,0сек
+            // 157 / 30 / 187 - 84,0% - 25, shift_compare=2, v2, c1, 3,0сек
+            // 150 / 37 / 187 - 80,2% - 25, shift_compare=0, v3, c1, 0,6сек
+            // 155 / 32 / 187 - 82,9% - 25, shift_compare=1, v3, c1, 0,0сек
+            // 155 / 32 / 187 - 82,9% - 25, shift_compare=2, v3, c1, 6,0сек
+
+            // 0 / 0 / 187 - 0,3% - 25, shift_compare=0, v2, c2, 0,6сек
+            // 0 / 0 / 187 - 0,0% - 25, shift_compare=1, v2, c2, 1,0сек
+            // 148 / 39 / 187 - 0,0% - 25, shift_compare=0, v3, c2, 3,0сек*
+            // 0 / 0 / 187 - 0,2% - 25, shift_compare=1, v3, c2, 0,6сек
+
+            Answer = GetAnswer(GetFiveBlockIndexes(SortBlocks(25)));
+        }
+
+
+        /// <summary>
+        /// находит различие в одной ячейке
+        /// </summary>
+        /// <param name="r">строка</param>
+        /// <param name="c">колонка</param>
+        /// <param name="l1">1 часть - левый</param>
+        /// <param name="u1">1 часть - верхний</param>
+        /// <param name="l2">2 часть - левый</param>
+        /// <param name="u2">2 часть - верхний</param>
+        /// <param name="w">ширина</param>
+        /// <param name="h">высота</param>
+        /// <returns>отличия</returns>
+        public Block FindOneDiffShift(int r, int c, int sh_w, int sh_h)
+        {
+            int hh = Parts[0].img.Height - 1;
+
+            // разнца сдвигов картинки и сетки + наш сдвиг, текущий
+            int shift_w = (Parts[1].BoundsLeftRight[c].start - Parts[0].BoundsLeftRight[c].start) - shift_hor + sh_w;
+            int shift_h = (Parts[1].BoundsUpDown[r].start - Parts[0].BoundsUpDown[r].start) - shift_ver + sh_h;
+            
+            // координаты ячеек
+            int p1_l = Parts[0].BoundsLeftRight[c].start;
+            int p1_r = Parts[0].BoundsLeftRight[c].end;
+            int p1_u = Parts[0].BoundsUpDown[r].start;
+            int p1_d = Parts[0].BoundsUpDown[r].end;
+            int p2_l = Parts[1].BoundsLeftRight[c].start;
+            int p2_r = Parts[1].BoundsLeftRight[c].end;
+            int p2_u = Parts[1].BoundsUpDown[r].start;
+            int p2_d = Parts[1].BoundsUpDown[r].end;
+            if (sh_w < 0)
+            {
+                p2_r -= shift_w;
+                if (sh_h < 0) { p2_d -= shift_h; } else { p1_u += shift_h; }
+            }
+            else
+            {
+                p1_l += shift_w;
+                if (sh_h < 0) { p2_d -= shift_h; } else { p1_u += shift_h; }
+            }
+
+            int w = Math.Min(p1_r - p1_l, p2_r - p2_l);
+            int h = Math.Min(p1_d - p1_u, p2_d - p2_u);
+            p1_r = p1_l + w;
+            p1_d = p1_u + h;
+            p2_r = p2_l + w;
+            p2_d = p2_u + h;
+            int sw = p2_l - p1_l;
+            int sh = p2_u - p1_u;
+
+            Block res = new Block(r * columns + c, 0);
+            //int w3 = w / 3 + 1;
+            //int h3 = h / 3 + 1;
+            //int w4 = w / 4 + 1;
+            //int h4 = h / 4 + 1;
+            int w5 = w / 5 + 1;
+            int h5 = h / 5 + 1;
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
+                    // c1
+                    int res_pixel = Math.Abs(Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]);
+                    res_pixel = res_pixel + Math.Abs(Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]);
+                    res_pixel = res_pixel + Math.Abs(Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]);
+
+                    //c2
+                    //Color c1 = new Color();
+                    //c1.R = Parts[0].ba[idx1 + 0];
+
+
+                    res.diff += res_pixel;
+                    int ii = (i - p1_l);
+                    int jj = (j - p1_u);
+                    //int idx9 = (ii / w3) * 3 + (jj / h3); // + FindOneDiff_shift_compare;
+                    //int idx16 = (ii / w4) * 4 + (jj / h4); //  + FindOneDiff_shift_compare;
+                    int idx25 = (ii / w5) * 5 + (jj / h5); //  + FindOneDiff_shift_compare;
+                    //res.diff9[idx9] += res_pixel;
+                    //res.diff16[idx16] += res_pixel;
+                    res.diff25[idx25] += res_pixel;
+                    //res.diff9_cnt[idx9]++;
+                    //res.diff16_cnt[idx16]++;
+                    res.diff25_cnt[idx25]++;
+
+                    //v2
+
+                    //res.max9 = 0; for (int iii = 0; iii < 9; iii++) { if (res.diff9_cnt[iii] != 0) { if (res.max9 < res.diff9[iii] / res.diff9_cnt[iii]) { res.max9 = res.diff9[iii] / res.diff9_cnt[iii]; } } }
+                    //res.max16 = 0; for (int iii = 0; iii < 16; iii++) { if (res.diff16_cnt[iii] != 0) { if (res.max16 < res.diff16[iii] / res.diff16_cnt[iii]) { res.max16 = res.diff16[iii] / res.diff16_cnt[iii]; } } }
+
+                    //res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
+
+
+                    //v3
+
+                    //res.max9 = 0; for (int iii = 0; iii < 9; iii++) { if (res.diff9_cnt[iii] != 0) { if (res.max9 < res.diff9[iii] / res.diff9_cnt[iii]) { res.max9 = res.diff9[iii] / res.diff9_cnt[iii]; } } }
+                    //res.max16 = 0; for (int iii = 0; iii < 16; iii++) { if (res.diff16_cnt[iii] != 0) { if (res.max16 < res.diff16[iii] / res.diff16_cnt[iii]) { res.max16 = res.diff16[iii] / res.diff16_cnt[iii]; } } }
+
+                    res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.diff25_cnt[iii] != 0) { if (res.max25 < res.diff25[iii] / res.diff25_cnt[iii]) { res.max25 = res.diff25[iii] / res.diff25_cnt[iii]; } } }
+                    
+                }
+            }
+            return res;
+        }
 
         /// <summary>
         /// конструктор
@@ -252,57 +406,6 @@ namespace FiveDiff
         }
 
         /// <summary>
-        /// формирует ответ
-        /// </summary>
-        public void DoAnswer()
-        {
-
-
-            // 2Do: (!)
-            // засечь время работы при компиляции в ОпКод или х86-32бит
-
-            //                                                // +  / -   / all -  0,0% - options
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(1)));  // 49 / 138 / 187 - 26,2% - shift_compare=0, 0,4сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(1)));  // 71 / 116 / 187 - 38,0% - shift_compare=1, 0,7сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(1)));  // 74 / 113 / 187 - 39,5% - shift_compare=2, 1,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(1)));  // 78 / 109 / 187 - 41,7% - shift_compare=3, 2,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(1)));  // 80 / 107 / 187 - 42,8% - shift_compare=5, 6,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(1)));  // 80 / 107 / 187 - 42,8% - shift_compare=7, 9,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(9)));  // 92 / 95  / 187 - 49,2% - shift_compare=0, 0,6сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(9)));  // 125 / 62 / 187 - 66,8% - shift_compare=1, 2,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 103 / 84 / 187 - 55,1% - shift_compare=0, 0,6сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 133 / 54 / 187 - 71,1% - shift_compare=1, criteria=1, 2,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 132 / 55 / 187 - 70,6% - shift_compare=1, criteria=16 2,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 138 / 49 / 187 - 73,8% - shift_compare=2, 7,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 109 / 78 / 187 - 58,3% - shift_compare=0, CorrectGridBorder_flag, 0,6сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 109 / 78 / 187 - 58,3% - shift_compare=0, criteria=1, 0,6сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 109 / 78 / 187 - 58,3% - shift_compare=0, criteria=25, 0,6сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 140 / 47 / 187 - 74,9% - shift_compare=1
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 141 / 46 / 187 - 75,4% - shift_compare=1, CorrectGridBorder_flag, 0,6сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 146 / 41 / 187 - 78,1% - shift_compare=2, criteria=1, 0,0сек
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 146 / 41 / 187 - 78,1% - shift_compare=2, criteria=25, 0,0сек
-
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 161 / 26 / 187 - 86,1% - shift_compare=8 (!), criteria=1, 60,0сек
-
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 109 / 78 / 187 - 58,3% - shift_compare=0
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 140 / 47 / 187 - 74,9% - shift_compare=1
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 146 / 41 / 187 - 78,1% - shift_compare=2 
-
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 151 / 36 / 187 - 80,7% - shift_compare=0, CorrectGridBorder_flag, v2
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 152 / 35 / 187 - 81,3% - shift_compare=0, v2
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 160 / 27 / 187 - 85,6% - shift_compare=1, v2
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 158 / 29 / 187 - 84,5% - shift_compare=2, v2
-
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 150 / 37 / 187 - 80,2% - shift_compare=0, criteria=1, v3
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 150 / 37 / 187 - 80,2% - shift_compare=0, criteria=25, v3
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(25))); // 155 / 32 / 187 - 82,9% - shift_compare=1, criteria=1, v3
-
-            //GetAnswer(GetFiveBlockIndexes(SortBlocks(16))); // 0 / 0 / 187 - 0,3% - shift_compare=1, criteria=1, v3*
-
-            Answer = GetAnswer(GetFiveBlockIndexes(SortBlocks(16)));
-        }
-
-        /// <summary>
         /// собирает ответ из массива номеров блоков
         /// </summary>
         /// <param name="a">массив</param>
@@ -383,12 +486,13 @@ namespace FiveDiff
                 for (int i = 0; i < cnt - 1; i++)
                 {
                     if (((v == 1) && (bl[i].diff < bl[i + 1].diff)) ||
+                        ((v == 25) && (bl[i].max25 < bl[i + 1].max25)) 
+                        ) /*||
                         ((v == 9) && (bl[i].max9 < bl[i + 1].max9)) ||
                         ((v == 16) && (bl[i].max16 < bl[i + 1].max16)) ||
-                        ((v == 25) && (bl[i].max25 < bl[i + 1].max25)) ||
                         ((v == 77) && ((bl[i].max16 + bl[i].max25) < (bl[i + 1].max16 + bl[i + 1].max25))) ||
                         ((v == 88) && ((bl[i].max16 + bl[i].max9) < (bl[i + 1].max16 + bl[i + 1].max9))) )
-                        
+                        */
                     {
                         Block q = bl[i];
                         bl[i] = bl[i + 1];
@@ -454,6 +558,7 @@ namespace FiveDiff
                     if (min > arbl[i].diff) { idx = i; min = arbl[i].diff; }
                 }
             }
+            /*
             if (GetMinBlock_criteria == 9)
             {
                 for (int i = 0; i < arbl.Length; i++)
@@ -468,6 +573,7 @@ namespace FiveDiff
                     if (min > arbl[i].max16) { idx = i; min = arbl[i].max16; }
                 }
             }
+            */
             if (GetMinBlock_criteria == 25)
             {
                 for (int i = 0; i < arbl.Length; i++)
@@ -476,121 +582,6 @@ namespace FiveDiff
                 }
             }
             return arbl[idx];
-        }
-
-        /// <summary>
-        /// находит различие в одной ячейке
-        /// </summary>
-        /// <param name="r">строка</param>
-        /// <param name="c">колонка</param>
-        /// <param name="l1">1 часть - левый</param>
-        /// <param name="u1">1 часть - верхний</param>
-        /// <param name="l2">2 часть - левый</param>
-        /// <param name="u2">2 часть - верхний</param>
-        /// <param name="w">ширина</param>
-        /// <param name="h">высота</param>
-        /// <returns>отличия</returns>
-        private Block FindOneDiffShift(int r, int c, int sh_w, int sh_h)
-        {
-            int hh = Parts[0].img.Height - 1;
-
-            // разнца сдвигов картинки и сетки + наш сдвиг, текущий
-            int shift_w =  (Parts[1].BoundsLeftRight[c].start - Parts[0].BoundsLeftRight[c].start) - shift_hor + sh_w;
-            int shift_h =  (Parts[1].BoundsUpDown[r].start - Parts[0].BoundsUpDown[r].start) - shift_ver + sh_h;
-            //shift_h = -shift_h;
-            //shift_w = -shift_w;
-            // координаты ячеек
-            int p1_l = Parts[0].BoundsLeftRight[c].start;
-            int p1_r = Parts[0].BoundsLeftRight[c].end;
-            int p1_u = Parts[0].BoundsUpDown[r].start;
-            int p1_d = Parts[0].BoundsUpDown[r].end;
-            int p2_l = Parts[1].BoundsLeftRight[c].start;
-            int p2_r = Parts[1].BoundsLeftRight[c].end;
-            int p2_u = Parts[1].BoundsUpDown[r].start;
-            int p2_d = Parts[1].BoundsUpDown[r].end;
-            if (sh_w < 0)
-            {
-                p2_r -= shift_w;
-                if (sh_h < 0)
-                {
-                    p2_d -= shift_h;
-                }
-                else
-                {
-                    p1_u += shift_h;
-                }
-            } else
-            {
-                p1_l += shift_w;
-                if (sh_h < 0)
-                {
-                    p2_d -= shift_h;
-                }
-                else
-                {
-                    p1_u += shift_h;
-                }
-            }
-
-            int w = Math.Min(p1_r - p1_l, p2_r - p2_l);
-            int h = Math.Min(p1_d - p1_u, p2_d - p2_u);
-            p1_r = p1_l + w;
-            p1_d = p1_u + h;
-            p2_r = p2_l + w;
-            p2_d = p2_u + h;
-            int sw = p2_l - p1_l;
-            int sh = p2_u - p1_u;
-
-            Block res = new Block(r * columns + c, 0);
-            int w3 = w / 3 + 1;
-            int h3 = h / 3 + 1;
-            int w4 = w / 4 + 1;
-            int h4 = h / 4 + 1;
-            int w5 = w / 5 + 1;
-            int h5 = h / 5 + 1;
-            // 2Do: (!)
-            // у нас есть общий сдвиг картинки, и, сдвиг сравниваемой ячейки.
-            // можно найти для каждой ячейки максимально точный сдвиг, по которому нужно искать расхождения.
-            // тем самым привести FindOneDiff_shift_compare к 1, или даже к нулю!
-            // 2Do: (!)
-            // выполнять точный расчет для каждого сдвига откуда докуда надо считать.
-            // избавиться от условий проверки границ ячейки. пересчитывать w3/4/5 и h3/4/5 от правильных ширины/высоты
-            // также, выполнять проверку на сетку сразу после начала соотв. цикла.
-            for (int i = p1_l; i < p1_r; i++)
-            {
-                if (Parts[0].grid_columns[i]) { continue; }
-                int i2 = i + sw;
-                if (Parts[1].grid_columns[i2]) { continue; }
-                for (int j = p1_u; j < p1_d; j++)
-                {
-                    if (Parts[0].grid_lines[j]) { continue; }
-                    int j2 = j + sh;
-                    if (Parts[1].grid_lines[j2]) { continue; }
-
-                    int idx1 = GetIndexByXY(i, hh - j);
-                    int idx2 = GetIndexByXY(i2, hh - j2);
-                    int res_pixel = Math.Abs(Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]);
-                    res_pixel = res_pixel + Math.Abs(Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]);
-                    res_pixel = res_pixel + Math.Abs(Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]);
-                    res.diff += res_pixel;
-                    int ii = (i - p1_l);
-                    int jj = (j - p1_u);
-                    int idx9 = (ii / w3) * 3 + (jj / h3); // + FindOneDiff_shift_compare;
-                    int idx16 = (ii / w4) * 4 + (jj / h4); //  + FindOneDiff_shift_compare;
-                    int idx25 = (ii / w5) * 5 + (jj / h5); //  + FindOneDiff_shift_compare;
-                    res.diff9[idx9] += res_pixel;
-                    res.diff16[idx16] += res_pixel;
-                    res.diff25[idx25] += res_pixel;
-                    res.diff9_cnt[idx9]++;
-                    res.diff16_cnt[idx16]++;
-                    res.diff25_cnt[idx25]++;
-                    res.max9 = 0; for (int iii = 0; iii < 9; iii++) { if (res.diff9_cnt[iii] != 0) { if (res.max9 < res.diff9[iii] / res.diff9_cnt[iii]) { res.max9 = res.diff9[iii] / res.diff9_cnt[iii]; } } }
-                    res.max16 = 0; for (int iii = 0; iii < 16; iii++) { if (res.diff16_cnt[iii] != 0) { if (res.max16 < res.diff16[iii] / res.diff16_cnt[iii]) { res.max16 = res.diff16[iii] / res.diff16_cnt[iii]; } } }
-                    res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.diff25_cnt[iii] != 0) { if (res.max25 < res.diff25[iii] / res.diff25_cnt[iii]) { res.max25 = res.diff25[iii] / res.diff25_cnt[iii]; } } }
-
-                }
-            }
-            return res;
         }
 
         /// <summary>
