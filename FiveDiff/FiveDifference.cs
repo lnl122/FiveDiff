@@ -156,7 +156,7 @@ namespace FiveDiff
         public int GetWhiteBound_PortionWhiteBound1000 = 10; // доля +- точек для определения границ белого по краям
         public int GetWhiteBound_PortionWhiteBound1000_0 = 5; // доля +- точек для определения границ белого по краям (1% = 10)
         public bool CorrectGridBorder_flag = false; // (true/false) - корректировать сетку на 1 пиксель шире?
-        public int FindOneDiff_shift_compare = 0; // сдвиг поиска в одной ячейке
+        public int FindOneDiff_shift_compare = 20; // сдвиг поиска в одной ячейке
         public int GetMinBlock_criteria = 1; // 1/9/16/25 - критерий выбора минимального блока
 
         /// <summary>
@@ -190,13 +190,21 @@ namespace FiveDiff
             // 155 / 32 / 187 - 82,9% - 25, shift_compare=1, v3, c1, 0,0сек
             // 155 / 32 / 187 - 82,9% - 25, shift_compare=2, v3, c1, 6,0сек
 
-            // 0 / 0 / 187 - 0,3% - 25, shift_compare=0, v2, c2, 0,6сек
-            // 0 / 0 / 187 - 0,0% - 25, shift_compare=1, v2, c2, 1,0сек
-            // 148 / 39 / 187 - 0,0% - 25, shift_compare=0, v3, c2, 3,0сек*
-            // 0 / 0 / 187 - 0,2% - 25, shift_compare=1, v3, c2, 0,6сек
+            // 150 / 37 / 187 - 80,2% - 25, shift_compare=0, v3, c1
+            // 153 / 34 / 187 - 81,8% - 25, shift_compare=0, v3, c3
+            // 152 / 35 / 187 - 81,3% - 25, shift_compare=0, v2, c1
+            // 155 / 32 / 187 - 82,9% - 25, shift_compare=0, v2, c3
+            // 155 / 32 / 187 - 82,9% - 25, shift_compare=1, v3, c1, 0,0сек
+            // 155 / 32 / 187 - 82,9% - 25, shift_compare=1, v3, c3, 0,0сек
+            // 157 / 30 / 187 - 84,0% - 25, shift_compare=1, v2, c1, 1,0сек
+            // 156 / 31 / 187 - 83,4% - 25, shift_compare=1, v2, c3, 1,0сек
+
+            // 161 / 26 / 187 - 86,1% - 25, shift_compare=8, v1 (!), 60,0сек
+            // 0 / 0 / 187 - 0,1% - 25, shift_compare=20, v2, 0,0сек
 
             Answer = GetAnswer(GetFiveBlockIndexes(SortBlocks(25)));
         }
+        // когда мы ищем смещение частей - мы учитываем положение сетки, чтобы не сравнивать эти линии?
 
 
         /// <summary>
@@ -275,10 +283,30 @@ namespace FiveDiff
                     res_pixel = res_pixel + Math.Abs(Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]);
                     res_pixel = res_pixel + Math.Abs(Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]);
 
-                    //c2
-                    //Color c1 = new Color();
-                    //c1.R = Parts[0].ba[idx1 + 0];
+                    //c3
+                    /*
+                    long pp = (Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]) * (Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]) +
+                        (Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]) * (Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]) +
+                        (Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]) * (Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]);
+                    int res_pixel = (int)Math.Sqrt(pp);
+                    */
 
+                    //c2
+                    /*
+                    Color c1 = Color.FromArgb(Parts[0].ba[idx1 + 2], Parts[0].ba[idx1 + 1], Parts[0].ba[idx1 + 0]);
+                    Color c2 = Color.FromArgb(Parts[1].ba[idx1 + 2], Parts[1].ba[idx1 + 1], Parts[1].ba[idx1 + 0]);
+                    float c1_b = 360*c1.GetBrightness();
+                    float c2_b = 360*c2.GetBrightness();
+                    float c1_s = 360*c1.GetSaturation();
+                    float c2_s = 360*c2.GetSaturation();
+                    float c1_h = c1.GetHue();
+                    float c2_h = c2.GetHue();
+
+                    float ch = Math.Abs(c1.GetHue() - c2.GetHue());
+                    float cs = 360*Math.Abs(c1.GetSaturation() - c2.GetSaturation());
+                    float cb = 360*Math.Abs(c1.GetBrightness() - c2.GetBrightness());
+                    int res_pixel = (int)(cb);
+                    */
 
                     res.diff += res_pixel;
                     int ii = (i - p1_l);
@@ -298,7 +326,7 @@ namespace FiveDiff
                     //res.max9 = 0; for (int iii = 0; iii < 9; iii++) { if (res.diff9_cnt[iii] != 0) { if (res.max9 < res.diff9[iii] / res.diff9_cnt[iii]) { res.max9 = res.diff9[iii] / res.diff9_cnt[iii]; } } }
                     //res.max16 = 0; for (int iii = 0; iii < 16; iii++) { if (res.diff16_cnt[iii] != 0) { if (res.max16 < res.diff16[iii] / res.diff16_cnt[iii]) { res.max16 = res.diff16[iii] / res.diff16_cnt[iii]; } } }
 
-                    //res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
+                    res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
 
 
                     //v3
@@ -306,7 +334,7 @@ namespace FiveDiff
                     //res.max9 = 0; for (int iii = 0; iii < 9; iii++) { if (res.diff9_cnt[iii] != 0) { if (res.max9 < res.diff9[iii] / res.diff9_cnt[iii]) { res.max9 = res.diff9[iii] / res.diff9_cnt[iii]; } } }
                     //res.max16 = 0; for (int iii = 0; iii < 16; iii++) { if (res.diff16_cnt[iii] != 0) { if (res.max16 < res.diff16[iii] / res.diff16_cnt[iii]) { res.max16 = res.diff16[iii] / res.diff16_cnt[iii]; } } }
 
-                    res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.diff25_cnt[iii] != 0) { if (res.max25 < res.diff25[iii] / res.diff25_cnt[iii]) { res.max25 = res.diff25[iii] / res.diff25_cnt[iii]; } } }
+                    //res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.diff25_cnt[iii] != 0) { if (res.max25 < res.diff25[iii] / res.diff25_cnt[iii]) { res.max25 = res.diff25[iii] / res.diff25_cnt[iii]; } } }
                     
                 }
             }
