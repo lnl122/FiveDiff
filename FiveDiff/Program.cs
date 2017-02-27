@@ -43,7 +43,7 @@ namespace FiveDiff
             TempFolder = System.IO.Path.GetTempPath();
             PrepareForm();
             PrepareTimer();
-
+            /*
             string p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\pic02.jpg"; // зеленая игра
             //p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\9\lu.jpg";
             p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\5_EnUpA1\B5C1F6H8L4.jpg"; //розовая сетка
@@ -54,15 +54,16 @@ namespace FiveDiff
             p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2A7D2D5E8.jpg"; // белая раска вокруг
             p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4F4I5J6K3.jpg"; // белый фон картинки
             p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1C2J3D5J7G-1_g1.jpg"; // белый фон картинки
-            p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\Г1И1К4Г8К8-2_g1.jpg";
-            FiveDifference b = new FiveDifference(new Bitmap(p1), new FiveDifference.Settings(FiveDifference.setNums.Left, FiveDifference.setLang.Rus, FiveDifference.setType._A1));
-
+            p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4F4I5J6K3.jpg";
+            FiveDifference b = new FiveDifference(new Bitmap(p1), new FiveDifference.Settings(FiveDifference.setNums.Up, FiveDifference.setLang.Eng, FiveDifference.setType._A1));
+            int ii = 9;
+            */
             //string v1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\kmv57389_EnUpA1\A5B2B4B7E6-2.jpg";
             //string v2 = "EnUpA1";
             //FindFiveDiff a = new FindFiveDiff(new Bitmap(v1), v2);
 
-            //F_SizeChanged(null, null);
-            //Application.Run(F);
+            F_SizeChanged(null, null);
+            Application.Run(F);
         }
 
         //
@@ -78,8 +79,8 @@ namespace FiveDiff
             if (SelectLang.SelectedIndex == 1) { lang = "Ru"; }
             string nums = "Up";
             if (SelectNumPlace.SelectedIndex == 1) { nums = "Le"; }
-            string answ = "1A";
-            if (SelectAnswerType.SelectedIndex == 1) { answ = "A1"; }
+            string answ = "A1";
+            if (SelectAnswerType.SelectedIndex == 1) { answ = "1A"; }
             answerformat = lang + nums + answ;
         }
         private static void RunWithFile(string v)
@@ -89,7 +90,7 @@ namespace FiveDiff
                 img.Image = Bmp;
                 F.Update();
                 CreateAnswerFormat();
-                FindFiveDiff a = new FindFiveDiff(Bmp, answerformat);
+                FiveDifference a = new FiveDifference(Bmp, answerformat);
                 pairs = new Bitmap[2];
                 pairs[0] = a.Img1;
                 pairs[1] = a.Img2;
