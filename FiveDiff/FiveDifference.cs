@@ -155,8 +155,8 @@ namespace FiveDiff
         //public int FindGrid_AllowedWhitePixels = 3; // сколько может быть белых пикселей в сетке
         public int GetWhiteBound_PortionWhiteBound1000 = 10; // доля +- точек для определения границ белого по краям
         public int GetWhiteBound_PortionWhiteBound1000_0 = 5; // доля +- точек для определения границ белого по краям (1% = 10)
-        public bool CorrectGridBorder_flag = false; // (true/false) - корректировать сетку на 1 пиксель шире?
-        public int GetMinBlock_criteria = 25; // 1/9/16/25 - критерий выбора минимального блока
+        public bool CorrectGridBorder_flag = true; // (true/false) - корректировать сетку на 1 пиксель шире?
+        public int GetMinBlock_criteria = 1; // 1/9/16/25 - критерий выбора минимального блока
 
         public int FindOneDiff_shift_compare = 1; // сдвиг поиска в одной ячейке
         public int CalculateDifference_Variant = 8; // вариант расчета различий ячеек
@@ -188,14 +188,30 @@ namespace FiveDiff
             // 155 / 32 / 187 - 82,9% - 25, shift_compare=1, v5, 1,0сек
             // 124 / 63 / 187 - 66,3% - 25, shift_compare=1, v6, 4,0сек
             // 159 / 28 / 187 - 85,0% - 25, shift_compare=1, v7, 0,6сек
-            // 162 / 25 / 187 - 86,6% - 25, shift_compare=1, v8, 0,6сек (!)
+            // 162 / 25 / 187 - 86,6% - 25, shift_compare=1, v8, 0,6сек
             // 151 / 36 / 187 - 80,1% - 25, shift_compare=1, v9, 0,6сек
+            // v8 - более прогрессивный
 
             // 162 / 25 / 187 - 86,6% - 25, shift_compare=1, v8, 0,6сек
             // 166 / 21 / 187 - 88,8% - 25, shift_compare=1, v8, CorrectGridBorder_flag, 0,6сек (!)
             // 166 / 21 / 187 - 88,8% - 25, shift_compare=1, v8, CorrectGridBorder_flag, criteria = 25, 0,6сек
             // 161 / 26 / 187 - 86,1% - 25, shift_compare=1, v8, criteria = 25, 0,6сек
+            // критерий не роляет. CorrectGridBorder_flag - роляет.
 
+            // 166 / 21 / 187 - 88,8% - 25, shift_compare=1, v8, CorrectGridBorder_flag, 0,6сек
+            // 150 / 37 / 187 - 80,2% - 1, shift_compare=1, v8, CorrectGridBorder_flag, 0,6сек
+            // искать одним блоком - плохая идея
+
+            // 163 / 24 / 187 - 87,2% - 25, shift_compare=0, v8, CorrectGridBorder_flag, 0,5сек
+            // 166 / 21 / 187 - 88,8% - 25, shift_compare=1, v8, CorrectGridBorder_flag, 0,6сек
+            // 166 / 21 / 187 - 88,8% - 25, shift_compare=2, v8, CorrectGridBorder_flag, 1,0сек
+            // 160 / 27 / 187 - 85,6% - 25, shift_compare=3, v8, CorrectGridBorder_flag, 1,5сек
+            // shift_compare=1
+
+            // 166 / 21 / 187 - 88,8% - 25, shift_compare=1, v8, CorrectGridBorder_flag, 0,6сек
+            // 150 / 37 / 187 - 80,2% - 25, shift_compare=1, v9, CorrectGridBorder_flag, 1,0сек
+            // bad / bad / 187 - 0,8% - 25, shift_compare=1, v10, CorrectGridBorder_flag, 0,0сек
+            // bad / bad / 187 - 0,8% - 25, shift_compare=1, v11, CorrectGridBorder_flag, 0,0сек
 
             Answer = GetAnswer(GetFiveBlockIndexes(SortBlocks(25)));
         }
@@ -257,6 +273,8 @@ namespace FiveDiff
             if (CalculateDifference_Variant == 7) { return CalculateDifference_v7(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
             if (CalculateDifference_Variant == 8) { return CalculateDifference_v8(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
             if (CalculateDifference_Variant == 9) { return CalculateDifference_v9(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
+            if (CalculateDifference_Variant == 10) { return CalculateDifference_v10(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
+            if (CalculateDifference_Variant == 11) { return CalculateDifference_v11(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
 
             //для теста надо бы сохранять ячейки в файлы
             /*
@@ -599,6 +617,168 @@ namespace FiveDiff
                 }
             }
             res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
+            return res;
+        }
+        public Block CalculateDifference_v10(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
+        {
+            int hh = Parts[0].img.Height - 1;
+
+            Block res = new Block(r * columns + c, 0);
+
+            int[] c1_r = new int[25];
+            int[] c1_g = new int[25];
+            int[] c1_b = new int[25];
+            int[] c2_r = new int[25];
+            int[] c2_g = new int[25];
+            int[] c2_b = new int[25];
+
+            int[] minr = new int[25];
+            int[] maxr = new int[25];
+            int[] ming = new int[25];
+            int[] maxg = new int[25];
+            int[] minb = new int[25];
+            int[] maxb = new int[25];
+            for (int i = 0; i < 25; i++) { minr[i] = 9999999; ming[i] = 9999999; minb[i] = 9999999; }
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
+
+                    minr[idx25] = Math.Min(minr[idx25], Math.Min(Parts[0].ba[idx1 + 0], Parts[1].ba[idx2 + 0]));
+                    ming[idx25] = Math.Min(ming[idx25], Math.Min(Parts[0].ba[idx1 + 1], Parts[1].ba[idx2 + 1]));
+                    minb[idx25] = Math.Min(minb[idx25], Math.Min(Parts[0].ba[idx1 + 2], Parts[1].ba[idx2 + 2]));
+                    maxr[idx25] = Math.Max(maxr[idx25], Math.Max(Parts[0].ba[idx1 + 0], Parts[1].ba[idx2 + 0]));
+                    maxg[idx25] = Math.Max(maxg[idx25], Math.Max(Parts[0].ba[idx1 + 1], Parts[1].ba[idx2 + 1]));
+                    maxb[idx25] = Math.Max(maxb[idx25], Math.Max(Parts[0].ba[idx1 + 2], Parts[1].ba[idx2 + 2]));
+                }
+            }
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
+
+                    c1_r[idx25] += (Parts[0].ba[idx1 + 0] - minr[idx25]) * 256 / (maxr[idx25] - minr[idx25]);
+                    c1_g[idx25] += (Parts[0].ba[idx1 + 1] - ming[idx25]) * 256 / (maxg[idx25] - ming[idx25]);
+                    c1_b[idx25] += (Parts[0].ba[idx1 + 2] - minb[idx25]) * 256 / (maxb[idx25] - minb[idx25]);
+                    c2_r[idx25] += (Parts[1].ba[idx2 + 0] - minr[idx25]) * 256 / (maxr[idx25] - minr[idx25]);
+                    c2_g[idx25] += (Parts[1].ba[idx2 + 1] - ming[idx25]) * 256 / (maxg[idx25] - ming[idx25]);
+                    c2_b[idx25] += (Parts[1].ba[idx2 + 2] - minb[idx25]) * 256 / (maxb[idx25] - minb[idx25]);
+
+                    res.diff25_cnt[idx25]++;
+                }
+            }
+            res.diff = 0;
+            for (int iii = 0; iii < 25; iii++)
+            {
+                res.diff25[iii] = Math.Abs(c1_r[iii] - c2_r[iii]) + Math.Abs(c1_g[iii] - c2_g[iii]) + Math.Abs(c1_b[iii] - c2_b[iii]);
+                res.diff += res.diff25[iii];
+            }
+            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
+            return res;
+        }
+        public Block CalculateDifference_v11(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
+        {
+            int hh = Parts[0].img.Height - 1;
+
+            Block res = new Block(r * columns + c, 0);
+
+            int[] c1_r = new int[25];
+            int[] c1_g = new int[25];
+            int[] c1_b = new int[25];
+            int[] c2_r = new int[25];
+            int[] c2_g = new int[25];
+            int[] c2_b = new int[25];
+
+            int[] minr = new int[25];
+            int[] maxr = new int[25];
+            int[] ming = new int[25];
+            int[] maxg = new int[25];
+            int[] minb = new int[25];
+            int[] maxb = new int[25];
+            for (int i = 0; i < 25; i++) { minr[i] = 9999999; ming[i] = 9999999; minb[i] = 9999999; }
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
+
+                    minr[idx25] = Math.Min(minr[idx25], Math.Min(Parts[0].ba[idx1 + 0], Parts[1].ba[idx2 + 0]));
+                    ming[idx25] = Math.Min(ming[idx25], Math.Min(Parts[0].ba[idx1 + 1], Parts[1].ba[idx2 + 1]));
+                    minb[idx25] = Math.Min(minb[idx25], Math.Min(Parts[0].ba[idx1 + 2], Parts[1].ba[idx2 + 2]));
+                    maxr[idx25] = Math.Max(maxr[idx25], Math.Max(Parts[0].ba[idx1 + 0], Parts[1].ba[idx2 + 0]));
+                    maxg[idx25] = Math.Max(maxg[idx25], Math.Max(Parts[0].ba[idx1 + 1], Parts[1].ba[idx2 + 1]));
+                    maxb[idx25] = Math.Max(maxb[idx25], Math.Max(Parts[0].ba[idx1 + 2], Parts[1].ba[idx2 + 2]));
+                }
+            }
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
+
+                    c1_r[idx25] += (Parts[0].ba[idx1 + 0] - minr[idx25]) * 256 / (maxr[idx25] - minr[idx25]);
+                    c1_g[idx25] += (Parts[0].ba[idx1 + 1] - ming[idx25]) * 256 / (maxg[idx25] - ming[idx25]);
+                    c1_b[idx25] += (Parts[0].ba[idx1 + 2] - minb[idx25]) * 256 / (maxb[idx25] - minb[idx25]);
+                    c2_r[idx25] += (Parts[1].ba[idx2 + 0] - minr[idx25]) * 256 / (maxr[idx25] - minr[idx25]);
+                    c2_g[idx25] += (Parts[1].ba[idx2 + 1] - ming[idx25]) * 256 / (maxg[idx25] - ming[idx25]);
+                    c2_b[idx25] += (Parts[1].ba[idx2 + 2] - minb[idx25]) * 256 / (maxb[idx25] - minb[idx25]);
+
+                    res.diff25_cnt[idx25]++;
+                }
+            }
+            res.diff = 0;
+            for (int iii = 0; iii < 25; iii++)
+            {
+                res.diff25[iii] = Math.Abs(c1_r[iii] - c2_r[iii]) + Math.Abs(c1_g[iii] - c2_g[iii]) + Math.Abs(c1_b[iii] - c2_b[iii]);
+                res.diff += res.diff25[iii];
+            }
+            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.diff25_cnt[iii] != 0) { if (res.max25 < res.diff25[iii] / res.diff25_cnt[iii]) { res.max25 = res.diff25[iii] / res.diff25_cnt[iii]; } } }
             return res;
         }
 
