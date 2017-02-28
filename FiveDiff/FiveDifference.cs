@@ -156,10 +156,10 @@ namespace FiveDiff
         public int GetWhiteBound_PortionWhiteBound1000 = 10; // доля +- точек для определения границ белого по краям
         public int GetWhiteBound_PortionWhiteBound1000_0 = 5; // доля +- точек для определения границ белого по краям (1% = 10)
         public bool CorrectGridBorder_flag = false; // (true/false) - корректировать сетку на 1 пиксель шире?
-        public int GetMinBlock_criteria = 1; // 1/9/16/25 - критерий выбора минимального блока
+        public int GetMinBlock_criteria = 25; // 1/9/16/25 - критерий выбора минимального блока
 
         public int FindOneDiff_shift_compare = 1; // сдвиг поиска в одной ячейке
-        public int CalculateDifference_Variant = 9; // вариант расчета различий ячеек
+        public int CalculateDifference_Variant = 8; // вариант расчета различий ячеек
 
         /// <summary>
         /// формирует ответ
@@ -190,6 +190,12 @@ namespace FiveDiff
             // 159 / 28 / 187 - 85,0% - 25, shift_compare=1, v7, 0,6сек
             // 162 / 25 / 187 - 86,6% - 25, shift_compare=1, v8, 0,6сек (!)
             // 151 / 36 / 187 - 80,1% - 25, shift_compare=1, v9, 0,6сек
+
+            // 162 / 25 / 187 - 86,6% - 25, shift_compare=1, v8, 0,6сек
+            // 166 / 21 / 187 - 88,8% - 25, shift_compare=1, v8, CorrectGridBorder_flag, 0,6сек (!)
+            // 166 / 21 / 187 - 88,8% - 25, shift_compare=1, v8, CorrectGridBorder_flag, criteria = 25, 0,6сек
+            // 161 / 26 / 187 - 86,1% - 25, shift_compare=1, v8, criteria = 25, 0,6сек
+
 
             Answer = GetAnswer(GetFiveBlockIndexes(SortBlocks(25)));
         }
