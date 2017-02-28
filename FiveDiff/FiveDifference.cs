@@ -156,65 +156,43 @@ namespace FiveDiff
         public int GetWhiteBound_PortionWhiteBound1000 = 10; // доля +- точек для определения границ белого по краям
         public int GetWhiteBound_PortionWhiteBound1000_0 = 5; // доля +- точек для определения границ белого по краям (1% = 10)
         public bool CorrectGridBorder_flag = false; // (true/false) - корректировать сетку на 1 пиксель шире?
-        public int FindOneDiff_shift_compare = 1; // сдвиг поиска в одной ячейке
         public int GetMinBlock_criteria = 1; // 1/9/16/25 - критерий выбора минимального блока
+
+        public int FindOneDiff_shift_compare = 1; // сдвиг поиска в одной ячейке
+        public int CalculateDifference_Variant = 9; // вариант расчета различий ячеек
 
         /// <summary>
         /// формирует ответ
         /// </summary>
         public void DoAnswer()
         {
-
-
             // 2Do: (!)
             // засечь время работы при компиляции в ОпКод или х86-32бит
-
-            //  +  / -  / all -  0,0% - options
-            // 141 / 46 / 187 - 75,4% - 25, shift_compare=1, v1, CorrectGridBorder_flag, 0,6сек
-            // 140 / 47 / 187 - 74,9% - 25, shift_compare=1, v1
-            // 146 / 41 / 187 - 78,1% - 25, shift_compare=2, v1
-            // 161 / 26 / 187 - 86,1% - 25, shift_compare=8, v1 (!), 60,0сек
-
-            // 152 / 35 / 187 - 81,3% - 25, shift_compare=0, v2
-            // 160 / 27 / 187 - 85,6% - 25, shift_compare=1, v2
-            // 158 / 29 / 187 - 84,5% - 25, shift_compare=2, v2
-
-            // 149 / 38 / 187 - 79,7% - 16, shift_compare=1, v3
-            // 150 / 37 / 187 - 80,2% - 25, shift_compare=0, v3
-            // 155 / 32 / 187 - 82,9% - 25, shift_compare=1, v3
-
-            // 152 / 35 / 187 - 81,3% - 25, shift_compare=0, v2, c1, 0,6сек
-            // 157 / 30 / 187 - 84,0% - 25, shift_compare=1, v2, c1, 1,0сек
-            // 157 / 30 / 187 - 84,0% - 25, shift_compare=2, v2, c1, 3,0сек
-            // 150 / 37 / 187 - 80,2% - 25, shift_compare=0, v3, c1, 0,6сек
-            // 155 / 32 / 187 - 82,9% - 25, shift_compare=1, v3, c1, 0,0сек
-            // 155 / 32 / 187 - 82,9% - 25, shift_compare=2, v3, c1, 6,0сек
-
-            // 150 / 37 / 187 - 80,2% - 25, shift_compare=0, v3, c1
-            // 0 / 0 / 187 - 0,8% - 25, shift_compare=0, v3, c3
-            // 152 / 35 / 187 - 81,3% - 25, shift_compare=0, v2, c1
-            // 155 / 32 / 187 - 82,9% - 25, shift_compare=0, v2, c3
-            // 155 / 32 / 187 - 82,9% - 25, shift_compare=1, v3, c1, 0,0сек
-            // 0 / 0 / 187 - 0,9% - 25, shift_compare=1, v3, c3, 0,0сек
-            // 157 / 30 / 187 - 84,0% - 25, shift_compare=1, v2, c1, 1,0сек
-            // 156 / 31 / 187 - 83,4% - 25, shift_compare=1, v2, c3, 0,8сек
-
-            // 161 / 26 / 187 - 86,1% - 25, shift_compare=8, v1 (!), 60,0сек
-            // 144 / 43 / 187 - 77,0% - 25, shift_compare=20, v2, 0,0сек
-
-            // 157 / 30 / 187 - 84,0% - 25, shift_compare=1 v2!, 0,4сек
-            // 141 / 46 / 187 - 75,4% - 1, shift_compare=0 v4, 0,4сек
-            // 144 / 43 / 187 - 77,0% - 1, shift_compare=1 v4, 1,0сек
-            // 142 / 45 / 187 - 75,9% - 1, shift_compare=1 v5, 1,0сек
-
             // еще идея - из каждой ячейки брать 6бит цвет - это индекс в массиве, и, вычислять разницу между количествами цветов.
 
-            // каждый вариант оформить отдельным методом. выбор метода - из константы сверху.
+            //  +  / -  / all -  0,0% - options
+            // 161 / 26 / 187 - 86,1% - 25, shift_compare=8, v1 (!), 60,0сек
+
+            // 152 / 35 / 187 - 81,3% - 25, shift_compare=0, v2, 0,6сек
+            // 150 / 37 / 187 - 80,2% - 25, shift_compare=0, v3, 0,6сек
+            // 155 / 32 / 187 - 82,9% - 25, shift_compare=0, v4, 0,6сек
+            // 153 / 34 / 187 - 81,8% - 25, shift_compare=0, v5, 0,6сек
+            // 120 / 67 / 187 - 64,2% - 25, shift_compare=0, v6, 1,0сек
+            // 155 / 32 / 187 - 82,9% - 25, shift_compare=0, v7, 0,6сек
+            // 161 / 26 / 187 - 86,1% - 25, shift_compare=1, v8, 0,6сек
+            // 144 / 43 / 187 - 77,0% - 25, shift_compare=1, v9, 0,6сек
+
+            // 157 / 30 / 187 - 84,0% - 25, shift_compare=1, v2, 1,0сек
+            // 155 / 32 / 187 - 82,9% - 25, shift_compare=1, v3, 1,0сек
+            // 156 / 31 / 187 - 83,4% - 25, shift_compare=1, v4, 1,0сек
+            // 155 / 32 / 187 - 82,9% - 25, shift_compare=1, v5, 1,0сек
+            // 124 / 63 / 187 - 66,3% - 25, shift_compare=1, v6, 4,0сек
+            // 159 / 28 / 187 - 85,0% - 25, shift_compare=1, v7, 0,6сек
+            // 162 / 25 / 187 - 86,6% - 25, shift_compare=1, v8, 0,6сек (!)
+            // 151 / 36 / 187 - 80,1% - 25, shift_compare=1, v9, 0,6сек
 
             Answer = GetAnswer(GetFiveBlockIndexes(SortBlocks(25)));
         }
-        // когда мы ищем смещение частей - мы учитываем положение сетки, чтобы не сравнивать эти линии?
-
 
         /// <summary>
         /// находит различие в одной ячейке
@@ -230,8 +208,6 @@ namespace FiveDiff
         /// <returns>отличия</returns>
         public Block FindOneDiffShift(int r, int c, int sh_w, int sh_h)
         {
-            int hh = Parts[0].img.Height - 1;
-
             // разнца сдвигов картинки и сетки + наш сдвиг, текущий
             int shift_w = (Parts[1].BoundsLeftRight[c].start - Parts[0].BoundsLeftRight[c].start) - shift_hor + sh_w;
             int shift_h = (Parts[1].BoundsUpDown[r].start - Parts[0].BoundsUpDown[r].start) - shift_ver + sh_h;
@@ -264,18 +240,34 @@ namespace FiveDiff
             p2_d = p2_u + h;
             int sw = p2_l - p1_l;
             int sh = p2_u - p1_u;
-
-            //v4
-            //int[] c1_r = new int[25];
-            //int[] c1_g = new int[25];
-            //int[] c1_b = new int[25];
-            //int[] c2_r = new int[25];
-            //int[] c2_g = new int[25];
-            //int[] c2_b = new int[25];
-
-            Block res = new Block(r * columns + c, 0);
             int w5 = w / 5 + 1;
             int h5 = h / 5 + 1;
+
+            if (CalculateDifference_Variant == 2) { return CalculateDifference_v2(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
+            if (CalculateDifference_Variant == 3) { return CalculateDifference_v3(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
+            if (CalculateDifference_Variant == 4) { return CalculateDifference_v4(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
+            if (CalculateDifference_Variant == 5) { return CalculateDifference_v5(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
+            if (CalculateDifference_Variant == 6) { return CalculateDifference_v6(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
+            if (CalculateDifference_Variant == 7) { return CalculateDifference_v7(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
+            if (CalculateDifference_Variant == 8) { return CalculateDifference_v8(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
+            if (CalculateDifference_Variant == 9) { return CalculateDifference_v9(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
+
+            //для теста надо бы сохранять ячейки в файлы
+            /*
+            string name = "_r" + r.ToString() + "_c" + c.ToString() + "_shw" + sh_w.ToString() + "_shh" + sh_h.ToString() + "_res" + res.diff.ToString();
+            string name1 = @"C:\TEMP\1\img_" + name + "_p0.jpg";
+            string name2 = @"C:\TEMP\1\img_" + name + "_p1.jpg";
+            StoreImage(Parts[0].img, name1, new Rectangle(p1_l, p1_u, w, h));
+            StoreImage(Parts[1].img, name2, new Rectangle(p2_l, p2_u, w, h));
+            */
+            return new Block(r * columns + c, 0);
+        }
+
+        public Block CalculateDifference_v2(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
+        {
+            int hh = Parts[0].img.Height - 1;
+
+            Block res = new Block(r * columns + c, 0);
 
             for (int i = p1_l; i < p1_r; i++)
             {
@@ -291,88 +283,316 @@ namespace FiveDiff
                     int idx1 = GetIndexByXY(i, hh - j);
                     int idx2 = GetIndexByXY(i2, hh - j2);
 
-
-                    // c1
                     int res_pixel = Math.Abs(Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]);
                     res_pixel = res_pixel + Math.Abs(Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]);
                     res_pixel = res_pixel + Math.Abs(Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]);
 
-                    //c3
-                    /*
+                    res.diff += res_pixel;
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
+                    res.diff25[idx25] += res_pixel;
+                    res.diff25_cnt[idx25]++;
+                }
+            }
+            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
+            return res;
+        }
+        public Block CalculateDifference_v3(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
+        {
+            int hh = Parts[0].img.Height - 1;
+
+            Block res = new Block(r * columns + c, 0);
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
+                    int res_pixel = Math.Abs(Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]);
+                    res_pixel = res_pixel + Math.Abs(Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]);
+                    res_pixel = res_pixel + Math.Abs(Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]);
+
+                    res.diff += res_pixel;
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
+                    res.diff25[idx25] += res_pixel;
+                    res.diff25_cnt[idx25]++;
+                }
+            }
+            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.diff25_cnt[iii] != 0) { if (res.max25 < res.diff25[iii] / res.diff25_cnt[iii]) { res.max25 = res.diff25[iii] / res.diff25_cnt[iii]; } } }
+            return res;
+        }
+        public Block CalculateDifference_v4(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
+        {
+            int hh = Parts[0].img.Height - 1;
+
+            Block res = new Block(r * columns + c, 0);
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
                     long pp = (Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]) * (Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]) +
                         (Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]) * (Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]) +
                         (Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]) * (Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]);
                     int res_pixel = (int)Math.Sqrt(pp);
-                    */
 
-                    //c2
-                    /*
+                    res.diff += res_pixel;
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
+                    res.diff25[idx25] += res_pixel;
+                    res.diff25_cnt[idx25]++;
+                }
+            }
+            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
+            return res;
+        }
+        public Block CalculateDifference_v5(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
+        {
+            int hh = Parts[0].img.Height - 1;
+
+            Block res = new Block(r * columns + c, 0);
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
+                    long pp = (Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]) * (Parts[0].ba[idx1 + 0] - Parts[1].ba[idx2 + 0]) +
+                        (Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]) * (Parts[0].ba[idx1 + 1] - Parts[1].ba[idx2 + 1]) +
+                        (Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]) * (Parts[0].ba[idx1 + 2] - Parts[1].ba[idx2 + 2]);
+                    int res_pixel = (int)Math.Sqrt(pp);
+
+                    res.diff += res_pixel;
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
+                    res.diff25[idx25] += res_pixel;
+                    res.diff25_cnt[idx25]++;
+                }
+            }
+            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.diff25_cnt[iii] != 0) { if (res.max25 < res.diff25[iii] / res.diff25_cnt[iii]) { res.max25 = res.diff25[iii] / res.diff25_cnt[iii]; } } }
+            return res;
+        }
+        public Block CalculateDifference_v6(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
+        {
+            int hh = Parts[0].img.Height - 1;
+
+            Block res = new Block(r * columns + c, 0);
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
                     Color c1 = Color.FromArgb(Parts[0].ba[idx1 + 2], Parts[0].ba[idx1 + 1], Parts[0].ba[idx1 + 0]);
                     Color c2 = Color.FromArgb(Parts[1].ba[idx2 + 2], Parts[1].ba[idx2 + 1], Parts[1].ba[idx2 + 0]);
-                    float c1_b = 360*c1.GetBrightness();
-                    float c2_b = 360*c2.GetBrightness();
-                    float c1_s = 360*c1.GetSaturation();
-                    float c2_s = 360*c2.GetSaturation();
+                    float c1_b = 360 * c1.GetBrightness();
+                    float c2_b = 360 * c2.GetBrightness();
+                    float c1_s = 360 * c1.GetSaturation();
+                    float c2_s = 360 * c2.GetSaturation();
                     float c1_h = c1.GetHue();
                     float c2_h = c2.GetHue();
 
                     float ch = Math.Abs(c1.GetHue() - c2.GetHue());
                     float cs = Math.Abs(c1.GetSaturation() - c2.GetSaturation());
                     float cb = Math.Abs(c1.GetBrightness() - c2.GetBrightness());
-                    int res_pixel = (int)(360 * cb + 360 * cs + cb);
-                    */
+                    int res_pixel = (int)(360 * cb);
 
                     res.diff += res_pixel;
-                    int ii = (i - p1_l);
-                    int jj = (j - p1_u);
-                    int idx25 = (ii / w5) * 5 + (jj / h5);
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
                     res.diff25[idx25] += res_pixel;
                     res.diff25_cnt[idx25]++;
+                }
+            }
+            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii] ) { res.max25 = res.diff25[iii]; } }
+            return res;
+        }
+        public Block CalculateDifference_v7(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
+        {
+            int hh = Parts[0].img.Height - 1;
 
-                    //v4
-                    /*
+            Block res = new Block(r * columns + c, 0);
+
+            int[] c1_r = new int[25];
+            int[] c1_g = new int[25];
+            int[] c1_b = new int[25];
+            int[] c2_r = new int[25];
+            int[] c2_g = new int[25];
+            int[] c2_b = new int[25];
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
+
                     c1_r[idx25] += Parts[0].ba[idx1 + 0];
                     c1_g[idx25] += Parts[0].ba[idx1 + 1];
                     c1_b[idx25] += Parts[0].ba[idx1 + 2];
                     c2_r[idx25] += Parts[1].ba[idx2 + 0];
                     c2_g[idx25] += Parts[1].ba[idx2 + 1];
                     c2_b[idx25] += Parts[1].ba[idx2 + 2];
-                    */
+
+                    res.diff25_cnt[idx25]++;
                 }
             }
-
-            //v2
-            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
-
-            //v3
-            //res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.diff25_cnt[iii] != 0) { if (res.max25 < res.diff25[iii] / res.diff25_cnt[iii]) { res.max25 = res.diff25[iii] / res.diff25_cnt[iii]; } } }
-
-            //v4
-            /*
             res.diff = 0;
-            for (int iii = 0; iii < 25; iii++) {
+            for (int iii = 0; iii < 25; iii++)
+            {
                 c1_r[iii] = c1_r[iii] / (int)res.diff25_cnt[iii];
                 c1_g[iii] = c1_g[iii] / (int)res.diff25_cnt[iii];
                 c1_b[iii] = c1_b[iii] / (int)res.diff25_cnt[iii];
                 c2_r[iii] = c2_r[iii] / (int)res.diff25_cnt[iii];
                 c2_g[iii] = c2_g[iii] / (int)res.diff25_cnt[iii];
                 c2_b[iii] = c2_b[iii] / (int)res.diff25_cnt[iii];
-                //v4
-                //res.diff25[iii] = (int)Math.Sqrt((c1_r[iii] - c2_r[iii]) * (c1_r[iii] - c2_r[iii]) + (c1_g[iii] - c2_g[iii]) * (c1_g[iii] - c2_g[iii]) + (c1_b[iii] - c2_b[iii]) * (c1_b[iii] - c2_b[iii]));
-                //v5
-                res.diff25[iii] = Math.Abs(c1_r[iii] - c2_r[iii])+ Math.Abs(c1_g[iii] - c2_g[iii])+ Math.Abs(c1_b[iii] - c2_b[iii]);
+                res.diff25[iii] = Math.Abs(c1_r[iii] - c2_r[iii]) + Math.Abs(c1_g[iii] - c2_g[iii]) + Math.Abs(c1_b[iii] - c2_b[iii]);
                 res.diff += res.diff25[iii];
             }
-            */
+            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
+            return res;
+        }
+        public Block CalculateDifference_v8(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
+        {
+            int hh = Parts[0].img.Height - 1;
 
-            //для теста надо бы сохранять ячейки в файлы
-            /*
-            string name = "_r" + r.ToString() + "_c" + c.ToString() + "_shw" + sh_w.ToString() + "_shh" + sh_h.ToString() + "_res" + res.diff.ToString();
-            string name1 = @"C:\TEMP\1\img_" + name + "_p0.jpg";
-            string name2 = @"C:\TEMP\1\img_" + name + "_p1.jpg";
-            StoreImage(Parts[0].img, name1, new Rectangle(p1_l, p1_u, w, h));
-            StoreImage(Parts[1].img, name2, new Rectangle(p2_l, p2_u, w, h));
-            */
+            Block res = new Block(r * columns + c, 0);
+
+            int[] c1_r = new int[25];
+            int[] c1_g = new int[25];
+            int[] c1_b = new int[25];
+            int[] c2_r = new int[25];
+            int[] c2_g = new int[25];
+            int[] c2_b = new int[25];
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
+
+                    c1_r[idx25] += Parts[0].ba[idx1 + 0];
+                    c1_g[idx25] += Parts[0].ba[idx1 + 1];
+                    c1_b[idx25] += Parts[0].ba[idx1 + 2];
+                    c2_r[idx25] += Parts[1].ba[idx2 + 0];
+                    c2_g[idx25] += Parts[1].ba[idx2 + 1];
+                    c2_b[idx25] += Parts[1].ba[idx2 + 2];
+
+                    res.diff25_cnt[idx25]++;
+                }
+            }
+            res.diff = 0;
+            for (int iii = 0; iii < 25; iii++)
+            {
+                /*c1_r[iii] = c1_r[iii] / (int)res.diff25_cnt[iii];
+                c1_g[iii] = c1_g[iii] / (int)res.diff25_cnt[iii];
+                c1_b[iii] = c1_b[iii] / (int)res.diff25_cnt[iii];
+                c2_r[iii] = c2_r[iii] / (int)res.diff25_cnt[iii];
+                c2_g[iii] = c2_g[iii] / (int)res.diff25_cnt[iii];
+                c2_b[iii] = c2_b[iii] / (int)res.diff25_cnt[iii];*/
+                res.diff25[iii] = Math.Abs(c1_r[iii] - c2_r[iii]) + Math.Abs(c1_g[iii] - c2_g[iii]) + Math.Abs(c1_b[iii] - c2_b[iii]);
+                res.diff += res.diff25[iii];
+            }
+            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
+            return res;
+        }
+        public Block CalculateDifference_v9(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
+        {
+            int hh = Parts[0].img.Height - 1;
+
+            Block res = new Block(r * columns + c, 0);
+
+            int[] c1_r = new int[25];
+            int[] c1_g = new int[25];
+            int[] c1_b = new int[25];
+            int[] c2_r = new int[25];
+            int[] c2_g = new int[25];
+            int[] c2_b = new int[25];
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
+
+                    c1_r[idx25] += Parts[0].ba[idx1 + 0];
+                    c1_g[idx25] += Parts[0].ba[idx1 + 1];
+                    c1_b[idx25] += Parts[0].ba[idx1 + 2];
+                    c2_r[idx25] += Parts[1].ba[idx2 + 0];
+                    c2_g[idx25] += Parts[1].ba[idx2 + 1];
+                    c2_b[idx25] += Parts[1].ba[idx2 + 2];
+                    int pixel = (int)Math.Sqrt((c1_r[idx25] - c2_r[idx25]) * (c1_r[idx25] - c2_r[idx25]) +
+                        (c1_g[idx25] - c2_g[idx25]) * (c1_g[idx25] - c2_g[idx25]) +
+                        (c1_b[idx25] - c2_b[idx25]) * (c1_b[idx25] - c2_b[idx25]));
+
+                    res.diff25_cnt[idx25]++;
+                    res.diff25[idx25] += pixel;
+                    res.diff += pixel;
+                }
+            }
+            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
             return res;
         }
 
