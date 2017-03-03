@@ -76,14 +76,6 @@ namespace FiveDiff
                 start = p1;
                 end = p2;
             }
-            public static bool operator ==(Bound c1, Bound c2)
-            {
-                return ((c1.start == c2.start) && (c1.end == c2.end));
-            }
-            public static bool operator !=(Bound c1, Bound c2)
-            {
-                return ((c1.start == c2.start) && (c1.end == c2.end));
-            }
         }
         /// <summary>
         /// структура для массива количества белого цвета по строкам и столбцам
@@ -2007,7 +1999,7 @@ namespace FiveDiff
             int idx = -1;
             for (int i = 0; i < bounds.Count; i++)
             {
-                if (bounds[i] == b) { continue; }
+                if ((bounds[i].start == b.start)&&(bounds[i].end == b.end)) { continue; }
                 if (max < bounds[i].end - bounds[i].start)
                 {
                     max = bounds[i].end - bounds[i].start;
