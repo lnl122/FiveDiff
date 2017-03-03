@@ -24,13 +24,6 @@ namespace FiveDiff
         // флаг для таймера
         static public int num = 1;
 
-        //
-        //
-        // удалить после перехода на новый класс
-        //
-        //
-        static public string answerformat;// = "LaUp1A";
-
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
@@ -45,52 +38,40 @@ namespace FiveDiff
             PrepareTimer();
             /*
             string p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\pic02.jpg"; // зеленая игра
-            //p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\9\lu.jpg";
-            p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\5_EnUpA1\B5C1F6H8L4.jpg"; //розовая сетка
-            //p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\5_EnUpA1\A2A7D2D5E8.jpg"; // яйца, поля
-            //p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\4_EnLeA1\F2H3C6G8D9.jpg"; // шахматы
-            p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\sar21623_RuLeA1\Б3Д4А6И6Ж8-2.jpg";
-            p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\B6C3C4D2E5-1.jpg"; // фрукты
-            p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A2A7D2D5E8.jpg"; // белая раска вокруг
-            p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4F4I5J6K3.jpg"; // белый фон картинки
-            p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\1C2J3D5J7G-1_g1.jpg"; // белый фон картинки
-            p1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\A4F4I5J6K3.jpg";
             FiveDifference b = new FiveDifference(new Bitmap(p1), new FiveDifference.Settings(FiveDifference.setNums.Up, FiveDifference.setLang.Eng, FiveDifference.setType._A1));
-            int ii = 9;
             */
-            //string v1 = @"C:\Users\Антон\Source\Repos\FiveDiff\FiveDiff\FiveDiffTests\pics4test\kmv57389_EnUpA1\A5B2B4B7E6-2.jpg";
-            //string v2 = "EnUpA1";
-            //FindFiveDiff a = new FindFiveDiff(new Bitmap(v1), v2);
 
             F_SizeChanged(null, null);
             Application.Run(F);
         }
 
-        //
-        //
-        //
-        // здесь и в следующем методе необходимо будет заменить метод подготовки формата ответа и вызова класса, решающего задачу.
-        //
-        //
-        //
-        private static void CreateAnswerFormat()
+        /// <summary>
+        /// создает структуру настроек из ГУИ для класса, решаемого задачу.
+        /// </summary>
+        /// <returns></returns>
+        private static FiveDifference.Settings CreateAnswerFormat()
         {
-            string lang = "La";
-            if (SelectLang.SelectedIndex == 1) { lang = "Ru"; }
-            string nums = "Up";
-            if (SelectNumPlace.SelectedIndex == 1) { nums = "Le"; }
-            string answ = "A1";
-            if (SelectAnswerType.SelectedIndex == 1) { answ = "1A"; }
-            answerformat = lang + nums + answ;
+            FiveDifference.Settings set = new FiveDifference.Settings();
+            set.lang = FiveDifference.setLang.Eng;
+            if (SelectLang.SelectedIndex == 1) { set.lang = FiveDifference.setLang.Rus; }
+            set.nums = FiveDifference.setNums.Up;
+            if (SelectNumPlace.SelectedIndex == 1) { set.nums = FiveDifference.setNums.Left; }
+            set.type = FiveDifference.setType._A1;
+            if (SelectAnswerType.SelectedIndex == 1) { set.type = FiveDifference.setType._1A; }
+            return set;
         }
+
+        /// <summary>
+        /// запустить решение с файлом картинки по указанному пути
+        /// </summary>
+        /// <param name="v">путь к изображению</param>
         private static void RunWithFile(string v)
         {
             using (Bitmap Bmp = new Bitmap(v))
             {
                 img.Image = Bmp;
                 F.Update();
-                CreateAnswerFormat();
-                FiveDifference a = new FiveDifference(Bmp, answerformat);
+                FiveDifference a = new FiveDifference(Bmp, CreateAnswerFormat());
                 pairs = new Bitmap[2];
                 pairs[0] = a.Img1;
                 pairs[1] = a.Img2;
@@ -99,10 +80,6 @@ namespace FiveDiff
                 a = null;
             }
         }
-        //
-        //
-        //
-
 
         /// <summary>
         /// подготовка таймера
@@ -114,6 +91,7 @@ namespace FiveDiff
             t1.AutoReset = true;
             t1.Elapsed += T_Elapsed;
         }
+
         /// <summary>
         /// подготовка формы
         /// </summary>
@@ -127,19 +105,16 @@ namespace FiveDiff
             SelectLang.Items.Add("Latin");
             SelectLang.Items.Add("Русские");
             SelectLang.SelectedIndex = 0;
-            //SelectLang.SelectedIndexChanged += Select_SelectedIndexChanged;
             F.Controls.Add(SelectLang);
             SelectNumPlace = new ComboBox();
             SelectNumPlace.Items.Add("Nums UP");
             SelectNumPlace.Items.Add("Nums LEFT");
             SelectNumPlace.SelectedIndex = 0;
-            //SelectNumPlace.SelectedIndexChanged += Select_SelectedIndexChanged;
             F.Controls.Add(SelectNumPlace);
             SelectAnswerType = new ComboBox();
             SelectAnswerType.Items.Add("A1B2C3D4E5");
             SelectAnswerType.Items.Add("1A2B3C4D5E");
             SelectAnswerType.SelectedIndex = 0;
-            //SelectAnswerType.SelectedIndexChanged += Select_SelectedIndexChanged;
             F.Controls.Add(SelectAnswerType);
             Answer = new TextBox();
             F.Controls.Add(Answer);
@@ -170,6 +145,7 @@ namespace FiveDiff
             img.DragEnter += Img_DragEnter;
             F.Controls.Add(img);
         }
+
         /// <summary>
         /// дейсвтие таймера (менять картинку)
         /// </summary>
@@ -180,6 +156,7 @@ namespace FiveDiff
             img.Image = pairs[num];
             num = 1 - num;
         }
+
         /// <summary>
         /// d&d enter event
         /// </summary>
@@ -189,6 +166,7 @@ namespace FiveDiff
         {
             e.Effect = DragDropEffects.Move;
         }
+
         /// <summary>
         /// ивент на перетаскивание файла или ссылки
         /// </summary>
@@ -217,6 +195,7 @@ namespace FiveDiff
             }
             t1.Enabled = true;
         }
+
         /// <summary>
         /// пятикратные попытки скачивания - не гарант, но хоть чтото
         /// </summary>
@@ -242,6 +221,7 @@ namespace FiveDiff
                 }
             }
         }
+
         /// <summary>
         /// изменение размеров окна-  корректировка положения картинки
         /// </summary>
