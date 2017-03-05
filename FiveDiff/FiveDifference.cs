@@ -1153,6 +1153,7 @@ namespace FiveDiff
         /// <returns>часть ответа</returns>
         public string GetPartAnswer(int num)
         {
+            if(columns == 0) { return ""; }
             string res = "";
             int row = num / columns;
             int col = num % columns;
@@ -1176,6 +1177,7 @@ namespace FiveDiff
         /// <returns>массив лучших индексов</returns>
         public int[] GetFiveBlockIndexes(Block[] b, int cnt = 5)
         {
+            if(b.Length < cnt) { return new int[5] { 0, 0, 0, 0, 0 }; }
             int[] res = new int[cnt];
             for (int i = 0; i < cnt; i++) { res[i] = b[i].num; }
             bool needSort = true;
