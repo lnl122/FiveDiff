@@ -14,7 +14,7 @@ namespace FiveDiff
         // заполнится ниже
         static public string TempFolder = "";
         // элементы формы
-        static public PictureBox img;
+        static public PictureBox img = new PictureBox();
         static public ComboBox SelectLang;
         static public ComboBox SelectNumPlace;
         static public ComboBox SelectAnswerType;
@@ -139,6 +139,8 @@ namespace FiveDiff
             F.Icon = Properties.Resources.favicon;
             F.SizeChanged += F_SizeChanged;
             F.AllowDrop = true;
+            F.Width = 530;
+            F.Height = 300;
             SelectLang = new ComboBox();
             SelectLang.Items.Add("Latin");
             SelectLang.Items.Add("Русские");

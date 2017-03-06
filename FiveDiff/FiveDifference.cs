@@ -13,24 +13,25 @@ namespace FiveDiff
 {
     public class FiveDifference
     {
-        // базовая картинка
-        public Bitmap Bmp;
         // половины картинок
         public Bitmap Img1, Img2;
-        public Part[] Parts = new Part[2];
-        public int LineLen = 0;
-        // смещения
-        public int shift_hor, shift_ver;
-        // размер сетки
-        public int rows, columns;
-        // разница ячеек
-        public long[] diffs;
-        public Block[] blocks;
         // ответ
         public string Answer = "";
 
-        // структура настроек
+        // базовая картинка
+        private Bitmap Bmp;
+        private Part[] Parts = new Part[2];
+        private int LineLen = 0;
+        // смещения
+        private int shift_hor, shift_ver;
+        // размер сетки
+        private int rows, columns;
+        
+        private Block[] blocks;
+        // настройки
         private Settings settings;
+
+        // структура настроек
         public enum setNums { Left, Up };
         public enum setLang { Rus, Eng };
         public enum setType { _A1, _1A };
@@ -46,7 +47,7 @@ namespace FiveDiff
                 type = tt;
             }
         }
-        public string answ_lett = "";
+        private string answ_lett = "";
 
         // структура для половинки картинки
         public struct Part
@@ -84,13 +85,33 @@ namespace FiveDiff
         {
             public int[] cols, rows;
         }
+        public struct Block
+        {
+            public int num;
+            public long diff;
+            public long[] diff25;
+            public long[] diff25_cnt;
+            public long max25;
+            public Rectangle rect;
+            public Block(int i, long d)
+            {
+                num = i;
+                diff = d;
+                diff25 = new long[25];
+                diff25_cnt = new long[25];
+                max25 = 0;
+                rect = new Rectangle(0, 0, 1, 1);
+            }
+        }
+
         /// <summary>
-        /// 
+        /// структура хэша отличий
         /// </summary>
-        public struct BoundHash
+        private struct BoundHash
         {
             public int min, max, avg, min_cnt, max_cnt, high_cnt, low_cnt;
-            public BoundHash(int imin, int imax, int iavg) {
+            public BoundHash(int imin, int imax, int iavg)
+            {
                 min = imin;
                 max = imax;
                 avg = iavg;
@@ -100,34 +121,6 @@ namespace FiveDiff
                 high_cnt = 0;
             }
         }
-        public struct Block
-        {
-            public int num;
-            public long diff;
-            //public long[] diff16;
-            public long[] diff25;
-            //public long[] diff9;
-            //public long[] diff16_cnt;
-            public long[] diff25_cnt;
-            //public long[] diff9_cnt;
-            //public long max9;
-            //public long max16;
-            public long max25;
-            public Block(int i, long d)
-            {
-                num = i;
-                diff = d;
-                //diff9 = new long[9];
-                //diff16 = new long[16];
-                diff25 = new long[25];
-                //diff9_cnt = new long[9];
-                //diff16_cnt = new long[16];
-                diff25_cnt = new long[25];
-                //max9 = 0;
-                //max16 = 0;
-                max25 = 0;
-            }
-        }
 
         // константы
         private const int BmpHeader = 54;
@@ -135,26 +128,59 @@ namespace FiveDiff
         // параметры для подгонки эффективности
 
         // = 1, иначе ошибки совсем
-        public int DetectGridOne_ArrSumMultiplier = 1; // поиск сетки по строкам/столбцам, отсечение ошибок до сравнения на белый цвет
+        //private int DetectGridOne_ArrSumMultiplier = 1; // поиск сетки по строкам/столбцам, отсечение ошибок до сравнения на белый цвет
 
-        public int FindCommonShift_shift2 = 5; // общий сдвиг, сдвиг поиска вокруг найденных пересечений
-        public int FindDiffsByShiftsOne_CutPart = 5; // часть (1/х) половинок, для поиска соответствия в одном пересечении
-        public int GetLineDiffArr_max_shift = 3; // часть (1/х) строк, по которым ищем сдвиг
+        private int FindCommonShift_shift2 = 5; // общий сдвиг, сдвиг поиска вокруг найденных пересечений
+        private int FindDiffsByShiftsOne_CutPart = 5; // часть (1/х) половинок, для поиска соответствия в одном пересечении
+        private int GetLineDiffArr_max_shift = 3; // часть (1/х) строк, по которым ищем сдвиг
         //public int FindLetterBounds_start = 30; // с какой позиции искать границу окончения первой буквы
         //public int FindGrid_SkipPointsAroundLetters = 2; // точек пропустить от границ букв 2-3 где-то так
-        public float GetBounds_AllowSizeMultiplier = 1.5f; // допустимые изменения размеров блоков
+        private float GetBounds_AllowSizeMultiplier = 1.5f; // допустимые изменения размеров блоков
         //public float DetectGridOne_MaxDiffPeakMultiplier = 1.3f; // максимальная разница в пиках
         //public int FindGrid_AllowedWhitePixels = 3; // сколько может быть белых пикселей в сетке
-        public int GetWhiteBound_PortionWhiteBound1000 = 10; // доля +- точек для определения границ белого по краям
-        public int GetWhiteBound_PortionWhiteBound1000_0 = 5; // доля +- точек для определения границ белого по краям (1% = 10)
-        public bool CorrectGridBorder_flag = true; // (true/false) - корректировать сетку на 1 пиксель шире?
-        public int GetMinBlock_criteria = 1; // 1/9/16/25 - критерий выбора минимального блока
+        private int GetWhiteBound_PortionWhiteBound1000 = 10; // доля +- точек для определения границ белого по краям
+        private int GetWhiteBound_PortionWhiteBound1000_0 = 5; // доля +- точек для определения границ белого по краям (1% = 10)
+        private bool CorrectGridBorder_flag = true; // (true/false) - корректировать сетку на 1 пиксель шире?
+        private int GetMinBlock_criteria = 1; // 1/9/16/25 - критерий выбора минимального блока
 
-        public int FindOneDiff_shift_compare = 1; // сдвиг поиска в одной ячейке
-        public int CalculateDifference_Variant = 8; // вариант расчета различий ячеек
-        public int v81_level = 500; // ниже это различия мы не считаем различием. для v8_1
-        public int v82_level = 5; // ниже это различия мы не считаем различием. для v8_2
-        public int v83_level = 50; // ниже это различия мы не считаем различием. для v8_3
+        private int FindOneDiff_shift_compare = 1; // сдвиг поиска в одной ячейке
+        //public int CalculateDifference_Variant = 8; // вариант расчета различий ячеек
+        //public int v81_level = 500; // ниже это различия мы не считаем различием. для v8_1
+        //public int v82_level = 5; // ниже это различия мы не считаем различием. для v8_2
+        //public int v83_level = 50; // ниже это различия мы не считаем различием. для v8_3
+
+
+        /// <summary>
+        /// конструктор
+        /// </summary>
+        /// <param name="b">анализируемая картинка</param>
+        /// <param name="s">структура настроек строкой, для совместимости</param>
+        public FiveDifference(Bitmap b, string s = "EnLeA1")
+        {
+            // EnLe1A
+            Settings ss = new Settings();
+            string p1 = s.Substring(0, 2);
+            string p2 = s.Substring(2, 2);
+            string p3 = s.Substring(4, 2);
+            if (p1 == "Ru") { ss.lang = setLang.Rus; } else { ss.lang = setLang.Eng; }
+            if (p2 == "Up") { ss.nums = setNums.Up; } else { ss.nums = setNums.Left; }
+            if (p3 == "A1") { ss.type = setType._A1; } else { ss.type = setType._1A; }
+            settings = ss;
+            Bmp = b;
+            FiveDifferenceDo();
+        }
+
+        /// <summary>
+        /// конструктор
+        /// </summary>
+        /// <param name="b">анализируемая картинка</param>
+        /// <param name="s">структура настроек</param>
+        public FiveDifference(Bitmap b, Settings s)
+        {
+            settings = s;
+            Bmp = b;
+            FiveDifferenceDo();
+        }
 
         /* пробы вариантов
             //  +  / -  / all -  0,0% - options
@@ -216,15 +242,51 @@ namespace FiveDiff
         /// <summary>
         /// формирует ответ
         /// </summary>
-        public void DoAnswer()
+        private void DoAnswer()
         {
             // 2Do: (!)
             // засечь время работы при компиляции в ОпКод или х86-32бит
 
             // 166 / 21 / 187 - 88,8% - 25, shift_compare=1, v8,                   CorrectGridBorder_flag, 1,0сек
 
+            Block[] sorted = SortBlocks(25);
+            int[] Five = GetFiveBlockIndexes(sorted);
+            Answer = GetAnswer(Five);
+            DrawSquaresOnImages(sorted, 5, 5);
+        }
 
-            Answer = GetAnswer(GetFiveBlockIndexes(SortBlocks(25)));
+        /// <summary>
+        /// выполняет отрисовку на Img1/Img2 блоков двумя цветами. количества блоков = cnt1/cnt2
+        /// первые cnt1 блоков - красным цветом, следующие cnt2 блоков - желтым
+        /// </summary>
+        /// <param name="bl">сортированный массив блоков</param>
+        /// <param name="cnt1">сколько красных вначале</param>
+        /// <param name="cnt2">сколько желтых за красными</param>
+        private void DrawSquaresOnImages(Block[] bl, int cnt1, int cnt2)
+        {
+            int cnt = bl.Length;
+            for (int i = 0; i < cnt; i++)
+            {
+                if (i < cnt1) { DrawRectangle(bl[i].rect, Color.Red); }
+                if ((i >= cnt1) && (i < cnt1+cnt2)) { DrawRectangle(bl[i].rect, Color.Yellow); }
+            }
+        }
+
+        /// <summary>
+        /// отрсовывает прямоугольник нужного цвета на Img1/Img2
+        /// </summary>
+        /// <param name="rect">прямоугольник</param>
+        /// <param name="col">цвет</param>
+        private void DrawRectangle(Rectangle rect, Color col)
+        {
+            Graphics g1 = Graphics.FromImage(Img1);
+            Graphics g2 = Graphics.FromImage(Img2);
+            Rectangle rect2 = new Rectangle(rect.Left + 1, rect.Top + 1, rect.Width - 2, rect.Height - 2);
+            g1.DrawRectangle(new Pen(col), rect);
+            g2.DrawRectangle(new Pen(col), rect);
+            g1.DrawRectangle(new Pen(col), rect2);
+            g2.DrawRectangle(new Pen(col), rect2);
+
         }
 
         /// <summary>
@@ -239,7 +301,7 @@ namespace FiveDiff
         /// <param name="w">ширина</param>
         /// <param name="h">высота</param>
         /// <returns>отличия</returns>
-        public Block FindOneDiffShift(int r, int c, int sh_w, int sh_h)
+        private Block FindOneDiffShift(int r, int c, int sh_w, int sh_h)
         {
             // разнца сдвигов картинки и сетки + наш сдвиг, текущий
             int shift_w = (Parts[1].BoundsLeftRight[c].start - Parts[0].BoundsLeftRight[c].start) - shift_hor + sh_w;
@@ -276,6 +338,8 @@ namespace FiveDiff
             int w5 = w / 5 + 1;
             int h5 = h / 5 + 1;
 
+            return CalculateDifference_v8(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5);
+            /*
             if (CalculateDifference_Variant == 2) { return CalculateDifference_v2(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
             if (CalculateDifference_Variant == 3) { return CalculateDifference_v3(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
             if (CalculateDifference_Variant == 4) { return CalculateDifference_v4(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
@@ -291,6 +355,7 @@ namespace FiveDiff
             if (CalculateDifference_Variant == 81) { return CalculateDifference_v8_1(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
             if (CalculateDifference_Variant == 82) { return CalculateDifference_v8_2(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
             if (CalculateDifference_Variant == 83) { return CalculateDifference_v8_3(r, c, p1_l, p1_r, p1_u, p1_d, sw, sh, w5, h5); }
+            */
 
             //для теста надо бы сохранять ячейки в файлы
             /*
@@ -300,10 +365,61 @@ namespace FiveDiff
             StoreImage(Parts[0].img, name1, new Rectangle(p1_l, p1_u, w, h));
             StoreImage(Parts[1].img, name2, new Rectangle(p2_l, p2_u, w, h));
             */
-            return new Block(r * columns + c, 0);
+
+            //return new Block(r * columns + c, 0);
         }
 
         // здесь и ниже - варианты расчета отличий.
+        private Block CalculateDifference_v8(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
+        {
+            int hh = Parts[0].img.Height - 1;
+
+            Block res = new Block(r * columns + c, 0);
+            res.rect = new Rectangle(p1_l, p1_u, p1_r-p1_l, p1_d-p1_u);
+
+            int[] c1_r = new int[25];
+            int[] c1_g = new int[25];
+            int[] c1_b = new int[25];
+            int[] c2_r = new int[25];
+            int[] c2_g = new int[25];
+            int[] c2_b = new int[25];
+
+            for (int i = p1_l; i < p1_r; i++)
+            {
+                if (Parts[0].grid_columns[i]) { continue; }
+                int i2 = i + sw;
+                if (Parts[1].grid_columns[i2]) { continue; }
+                for (int j = p1_u; j < p1_d; j++)
+                {
+                    if (Parts[0].grid_lines[j]) { continue; }
+                    int j2 = j + sh;
+                    if (Parts[1].grid_lines[j2]) { continue; }
+
+                    int idx1 = GetIndexByXY(i, hh - j);
+                    int idx2 = GetIndexByXY(i2, hh - j2);
+
+                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
+
+                    c1_r[idx25] += Parts[0].ba[idx1 + 0];
+                    c1_g[idx25] += Parts[0].ba[idx1 + 1];
+                    c1_b[idx25] += Parts[0].ba[idx1 + 2];
+                    c2_r[idx25] += Parts[1].ba[idx2 + 0];
+                    c2_g[idx25] += Parts[1].ba[idx2 + 1];
+                    c2_b[idx25] += Parts[1].ba[idx2 + 2];
+
+                    res.diff25_cnt[idx25]++;
+                }
+            }
+            res.diff = 0;
+            for (int iii = 0; iii < 25; iii++)
+            {
+                res.diff25[iii] = Math.Abs(c1_r[iii] - c2_r[iii]) + Math.Abs(c1_g[iii] - c2_g[iii]) + Math.Abs(c1_b[iii] - c2_b[iii]);
+                res.diff += res.diff25[iii];
+            }
+            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
+            return res;
+        }
+        /* менее удачные варианты
         public Block CalculateDifference_v2(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
         {
             int hh = Parts[0].img.Height - 1;
@@ -529,54 +645,6 @@ namespace FiveDiff
                 c2_r[iii] = c2_r[iii] / (int)res.diff25_cnt[iii];
                 c2_g[iii] = c2_g[iii] / (int)res.diff25_cnt[iii];
                 c2_b[iii] = c2_b[iii] / (int)res.diff25_cnt[iii];
-                res.diff25[iii] = Math.Abs(c1_r[iii] - c2_r[iii]) + Math.Abs(c1_g[iii] - c2_g[iii]) + Math.Abs(c1_b[iii] - c2_b[iii]);
-                res.diff += res.diff25[iii];
-            }
-            res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
-            return res;
-        }
-        public Block CalculateDifference_v8(int r, int c, int p1_l, int p1_r, int p1_u, int p1_d, int sw, int sh, int w5, int h5)
-        {
-            int hh = Parts[0].img.Height - 1;
-
-            Block res = new Block(r * columns + c, 0);
-
-            int[] c1_r = new int[25];
-            int[] c1_g = new int[25];
-            int[] c1_b = new int[25];
-            int[] c2_r = new int[25];
-            int[] c2_g = new int[25];
-            int[] c2_b = new int[25];
-
-            for (int i = p1_l; i < p1_r; i++)
-            {
-                if (Parts[0].grid_columns[i]) { continue; }
-                int i2 = i + sw;
-                if (Parts[1].grid_columns[i2]) { continue; }
-                for (int j = p1_u; j < p1_d; j++)
-                {
-                    if (Parts[0].grid_lines[j]) { continue; }
-                    int j2 = j + sh;
-                    if (Parts[1].grid_lines[j2]) { continue; }
-
-                    int idx1 = GetIndexByXY(i, hh - j);
-                    int idx2 = GetIndexByXY(i2, hh - j2);
-
-                    int idx25 = ((i - p1_l) / w5) * 5 + ((j - p1_u) / h5);
-
-                    c1_r[idx25] += Parts[0].ba[idx1 + 0];
-                    c1_g[idx25] += Parts[0].ba[idx1 + 1];
-                    c1_b[idx25] += Parts[0].ba[idx1 + 2];
-                    c2_r[idx25] += Parts[1].ba[idx2 + 0];
-                    c2_g[idx25] += Parts[1].ba[idx2 + 1];
-                    c2_b[idx25] += Parts[1].ba[idx2 + 2];
-
-                    res.diff25_cnt[idx25]++;
-                }
-            }
-            res.diff = 0;
-            for (int iii = 0; iii < 25; iii++)
-            {
                 res.diff25[iii] = Math.Abs(c1_r[iii] - c2_r[iii]) + Math.Abs(c1_g[iii] - c2_g[iii]) + Math.Abs(c1_b[iii] - c2_b[iii]);
                 res.diff += res.diff25[iii];
             }
@@ -1038,43 +1106,12 @@ namespace FiveDiff
             res.max25 = 0; for (int iii = 0; iii < 25; iii++) { if (res.max25 < res.diff25[iii]) { res.max25 = res.diff25[iii]; } }
             return res;
         }
-
-        /// <summary>
-        /// конструктор
-        /// </summary>
-        /// <param name="b">анализируемая картинка</param>
-        /// <param name="s">структура настроек строкой, для совместимости</param>
-        public FiveDifference(Bitmap b, string s = "EnLeA1")
-        {
-            // EnLe1A
-            Settings ss = new Settings();
-            string p1 = s.Substring(0, 2);
-            string p2 = s.Substring(2, 2);
-            string p3 = s.Substring(4, 2);
-            if (p1 == "Ru") { ss.lang = setLang.Rus; } else { ss.lang = setLang.Eng; }
-            if (p2 == "Up") { ss.nums = setNums.Up; } else { ss.nums = setNums.Left; }
-            if (p3 == "A1") { ss.type = setType._A1; } else { ss.type = setType._1A; }
-            settings = ss;
-            Bmp = b;
-            FiveDifferenceDo();
-        }
-
-        /// <summary>
-        /// конструктор
-        /// </summary>
-        /// <param name="b">анализируемая картинка</param>
-        /// <param name="s">структура настроек</param>
-        public FiveDifference(Bitmap b, Settings s)
-        {
-            settings = s;
-            Bmp = b;
-            FiveDifferenceDo();
-        }
+        */
 
         /// <summary>
         /// main code
         /// </summary>
-        public void FiveDifferenceDo()
+        private void FiveDifferenceDo()
         {
             // установим язык по настройкам
             if (settings.lang == setLang.Rus) { answ_lett = "АБВГДЕЖЗИКЛМНОПРСТУФ"; } else { answ_lett = "ABCDEFGHIJKLMNOPQRST"; }
@@ -1104,7 +1141,7 @@ namespace FiveDiff
         /// <summary>
         /// корректирует сетку на 1 пиксель
         /// </summary>
-        public void CorrectGridBorder()
+        private void CorrectGridBorder()
         {
             if (!CorrectGridBorder_flag) { return; }
             int cols = Parts[0].grid_columns.Length;
@@ -1136,7 +1173,7 @@ namespace FiveDiff
         /// </summary>
         /// <param name="a">массив</param>
         /// <returns>ответ</returns>
-        public string GetAnswer(int[] a)
+        private string GetAnswer(int[] a)
         {
             string res = "";
             for (int i = 0; i < a.Length; i++)
@@ -1151,7 +1188,7 @@ namespace FiveDiff
         /// </summary>
         /// <param name="num">номер блока</param>
         /// <returns>часть ответа</returns>
-        public string GetPartAnswer(int num)
+        private string GetPartAnswer(int num)
         {
             if(columns == 0) { return ""; }
             string res = "";
@@ -1175,7 +1212,7 @@ namespace FiveDiff
         /// </summary>
         /// <param name="b">блоки</param>
         /// <returns>массив лучших индексов</returns>
-        public int[] GetFiveBlockIndexes(Block[] b, int cnt = 5)
+        private int[] GetFiveBlockIndexes(Block[] b, int cnt = 5)
         {
             if(b.Length < cnt) { return new int[5] { 0, 0, 0, 0, 0 }; }
             int[] res = new int[cnt];
@@ -1202,7 +1239,7 @@ namespace FiveDiff
         /// сортирует блоки по убыванию отличий
         /// </summary>
         /// <param name="v">1 - на целом блоке, 9 - на 1/9 блока, 16 - на 1/16 блока</param>
-        public Block[] SortBlocks(int v)
+        private Block[] SortBlocks(int v)
         {
             Block[] bl = blocks;
             if (!((v == 1) || (v == 9) || (v == 16) || (v == 25) || (v == 77) || (v == 88) || (v == 99))) { return blocks; }
@@ -1235,7 +1272,7 @@ namespace FiveDiff
         /// <summary>
         /// находит разницы ячеек, заполняет difss
         /// </summary>
-        public void FindDifferenceSquares()
+        private void FindDifferenceSquares()
         {
             int cnt = columns * rows;
             blocks = new Block[cnt];
@@ -1256,7 +1293,7 @@ namespace FiveDiff
         /// <param name="r">строка</param>
         /// <param name="c">колонка</param>
         /// <returns>минимум разницы с учетом сдвигов</returns>
-        public Block FindOneDiff(int r, int c)
+        private Block FindOneDiff(int r, int c)
         {
             int FindOneDiff_shift_compare2 = FindOneDiff_shift_compare * 2 + 1;
             Block[] res_sh = new Block[FindOneDiff_shift_compare2 * FindOneDiff_shift_compare2];
@@ -1286,22 +1323,6 @@ namespace FiveDiff
                     if (min > arbl[i].diff) { idx = i; min = arbl[i].diff; }
                 }
             }
-            /*
-            if (GetMinBlock_criteria == 9)
-            {
-                for (int i = 0; i < arbl.Length; i++)
-                {
-                    if (min > arbl[i].max9) { idx = i; min = arbl[i].max9; }
-                }
-            }
-            if (GetMinBlock_criteria == 16)
-            {
-                for (int i = 0; i < arbl.Length; i++)
-                {
-                    if (min > arbl[i].max16) { idx = i; min = arbl[i].max16; }
-                }
-            }
-            */
             if (GetMinBlock_criteria == 25)
             {
                 for (int i = 0; i < arbl.Length; i++)
@@ -1315,7 +1336,7 @@ namespace FiveDiff
         /// <summary>
         /// создает парные изображения для вывода на экран
         /// </summary>
-        public void CreatePairImage()
+        private void CreatePairImage()
         {
             Img1 = Parts[0].img;
             Bitmap b = new Bitmap(Parts[0].img.Width, Parts[0].img.Height);
@@ -1328,7 +1349,7 @@ namespace FiveDiff
         /// <summary>
         /// сохраняет части по найденным смещениям
         /// </summary>
-        public void StoreParts()
+        private void StoreParts()
         {
             int ww = Parts[0].rect.Width - Math.Abs(shift_hor);
             int hh = Parts[0].rect.Height - Math.Abs(shift_ver);
@@ -1361,11 +1382,11 @@ namespace FiveDiff
             Parts[0].img_shift = Parts[0].img.Clone(Parts[0].rect_shift, Bmp.PixelFormat);
             Parts[1].img_shift = Parts[1].img.Clone(Parts[1].rect_shift, Bmp.PixelFormat);
         }
- 
+
         /// <summary>
         /// находит общий для двух частей
         /// </summary>
-        public void FindCommonShift()
+        private void FindCommonShift()
         {
             int[] r0 = GetSumRowsParts(0);
             int[] r1 = GetSumRowsParts(1);
@@ -1405,13 +1426,13 @@ namespace FiveDiff
             shift_ver = -Shifts[idx].shift_v;
             shift_hor = Shifts[idx].shift_h;
         }
-  
+
         /// <summary>
         /// находит индекс минимального значения из массива
         /// </summary>
         /// <param name="diff">массив</param>
         /// <returns>минимальный индекс</returns>
-        public int GetMinIndex(long[] diff)
+        private int GetMinIndex(long[] diff)
         {
             int res = 0;
             int len = diff.Length;
@@ -1426,11 +1447,11 @@ namespace FiveDiff
             }
             return res;
         }
-  
+
         /// <summary>
         /// для всех сдвигов ищет сумму разниц отличий
         /// </summary>
-        public ShArr[] FindDiffsByShifts(ShArr[] Shifts)
+        private ShArr[] FindDiffsByShifts(ShArr[] Shifts)
         {
             int len = Shifts.Length;
             ShArr[] res = new ShArr[len];
@@ -1441,13 +1462,13 @@ namespace FiveDiff
             }
             return res;
         }
- 
+
         /// <summary>
         /// ищет сумму разниц отличий для одной пары сдвигов по прямоугольнику
         /// </summary>
         /// <param name="num">индекс в массиве сдвигов</param>
         /// <returns>разница цветов</returns>
-        public long FindDiffsByShiftsOne(ShArr sh)
+        private long FindDiffsByShiftsOne(ShArr sh)
         {
             int sh_v = sh.shift_v;
             int sh_h = sh.shift_h;
@@ -1474,13 +1495,13 @@ namespace FiveDiff
             }
             return dd;
         }
-   
+
         /// <summary>
         /// убивает дубликаты структур в Shifts
         /// </summary>
         /// <param name="shifts2">исходный массив</param>
         /// <returns>массив без дупов</returns>
-        public ShArr[] KillDupesShifts(ShArr[] shifts2)
+        private ShArr[] KillDupesShifts(ShArr[] shifts2)
         {
             List<ShArr> resL = new List<ShArr>();
             foreach (ShArr q in shifts2)
@@ -1495,7 +1516,7 @@ namespace FiveDiff
             }
             return res;
         }
-     
+
         /// <summary>
         /// находит смещение по разнице цветов из двух массивов
         /// </summary>
@@ -1504,7 +1525,7 @@ namespace FiveDiff
         /// <param name="b1">маска сетки 1</param>
         /// <param name="b2">маска сетки 2</param>
         /// <returns>смещение массива 2 относительно массива 1</returns>
-        public int[] GetLineDiffArr(int[] a1, int[] a2, bool[] b1, bool[] b2)
+        private int[] GetLineDiffArr(int[] a1, int[] a2, bool[] b1, bool[] b2)
         {
             int len = a1.Length;
             if (len != a2.Length) { return new int[0]; }
@@ -1522,13 +1543,13 @@ namespace FiveDiff
             for (int i = 0; i < lenres; i++) { res[i] = res2[i] - shift; }
             return res;
         }
-     
+
         /// <summary>
         /// находит индексы пяти минимальных значений из массива
         /// </summary>
         /// <param name="d">массив</param>
         /// <returns>массив минимальных индексов</returns>
-        public int[] GetFiveMinIndex(float[] d)
+        private int[] GetFiveMinIndex(float[] d)
         {
             float[] diff = d;
             List<int> res_l = new List<int>();
@@ -1555,7 +1576,7 @@ namespace FiveDiff
             }
             return res;
         }
-     
+
         /// <summary>
         /// находит разницу цветов из двух массивов для конкретного смещения. усредняет
         /// </summary>
@@ -1563,7 +1584,7 @@ namespace FiveDiff
         /// <param name="a2">массив цветов 2</param>
         /// <param name="i">смещение</param>
         /// <returns>усредненная разница</returns>
-        public float GetLineDiffOne(int[] a1, int[] a2, int sh, bool[] b1, bool[] b2)
+        private float GetLineDiffOne(int[] a1, int[] a2, int sh, bool[] b1, bool[] b2)
         {
             int len = a1.Length;
             int cnt = 0;
@@ -1578,13 +1599,13 @@ namespace FiveDiff
             }
             return (float)sum / (float)(cnt);
         }
-    
+
         /// <summary>
         /// получает массив сумм цветов горизонталей
         /// </summary>
         /// <param name="v">номер части</param>
         /// <returns>массив</returns>
-        public int[] GetSumRowsParts(int v)
+        private int[] GetSumRowsParts(int v)
         {
             int w = Parts[v].rect.Width;
             int h = Parts[v].rect.Height;
@@ -1602,13 +1623,13 @@ namespace FiveDiff
             }
             return res;
         }
-    
+
         /// <summary>
         /// получает массив сумм цветов вертикалей
         /// </summary>
         /// <param name="v">номер части</param>
         /// <returns>массив</returns>
-        public int[] GetSumColsParts(int v)
+        private int[] GetSumColsParts(int v)
         {
             int w = Parts[v].rect.Width;
             int h = Parts[v].rect.Height;
@@ -1626,75 +1647,75 @@ namespace FiveDiff
             }
             return res;
         }
-     
+
         /// <summary>
         /// получает индекс в массиве байт для координат
         /// </summary>
         /// <param name="x">координата пикселя горизонталь, слева</param>
         /// <param name="y">координата пикселя вертикаль, снизу</param>
         /// <returns>положение в массиве</returns>
-        public int GetIndexByXY(int x, int y)
+        private int GetIndexByXY(int x, int y)
         {
             return BmpHeader + y * LineLen + x * 3;
         }
-      
+
         /// <summary>
         ///  получает 3 бит цвет точки
         /// </summary>
         /// <param name="idx">индекс</param>
         /// <returns>цвет</returns>
-        public int GetColor3bit(byte[] ba, int idx)
+        private int GetColor3bit(byte[] ba, int idx)
         {
             return (ba[idx + 0] >> 7) + ((ba[idx + 1] >> 7) << 1) + ((ba[idx + 2] >> 7) << 2);
         }
-    
+
         /// <summary>
         ///  получает 6 бит цвет точки
         /// </summary>
         /// <param name="idx">индекс</param>
         /// <returns>цвет</returns>
-        public int GetColor6bit(byte[] ba, int idx)
+        private int GetColor6bit(byte[] ba, int idx)
         {
             return (ba[idx + 0] >> 6) + ((ba[idx + 1] >> 6) << 2) + ((ba[idx + 2] >> 6) << 4);
         }
-     
+
         /// <summary>
         ///  получает 9 бит цвет точки
         /// </summary>
         /// <param name="idx">индекс</param>
         /// <returns>цвет</returns>
-        public int GetColor9bit(byte[] ba, int idx)
+        private int GetColor9bit(byte[] ba, int idx)
         {
             return (ba[idx + 0] >> 5) + ((ba[idx + 1] >> 5) << 3) + ((ba[idx + 2] >> 5) << 6);
         }
-  
+
         /// <summary>
         ///  получает 12 бит цвет точки
         /// </summary>
         /// <param name="idx">индекс</param>
         /// <returns>цвет</returns>
-        public int GetColor12bit(byte[] ba, int idx)
+        private int GetColor12bit(byte[] ba, int idx)
         {
             return (ba[idx + 0] >> 4) + ((ba[idx + 1] >> 4) << 4) + ((ba[idx + 2] >> 4) << 8);
         }
-  
+
         /// <summary>
         /// находит сетку для обоих половинок
         /// </summary>
-        public void DetectGrid()
+        private void DetectGrid()
         {
             DetectGridOne(0);
             DetectGridOne(1);
             columns = Parts[0].columns;
             rows = Parts[0].rows;
         }
-    
+
         /// <summary>
         /// получает количества белых цветов в части картинки
         /// </summary>
         /// <param name="num">номер части</param>
         /// <returns>структура из двух массивов</returns>
-        public TwoWhiteArray GetWhiteCounts(int num)
+        private TwoWhiteArray GetWhiteCounts(int num)
         {
             byte[] ba = Parts[num].ba;
             int width = Parts[num].rect.Width;
@@ -1725,7 +1746,7 @@ namespace FiveDiff
         /// <param name="ar">линейка количества белого цвета</param>
         /// <param name="max">теоретически максимальное значение</param>
         /// <returns>границы слева и справа</returns>
-        public Bound GetWhiteBound(int[] ar, int max)
+        private Bound GetWhiteBound(int[] ar, int max)
         {
             int m = max - max * GetWhiteBound_PortionWhiteBound1000 / 1000;
             int cnt = ar.Length;
@@ -1744,7 +1765,7 @@ namespace FiveDiff
         /// <param name="ar">массив количеств белых цветов</param>
         /// <param name="b">границы краев, за которыми искать не нужно</param>
         /// <returns>массив границ ячеек сетки</returns>
-        public List<Bound> GetWhiteSquare(int[] ar, Bound b, int wh)
+        private List<Bound> GetWhiteSquare(int[] ar, Bound b, int wh)
         {
             int len = ar.Length;
             int min = GetMin(ar);
@@ -1782,7 +1803,7 @@ namespace FiveDiff
         /// <param name="b"></param>
         /// <param name="l"></param>
         /// <returns></returns>
-        public int GetWhiteCnt(Bound b, int l)
+        private int GetWhiteCnt(Bound b, int l)
         {
             return (b.start) + (l-b.end);
         }
@@ -1791,7 +1812,7 @@ namespace FiveDiff
         /// находит сетку для одной из половинок
         /// <param name="num">номер части</param>
         /// </summary>
-        public void DetectGridOne(int num)
+        private void DetectGridOne(int num)
         {
             // * найти количества белых цветов
             TwoWhiteArray white = GetWhiteCounts(num);
@@ -1897,7 +1918,7 @@ namespace FiveDiff
         /// <param name="b">границы</param>
         /// <param name="ar2">массив</param>
         /// <returns>хэш</returns>
-        public BoundHash GetBoundHash(Bound b, int[] ar2)
+        private BoundHash GetBoundHash(Bound b, int[] ar2)
         {
             int cnt = b.end - b.start + 1;
             int[] ar = new int[cnt];
@@ -1920,7 +1941,7 @@ namespace FiveDiff
         /// <param name="grid">маска сетки</param>
         /// <param name="Bnd">границы символов</param>
         /// <returns></returns>
-        public Bound[] GetBounds(bool[] grid, Bound Bnd)
+        private Bound[] GetBounds(bool[] grid, Bound Bnd)
         {
             int len = grid.Length;
             int avg_letter = (Bnd.end + Bnd.start) / 2;
@@ -1982,7 +2003,7 @@ namespace FiveDiff
         /// <param name="grid">сетка</param>
         /// <param name="b">исключение</param>
         /// <returns>границы с максимальной шириной</returns>
-        public Bound GetMaxBound(bool[] grid, Bound b)
+        private Bound GetMaxBound(bool[] grid, Bound b)
         {
             int len = grid.Length;
             // получим границы
@@ -2009,8 +2030,8 @@ namespace FiveDiff
                 }
             }
             return bounds[idx];
-        }        
-   
+        }
+
         /// <summary>
         /// находит в сетке между указанными координатами максимальный блок
         /// </summary>
@@ -2018,7 +2039,7 @@ namespace FiveDiff
         /// <param name="v1">начало</param>
         /// <param name="v2">конец</param>
         /// <returns>границы с максимальной шириной</returns>
-        public Bound GetMaxBound(bool[] grid, int v1, int v2)
+        private Bound GetMaxBound(bool[] grid, int v1, int v2)
         {
             // получим границы
             List<Bound> bounds = new List<Bound>();
@@ -2051,7 +2072,7 @@ namespace FiveDiff
         /// <param name="ar">массив значений разностей</param>
         /// <param name="val">критерий оценки</param>
         /// <returns>флаги сетки</returns>
-        public bool[] GetGridFlagByDiff2(int[] ar, int val)
+        private bool[] GetGridFlagByDiff2(int[] ar, int val)
         {
             int len = ar.Length;
             bool[] res = new bool[len+1];
@@ -2075,7 +2096,7 @@ namespace FiveDiff
         /// <param name="ar1"></param>
         /// <param name="ar2"></param>
         /// <returns></returns>
-        public int[] GetWhiteDiff(int[] ar1, int[] ar2)
+        private int[] GetWhiteDiff(int[] ar1, int[] ar2)
         {
             int len = ar1.Length - 1;
             int[] res = new int[len];
@@ -2091,34 +2112,34 @@ namespace FiveDiff
         /// </summary>
         /// <param name="ar">массив</param>
         /// <returns>максимум значение</returns>
-        public int GetMax(int[] ar)
+        private int GetMax(int[] ar)
         {
             int max = -1;
             int cnt = ar.Length;
             for (int i = 0; i < cnt; i++) { if (ar[i] > max) { max = ar[i]; } }
             return max;
-        }        
-   
+        }
+
         /// <summary>
         /// вычитает из массива число, отрицательные приводит к нулю
         /// </summary>
         /// <param name="ar">массив</param>
         /// <param name="num">вычитаемое</param>
         /// <returns>уменьшенный массив</returns>
-        public int[] SubArr(int[] ar, int num)
+        private int[] SubArr(int[] ar, int num)
         {
             int cnt = ar.Length;
             int[] res = new int[cnt];
             for (int i = 0; i < cnt; i++) { res[i] = Math.Max(ar[i] - num, 0); }
             return res;
         }
-   
+
         /// <summary>
         /// возвращает булев флаг наличия сетки по значениям массива меньше или равных 0
         /// </summary>
         /// <param name="ar">входящий массив</param>
         /// <returns>массив флагов</returns>
-        public bool[] GetGridFlag(int[] ar)
+        private bool[] GetGridFlag(int[] ar)
         {
             int cnt = ar.Length;
             bool[] res = new bool[cnt];
@@ -2130,24 +2151,24 @@ namespace FiveDiff
             res[cnt-1] = true;
             return res;
         }
-    
+
         /// <summary>
         /// перевод 6 битного цвета в 3 битный
         /// </summary>
         /// <param name="num">цвет 6 бит</param>
         /// <returns>цвет 3 бит</returns>
-        public int Color6to3bit(int num)
+        private int Color6to3bit(int num)
         {
             return ((num & 2) >> 1) | ((num & 8) >> 2) | ((num & 32) >> 3);
         }
-    
+
         /// <summary>
         /// вычитает из массива число
         /// </summary>
         /// <param name="ar">массив</param>
         /// <param name="num">число</param>
         /// <returns>массив</returns>
-        public int[] GetArrSubInt(int[] ar, int num)
+        private int[] GetArrSubInt(int[] ar, int num)
         {
             int cnt = ar.Length;
             int[] res = new int[cnt];
@@ -2160,7 +2181,7 @@ namespace FiveDiff
         /// </summary>
         /// <param name="ar">массив</param>
         /// <returns>минимальное значение</returns>
-        public int GetMin(int[] ar)
+        private int GetMin(int[] ar)
         {
             int min = 256 * 256 * 256;
             int cnt = ar.Length;
@@ -2173,7 +2194,7 @@ namespace FiveDiff
         /// </summary>
         /// <param name="ar">массив</param>
         /// <returns>минимальное значение</returns>
-        public long GetMin(long[] ar)
+        private long GetMin(long[] ar)
         {
             long min = 0xffffffffff;
             int cnt = ar.Length;
@@ -2186,20 +2207,20 @@ namespace FiveDiff
         /// </summary>
         /// <param name="ar">массив</param>
         /// <returns>среднее значение</returns>
-        public int GetAvg(int[] ar)
+        private int GetAvg(int[] ar)
         {
             int sum = 0;
             int cnt = ar.Length;
             for (int i = 0; i < cnt; i++) { sum += ar[i]; }
             return sum/cnt;
-        }              
-        
+        }
+
         /// <summary>
-                       /// находит минимум в массиве, не равный нулю
-                       /// </summary>
-                       /// <param name="ar">массив</param>
-                       /// <returns>минимальное значение</returns>
-        public int GetMin_NonZero(int[] ar)
+        /// находит минимум в массиве, не равный нулю
+        /// </summary>
+        /// <param name="ar">массив</param>
+        /// <returns>минимальное значение</returns>
+        private int GetMin_NonZero(int[] ar)
         {
             int min = 256 * 256 * 256;
             int cnt = ar.Length;
@@ -2210,13 +2231,13 @@ namespace FiveDiff
             }
             return min;
         }
-   
+
         /// <summary>
         /// из битмапа делает массив байт - представление bmp
         /// </summary>
         /// <param name="img">битмап</param>
         /// <returns>массив байт</returns>
-        public byte[] BitmapToByteArray(Bitmap img)
+        private byte[] BitmapToByteArray(Bitmap img)
         {
             // 54 байта - заголовок
             // line = width * 3 + width % 4; /* Длина строки с учетом выравнивания */
@@ -2224,11 +2245,11 @@ namespace FiveDiff
             img.Save(mStream, System.Drawing.Imaging.ImageFormat.Bmp);
             return mStream.ToArray();
         }
-   
+
         /// <summary>
         /// из картинок делает массив байт
         /// </summary>
-        public void ImageToByteArray()
+        private void ImageToByteArray()
         {
             // переведем в массив байт
             Parts[0].ba = BitmapToByteArray(Parts[0].img);
