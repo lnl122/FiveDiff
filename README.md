@@ -1,5 +1,3 @@
-[![Code Climate](https://codeclimate.com/repos/58c616307587b202920006d3/badges/c4f5e1e674028ce8ce35/gpa.svg)](https://codeclimate.com/repos/58c616307587b202920006d3/feed)
-
 # Пять отличий
 ## Цель и назначение
 Программа для поиска 5 отличий в картинках. Для игр МШ Encounter. Пример игры - http://sar.en.cx/GameScenario.aspx?gid=21623
